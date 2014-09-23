@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int converter(int minutes, int* heures);
+int Converter(int minutes, int* heures);
 
 int main()
 {
@@ -11,7 +11,7 @@ int main()
 	printf("Entrez un chiffre\n");
 	scanf_s("%d", &minutes);
 
-	minutes = converter(minutes, &heures);
+	minutes = Converter(minutes, &heures);
 
 	printf("\n\nCela fait %d heures et %d minutes.\n", heures, minutes);
 
@@ -21,7 +21,7 @@ int main()
 }
 
 
-int converter(int minutes, int* heures)
+int Converter(int minutes, int* heures)
 {
 	*heures = minutes / 60;
 	minutes = minutes % 60;
