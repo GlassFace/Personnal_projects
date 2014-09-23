@@ -8,8 +8,5 @@ int main()
 
 	printf("Hello world!\n");
 
-	scanf_s("%d", &entree);
-	printf("%d\n\n", entree);
-
 	return 0;
 }
