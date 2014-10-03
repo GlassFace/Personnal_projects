@@ -3,7 +3,7 @@
 #include "levelgesture.h"
 
 
-const int TILE = 32;
+const int TILE = 32;		// Tiles size
 
 
 TGfxSprite * g_pHero = nullptr;		// Sprite* for hero
@@ -29,18 +29,15 @@ TGfxSprite * g_pGround14 = nullptr;
 TGfxSprite * g_pGround15 = nullptr;
 
 /* Store ground sprites into pointers-array */
+
 TGfxSprite * g_groundcases[15] = { g_pGround1, g_pGround2, g_pGround3, g_pGround4, g_pGround5, g_pGround6, g_pGround7, g_pGround8, g_pGround9, g_pGround10, g_pGround11, g_pGround12, g_pGround13, g_pGround14, g_pGround15 };
 
 
-char g_screengrid[9][14] = {{ 0 }, { 0 }};
 
-float groundx = 0;			// ground x position
-float groundy = 0;			// ground y position
+char g_screengrid[9][14] = {{ 0 }, { 0 }};		// Screen grid array
 
-float waterx = 0;			// water x position
-float watery = 0;			// water y position
 
-int g_waterdelay = 0;
+int g_waterdelay = 0;		// Water animation delay
 
 
 float screensizex = 0;		// Screen x size
@@ -73,8 +70,8 @@ void Update()
 		}
 	}
 
-	g_waterdelay++;
-	if (g_waterdelay == 20)
+	g_waterdelay++;			// Pursuing water animation delay
+	if (g_waterdelay == 20)			// Reinitializing water animation delay if 20 frames passed
 	{
 		g_waterdelay = 0;
 	}
