@@ -1,13 +1,17 @@
 #include "flib.h"
 
+const int TILE = 32;		// Tiles size
 
-void AnimateWater(char grid[][14], TGfxSprite *groundcase[14], int *waterdelay, const int TILE)		// Animate water
+const int XSCREENLENGHT = 15;	// Number of tiles on x
+
+
+void AnimateWater(char grid[][15], TGfxSprite *groundcase[15], int *waterdelay)		// Animate water
 {
 	int i = 0;
 
-	for (i = 0; i < 15; i++)
+	for (i = 0; i < XSCREENLENGHT; i++)
 	{
-		if (grid[8][i] == '2')								// If there is water at this ground tile...
+		if (grid[9][i] == '2')								// If there is water at this ground tile...
 		{
 			if (*waterdelay < 10)
 			{

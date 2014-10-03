@@ -6,6 +6,8 @@
 
 const int TILE = 32;		// Tiles size
 
+const int XSCREENLENGHT = 15;	// Number of tiles on x
+
 
 
 					/* GROUND VARIABLES */
@@ -59,7 +61,7 @@ int g_movedelay = 0;	// Hero move delay
 
 					/* SCREEN VARIABLES	*/
 
-char g_screengrid[9][14] = {{ 0 }, { 0 }};		// Screen grid array
+char g_screengrid[10][15] = {{ 0 }, { 0 }};		// Screen grid array
 
 
 float g_screensizex = 0;		// Screen x size
@@ -88,8 +90,8 @@ void Initialize()
 
 
 
-	LoadLevel(g_screengrid, levelfile);													//Load level from file to array
-	CreateGround(pGroundTexture, g_screengrid, g_groundcases, g_screensizey, TILE);		// Create ground sprites from array
+	LoadLevel(g_screengrid, levelfile);												//Load level from file to array
+	CreateGround(pGroundTexture, g_screengrid, g_groundcases, g_screensizey);		// Create ground sprites from array
 }
 
 
@@ -97,9 +99,9 @@ void Initialize()
 
 void Update()
 {
-	AnimateWater(g_screengrid, g_groundcases, &g_waterdelay, TILE);		// Animate water
+	AnimateWater(g_screengrid, g_groundcases, &g_waterdelay);		// Animate water
 
-	MoveHero(g_pHero, &g_herox, &g_heroy, &g_movedelay, g_screengrid, g_screensizex, g_screensizey, TILE);				// Manage hero position
+	MoveHero(g_pHero, &g_herox, &g_heroy, &g_movedelay, g_screengrid, g_screensizex, g_screensizey);				// Manage hero position
 }
 
 
@@ -112,7 +114,7 @@ void Render()
 
 	GfxClear(EGfxColor_White);
 
-	for (i = 0; i < 15; i++)
+	for (i = 0; i < XSCREENLENGHT; i++)
 	{
 		if (g_groundcases[i] != nullptr)			// Render every ground sprite that aren't null
 		{

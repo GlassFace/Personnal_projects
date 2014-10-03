@@ -1,7 +1,11 @@
 #include "flib.h"
 
+const int TILE = 32;		// Tiles size
 
-void CheckCollision(float *herox, const bool *right, const bool *left, const float screensizex, const float screensizey, const char grid[][14])
+const int XSCREENLENGHT = 15;	// Number of tiles on x
+
+
+void CheckCollision(float *herox, const bool *right, const bool *left, const float screensizex, const float screensizey, const char grid[][15])
 {
 	int intherox = int(*herox);		// Conversion hero position from float to int
 
@@ -37,9 +41,6 @@ void CheckCollision(float *herox, const bool *right, const bool *left, const flo
 
 void GetInput(bool *right, bool *left)		// Get input
 {
-	char charinput = 0;		// Character input on this frame
-
-
 	if (GfxInputIsPressed(EGfxInputID_KeyCharD))
 	{
 		*right = true;
@@ -53,7 +54,7 @@ void GetInput(bool *right, bool *left)		// Get input
 
 
 
-void MoveHero(TGfxSprite *hero, float *herox, float *heroy, int *delay, const char grid[][14], const float screensizex, const float screensizey, const int TILE)		// Move hero
+void MoveHero(TGfxSprite *hero, float *herox, float *heroy, int *delay, const char grid[][15], const float screensizex, const float screensizey)		// Move hero
 {
 	bool right = false;
 	bool left = false;
@@ -65,7 +66,7 @@ void MoveHero(TGfxSprite *hero, float *herox, float *heroy, int *delay, const ch
 	GetInput(&right, &left);		// Get input at this frame
 
 
-	if (*delay == 15)		// Delay time
+	if (*delay == 10)		// Delay time
 	{
 		*delay = 0;
 	}
@@ -88,10 +89,11 @@ void MoveHero(TGfxSprite *hero, float *herox, float *heroy, int *delay, const ch
 			(*herox)--;
 		}
 
+
 		(*delay)++;
 	}
 
-	if (!right && !left && *delay < 15)		// If delay engaged but no key pressed at this frame, finish it anyway
+	if (!right && !left && *delay != 0)		// If delay engaged but no key pressed at this frame, finish it anyway
 	{
 		(*delay)++;
 	}

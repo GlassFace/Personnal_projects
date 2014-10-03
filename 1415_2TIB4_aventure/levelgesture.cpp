@@ -1,7 +1,11 @@
 #include "flib.h"
 
+const int TILE = 32;		// Tiles size
 
-void LoadLevel(char grid[][14], TGfxFile *level)	// Loading level from level.txt
+const int XSCREENLENGHT = 15;	// Number of tiles on x
+
+
+void LoadLevel(char grid[][15], TGfxFile *level)	// Loading level from level.txt
 {
 	int i = 0;
 	int j = 0;
@@ -41,7 +45,7 @@ void LoadLevel(char grid[][14], TGfxFile *level)	// Loading level from level.txt
 			}
 
 
-			if (j < 14 && charread != 'l')	// Next collumn
+			if (j < XSCREENLENGHT && charread != 'l')	// Next collumn
 			{
 				j++;
 			}
@@ -59,13 +63,13 @@ void LoadLevel(char grid[][14], TGfxFile *level)	// Loading level from level.txt
 }
 
 
-void CreateGround(TGfxTexture *groundset, char grid[][14], TGfxSprite *groundtiles[14], float screensizey, const int TILE)	// Creating level (ground only for now) from screen grid infos
+void CreateGround(TGfxTexture *groundset, char grid[][15], TGfxSprite *groundtiles[15], float screensizey)	// Creating level (ground only for now) from screen grid infos
 {
 	int i = 0;
 
-	for (i = 0; i < 15; i++)		// Checking every floor case to create appropriate ground
+	for (i = 0; i < XSCREENLENGHT; i++)		// Checking every floor case to create appropriate ground
 	{
-		switch (grid[8][i])
+		switch (grid[9][i])
 		{
 		case '1':		// If tile should be ground
 			groundtiles[i] = GfxSpriteCreate(groundset);												// Creating ground sprite

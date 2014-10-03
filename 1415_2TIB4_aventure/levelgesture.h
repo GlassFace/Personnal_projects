@@ -1,4 +1,4 @@
 
-void LoadLevel(char grid[][14], TGfxFile *level);		// Loading level from level.txt
+void LoadLevel(char grid[][15], TGfxFile *level);		// Loading level from level.txt
 
-void CreateGround(TGfxTexture *groundset, char grid[][14], TGfxSprite *groundtiles[14], float screensizey, const int TILE);	// Creating level (ground only for now) from screen grid infos
+void CreateGround(TGfxTexture *groundset, char grid[][15], TGfxSprite *groundtiles[15], float screensizey);	// Creating level (ground only for now) from screen grid infos

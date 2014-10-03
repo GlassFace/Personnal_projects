@@ -1,2 +1,2 @@
 
-void AnimateWater(char grid[][14], TGfxSprite *groundcase[14], int *waterdelay, const int TILE);		// Animate water
+void AnimateWater(char grid[][15], TGfxSprite *groundcase[15], int *waterdelay);		// Animate water
