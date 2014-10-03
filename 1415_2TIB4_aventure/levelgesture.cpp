@@ -38,14 +38,14 @@ void LoadLevel(char grid[][15], TGfxFile *level)	// Loading level from level.txt
 				grid[i][j] = '2';
 			}
 
-			else if (charread == 'l')	// End of line
+			else if (charread == ' ')	// End of line
 			{
 				i++;
 				j = 0;
 			}
 
 
-			if (j < XSCREENLENGHT && charread != 'l')	// Next collumn
+			if (j < XSCREENLENGHT && charread != ' ')	// Next collumn
 			{
 				j++;
 			}
@@ -59,6 +59,8 @@ void LoadLevel(char grid[][15], TGfxFile *level)	// Loading level from level.txt
 	else
 	{
 		GfxDbgPrintf("Opening level.txt failed for some reason.\n");		// Error output if file failed to be opened
+
+		GfxExitRequest();
 	}
 }
 

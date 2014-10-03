@@ -48,10 +48,15 @@ int g_waterdelay = 0;		// Water animation delay
 
 TGfxSprite * g_pHero = nullptr;		// Sprite* for hero
 
-float g_herox = 0;		// Hero x position
-float g_heroy = 0;		// Hero y position
+float g_herox = 0;				// Hero x position
+float g_heroy = 0;				// Hero y position
 
-int g_movedelay = 0;	// Hero move delay
+int g_movedelay = 0;			// Hero move delay
+bool g_wasgoingleft = false;	// Hero was going left last frame
+bool g_wasgoingright = false;	// Hero was going right last frame
+bool g_wasfalling = false;		// Hero was falling last frame
+bool g_jump = false;			// Is hero jumping?
+float g_jumpmaxheight = 0;		// Hero max jump height
 
 
 					/* END OF HERO VARIABLES */
@@ -83,7 +88,7 @@ void Initialize()
 
 	TGfxTexture * pHeroTexture = GfxTextureLoad("hero.tga");			// Loading hero texture
 	g_pHero = GfxSpriteCreate(pHeroTexture);							// Putting texture into sprite
-	GfxSpriteSetPosition(g_pHero, 0, (g_screensizey - 2) * TILE);		// Setting hero's first position
+	GfxSpriteSetPosition(g_pHero, 0, 0);		// Setting hero's first position
 
 
 	TGfxTexture * pGroundTexture = GfxTextureLoad("ground.tga");		// Loading ground tileset
@@ -101,7 +106,7 @@ void Update()
 {
 	AnimateWater(g_screengrid, g_groundcases, &g_waterdelay);		// Animate water
 
-	MoveHero(g_pHero, &g_herox, &g_heroy, &g_movedelay, g_screengrid, g_screensizex, g_screensizey);				// Manage hero position
+	MoveHero(g_pHero, &g_herox, &g_heroy, &g_movedelay, &g_wasgoingleft, &g_wasgoingright, &g_wasfalling, &g_jump, &g_jumpmaxheight, g_screengrid, g_screensizex, g_screensizey);				// Manage hero position
 }
 
 
