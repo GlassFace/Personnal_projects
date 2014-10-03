@@ -1,14 +1,14 @@
 #include "flib.h"
 #include "animations.h"
 #include "levelgesture.h"
+#include "move.h"
 
 
 const int TILE = 32;		// Tiles size
 
 
-TGfxSprite * g_pHero = nullptr;		// Sprite* for hero
 
-
+					/* GROUND VARIABLES */
 
 /* Ground sprites */
 
@@ -28,54 +28,82 @@ TGfxSprite * g_pGround13 = nullptr;
 TGfxSprite * g_pGround14 = nullptr;
 TGfxSprite * g_pGround15 = nullptr;
 
-/* Store ground sprites into pointers-array */
+
+/* Store ground sprites into array */
 
 TGfxSprite * g_groundcases[15] = { g_pGround1, g_pGround2, g_pGround3, g_pGround4, g_pGround5, g_pGround6, g_pGround7, g_pGround8, g_pGround9, g_pGround10, g_pGround11, g_pGround12, g_pGround13, g_pGround14, g_pGround15 };
-
-
-
-char g_screengrid[9][14] = {{ 0 }, { 0 }};		// Screen grid array
 
 
 int g_waterdelay = 0;		// Water animation delay
 
 
-float screensizex = 0;		// Screen x size
-float screensizey = 0;		// Screen y size
+					/* END OF GROUND VARIABLES */
+
+
+
+
+					/* HERO VARIABLES */
+
+TGfxSprite * g_pHero = nullptr;		// Sprite* for hero
+
+float g_herox = 0;		// Hero x position
+float g_heroy = 0;		// Hero y position
+
+int g_movedelay = 0;	// Hero move delay
+
+
+					/* END OF HERO VARIABLES */
+
+
+
+
+					/* SCREEN VARIABLES	*/
+
+char g_screengrid[9][14] = {{ 0 }, { 0 }};		// Screen grid array
+
+
+float g_screensizex = 0;		// Screen x size
+float g_screensizey = 0;		// Screen y size
+
+
+					/* END OF SCREEN VARIABLES */
+
+
 
 
 void Initialize()
 {
-	screensizex = float(GfxGetDisplaySizeX() / TILE);		// Getting screen size (+ downscaling)
-	screensizey = float(GfxGetDisplaySizeY() / TILE);
+	g_screensizex = float(GfxGetDisplaySizeX() / TILE);		// Getting screen size (+ downscaling)
+	g_screensizey = float(GfxGetDisplaySizeY() / TILE);
 
-	TGfxFile * levelfile = nullptr;
+	TGfxFile * levelfile = nullptr;			// File* for level.txt
 
 
-	TGfxTexture * pSolTexture = GfxTextureLoad("ground.tga");			// Loading ground tileset
+	TGfxTexture * pHeroTexture = GfxTextureLoad("hero.tga");			// Loading hero texture
+	g_pHero = GfxSpriteCreate(pHeroTexture);							// Putting texture into sprite
+	GfxSpriteSetPosition(g_pHero, 0, (g_screensizey - 2) * TILE);		// Setting hero's first position
 
-	LoadLevel(g_screengrid, levelfile);
-	CreateGround(pSolTexture, g_screengrid, g_groundcases, TILE, screensizey);
+
+	TGfxTexture * pGroundTexture = GfxTextureLoad("ground.tga");		// Loading ground tileset
+
+
+
+	LoadLevel(g_screengrid, levelfile);													//Load level from file to array
+	CreateGround(pGroundTexture, g_screengrid, g_groundcases, g_screensizey, TILE);		// Create ground sprites from array
 }
+
+
+
 
 void Update()
 {
-	int i = 0;
+	AnimateWater(g_screengrid, g_groundcases, &g_waterdelay, TILE);		// Animate water
 
-	for (i = 0; i < 15; i++)
-	{
-		if (g_screengrid[8][i] == '2')								// If there is water at this ground tile...
-		{
-			AnimateWater(g_groundcases[i], g_waterdelay, TILE);	// ... animate water
-		}
-	}
-
-	g_waterdelay++;			// Pursuing water animation delay
-	if (g_waterdelay == 20)			// Reinitializing water animation delay if 20 frames passed
-	{
-		g_waterdelay = 0;
-	}
+	MoveHero(g_pHero, &g_herox, &g_heroy, &g_movedelay, g_screengrid, g_screensizex, g_screensizey, TILE);				// Manage hero position
 }
+
+
+
 
 
 void Render()
@@ -86,11 +114,13 @@ void Render()
 
 	for (i = 0; i < 15; i++)
 	{
-		if (g_groundcases[i] != nullptr)
+		if (g_groundcases[i] != nullptr)			// Render every ground sprite that aren't null
 		{
 			GfxSpriteRender(g_groundcases[i]);
 		}
 	}
+
+	GfxSpriteRender(g_pHero);						// Render hero
 }
 
 

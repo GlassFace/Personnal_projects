@@ -114,9 +114,11 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="animations.cpp" />
     <ClCompile Include="levelgesture.cpp" />
+    <ClCompile Include="move.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animations.h" />
+    <ClInclude Include="move.h" />
     <ClInclude Include="levelgesture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

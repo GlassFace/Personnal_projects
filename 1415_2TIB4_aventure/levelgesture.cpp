@@ -9,6 +9,8 @@ void LoadLevel(char grid[][14], TGfxFile *level)	// Loading level from level.txt
 	unsigned char charread = 0;
 
 	level = GfxFileOpenRead("level.txt");		// Opening level.txt
+
+
 	
 	if (level != nullptr)		// If opening level.txt succeeded
 	{
@@ -38,11 +40,14 @@ void LoadLevel(char grid[][14], TGfxFile *level)	// Loading level from level.txt
 				j = 0;
 			}
 
-			if (j < 14 && charread != 'l')	// Next array j case
+
+			if (j < 14 && charread != 'l')	// Next collumn
 			{
 				j++;
 			}
 		}
+
+		
 
 		GfxFileClose(level);		// Closing file
 	}
@@ -54,7 +59,7 @@ void LoadLevel(char grid[][14], TGfxFile *level)	// Loading level from level.txt
 }
 
 
-void CreateGround(TGfxTexture *groundset, char grid[][14], TGfxSprite *groundtiles[15], int TILE, float screensizey)	// Creating level (ground only for now) from screen grid infos
+void CreateGround(TGfxTexture *groundset, char grid[][14], TGfxSprite *groundtiles[14], float screensizey, const int TILE)	// Creating level (ground only for now) from screen grid infos
 {
 	int i = 0;
 
