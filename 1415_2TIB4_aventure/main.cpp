@@ -80,7 +80,7 @@ void Initialize()
 
 	TGfxTexture * pHeroTexture = GfxTextureLoad("hero.tga");			// Loading hero texture
 	g_pHero = GfxSpriteCreate(pHeroTexture);							// Putting texture into sprite
-	GfxSpriteSetPosition(g_pHero, 0, 0);		// Setting hero's first position
+	GfxSpriteSetPosition(g_pHero, float(TILE), 0);		// Setting hero's first position
 
 
 	TGfxTexture * pGroundTexture = GfxTextureLoad("ground.tga");		// Loading ground tileset
@@ -98,7 +98,7 @@ void Update()
 {
 	AnimateWater(g_screengrid, g_groundcases);		// Animate water
 
-	MoveHero(g_pHero, &g_herox, &g_heroy, g_screengrid, g_screensizex, g_screensizey);				// Manage hero position
+	MoveHero(g_pHero, &g_herox, &g_heroy, g_screengrid, g_groundcases, g_screensizex, g_screensizey);				// Manage hero position
 }
 
 

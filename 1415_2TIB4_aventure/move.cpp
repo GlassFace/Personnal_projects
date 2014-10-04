@@ -9,8 +9,7 @@ direction dir = { 0 };		// Directions record structure
 
 int delay = 0;		// Move delay
 
-float jumpmaxheight = 0;		// Hero max jump height
-float fallequationx = 0;		// X value for falling and jumping equations
+float heroxrelative = 0;		// X value for falling and jumping equations
 
 
 void CheckCollision(float *herox, float *heroy, const float screensizex, const float screensizey, const char grid[][15])	// Check collisions
@@ -23,12 +22,12 @@ void CheckCollision(float *herox, float *heroy, const float screensizex, const f
 	{
 		if (dir.right)
 		{
-			(*herox)--;
+			*herox = screensizex - 1;
 		}
 
 		if (dir.left)
 		{
-			(*herox)++;
+			*herox = 0;
 		}
 	}
 
@@ -53,12 +52,12 @@ void CheckCollision(float *herox, float *heroy, const float screensizex, const f
 }
 
 
-void GetInput(float *heroy)		// Get input
+void GetInput(float *herox, float *heroy)		// Get input
 {
 	if (GfxInputIsPressed(EGfxInputID_KeyCharD))			// Go right
 	{
 		dir.right = true;
-		GfxDbgPrintf("dir.right = %d", dir.right);
+
 		if (dir.wasgoingleft)		// If turning back, reinitialize delay to move instantly
 		{
 			delay = 0;
@@ -87,8 +86,6 @@ void GetInput(float *heroy)		// Get input
 	{
 		if (!dir.jump)								// If hero wasn't jumping yet...
 		{
-			jumpmaxheight = *heroy - 2;		// ... set jump max height
-
 			if (!dir.wasfalling)
 			{
 				dir.jump = true;
@@ -105,37 +102,46 @@ void GetInput(float *heroy)		// Get input
 
 
 
-void MoveHero(TGfxSprite *hero, float *herox, float *heroy, const char grid[][15], const float screensizex, const float screensizey)		// Move hero
+void MoveHero(TGfxSprite *hero, float *herox, float *heroy, const char grid[][15], TGfxSprite *cases[15], const float screensizex, const float screensizey)		// Move hero
 {
 	int intherox = int(*herox);		// Conversion hero position from float to int
 	int intheroy = int(*heroy);		// Conversion hero position from float to int
+
+	float groundbeneathy = 0;
 
 
 	*herox = (GfxSpriteGetPositionX(hero) / TILE);			// Getting hero position + downscaling
 	*heroy = (GfxSpriteGetPositionY(hero) / TILE);
 
 
-	GetInput(heroy);		// Get input at this frame
+	GetInput(herox, heroy);		// Get input at this frame
 
 
-	if (grid[intheroy + 1][intherox] == '0' && dir.jump == false)		// Fall if nothing beneath hero
+	if (grid[intheroy + 1][intherox] == '0' && dir.jump == false)				// Fall if nothing beneath hero
 	{
-		if (fallequationx == 0)
+		*heroy = *heroy + ((heroxrelative / TILE) * (heroxrelative / TILE));
+
+		if (heroxrelative < 25)
 		{
-			fallequationx = *heroy;
+			heroxrelative++;
 		}
 
 		dir.wasfalling = true;
-		*heroy = ((fallequationx) * (fallequationx)) / TILE;
-
-		(fallequationx)++;
 	}
 
 	else
 	{
-		dir.wasfalling = false;
-		fallequationx = 0;
+		if (dir.wasfalling)
+		{
+			groundbeneathy = (GfxSpriteGetPositionY(cases[intherox - 1]) / TILE);
+
+			*heroy = groundbeneathy - 1;
+
+			dir.wasfalling = false;
+			heroxrelative = 0;
+		}
 	}
+
 
 
 	if (delay == 10)		// Delay time
@@ -166,15 +172,7 @@ void MoveHero(TGfxSprite *hero, float *herox, float *heroy, const char grid[][15
 
 	if (dir.jump == true)		// Jump
 	{
-		if (*heroy > jumpmaxheight)		// Go up until max jump height
-		{
-			*heroy = *heroy - float(0.1);
-		}
-
-		else
-		{
-			dir.jump = false;
-		}
+		
 	}
 
 	if (!dir.right && !dir.left && delay != 0)		// If delay engaged but no key pressed at this frame, finish it anyway
