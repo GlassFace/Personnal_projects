@@ -1,11 +1,19 @@
 #include "flib.h"
+#include "move.h"
 
 const int TILE = 32;		// Tiles size
 
 const int XSCREENLENGHT = 15;	// Number of tiles on x
 
+direction dir = { 0 };		// Directions record structure
 
-void CheckCollision(float *herox, float *heroy, const bool *right, const bool *left, const float screensizex, const float screensizey, const char grid[][15])
+int delay = 0;		// Move delay
+
+float jumpmaxheight = 0;		// Hero max jump height
+float fallequationx = 0;		// X value for falling and jumping equations
+
+
+void CheckCollision(float *herox, float *heroy, const float screensizex, const float screensizey, const char grid[][15])	// Check collisions
 {
 	int intherox = int(*herox);		// Conversion hero position from float to int
 	int intheroy = int(*heroy);		// Conversion hero position from float to int
@@ -13,12 +21,12 @@ void CheckCollision(float *herox, float *heroy, const bool *right, const bool *l
 
 	if (*herox < 0 || *herox > screensizex - 1)							// Border collision
 	{
-		if (*right)
+		if (dir.right)
 		{
 			(*herox)--;
 		}
 
-		if (*left)
+		if (dir.left)
 		{
 			(*herox)++;
 		}
@@ -28,77 +36,77 @@ void CheckCollision(float *herox, float *heroy, const bool *right, const bool *l
 	{
 		if (grid[intheroy][intherox] == '1' || grid[intheroy][intherox] == '2')		// Wall collision
 		{
-			if (*right)
+			if (dir.right)
 			{
 				(*herox)--;
 			}
 
-			if (*left)
+			if (dir.left)
 			{
 				(*herox)++;
 			}
 		}
 	}
+
+	dir.right = false;
+	dir.left = false;
 }
 
 
-void GetInput(bool *right, bool *left, bool *jump, bool *wasgoingleft, bool *wasgoingright, int *delay, bool *wasfalling, float *jumpmaxheight, float *heroy)		// Get input
+void GetInput(float *heroy)		// Get input
 {
 	if (GfxInputIsPressed(EGfxInputID_KeyCharD))			// Go right
 	{
-		*right = true;
-
-		if (*wasgoingleft)		// If turning back, reinitialize delay to move instantly
+		dir.right = true;
+		GfxDbgPrintf("dir.right = %d", dir.right);
+		if (dir.wasgoingleft)		// If turning back, reinitialize delay to move instantly
 		{
-			*delay = 0;
+			delay = 0;
 
-			*wasgoingleft = false;
+			dir.wasgoingleft = false;
 		}
 
-		*wasgoingright = true;	// Record the direction of this frame for the next one
+		dir.wasgoingright = true;	// Record the direction of this frame for the next one
 	}
 
 	else if (GfxInputIsPressed(EGfxInputID_KeyCharQ))		// Go left
 	{
-		*left = true;
+		dir.left = true;
 
-		if (*wasgoingright)		// If turning back, reinitialize delay to move instantly
+		if (dir.wasgoingright)		// If turning back, reinitialize delay to move instantly
 		{
-			*delay = 0;
+			delay = 0;
 
-			*wasgoingright = false;
+			dir.wasgoingright = false;
 		}
 
-		*wasgoingleft = true;	// Record the direction of this frame for the next one
+		dir.wasgoingleft = true;	// Record the direction of this frame for the next one
 	}
 
 	else if (GfxInputIsJustPressed(EGfxInputID_KeyCharZ))	// Jump
 	{
-		if (!*jump)								// If hero wasn't jumping yet...
+		if (!dir.jump)								// If hero wasn't jumping yet...
 		{
-			*jumpmaxheight = *heroy - 2;		// ... set jump max height
+			jumpmaxheight = *heroy - 2;		// ... set jump max height
 
-			if (!*wasfalling)
+			if (!dir.wasfalling)
 			{
-				*jump = true;
+				dir.jump = true;
 			}
 		}
 	}
 
 	else			// If nothing pressed, record that hero doesn't move this frame
 	{
-		*wasgoingleft = 0;
-		*wasgoingright = 0;
+		dir.wasgoingleft = false;
+		dir.wasgoingright = false;
 	}
 }
 
 
 
-void MoveHero(TGfxSprite *hero, float *herox, float *heroy, int *delay, bool *wasgoingleft, bool *wasgoingright, bool *wasfalling, bool *jump, float *jumpmaxheight, const char grid[][15], const float screensizex, const float screensizey)		// Move hero
+void MoveHero(TGfxSprite *hero, float *herox, float *heroy, const char grid[][15], const float screensizex, const float screensizey)		// Move hero
 {
-	bool right = false;
-	bool left = false;
-
 	int intherox = int(*herox);		// Conversion hero position from float to int
 	int intheroy = int(*heroy);		// Conversion hero position from float to int
 
@@ -107,67 +115,74 @@ void MoveHero(TGfxSprite *hero, float *herox, float *heroy, int *delay, bool *wa
 	*heroy = (GfxSpriteGetPositionY(hero) / TILE);
 
 
-	GetInput(&right, &left, jump, wasgoingleft, wasgoingright, delay, wasfalling, jumpmaxheight, heroy);		// Get input at this frame
+	GetInput(heroy);		// Get input at this frame
 
 
-	if (grid[intheroy + 1][intherox] == '0' && *jump == false)		// Fall if nothing beneath hero
+	if (grid[intheroy + 1][intherox] == '0' && dir.jump == false)		// Fall if nothing beneath hero
 	{
-		*wasfalling = true;
-		*heroy = *heroy + float(0.1);
+		if (fallequationx == 0)
+		{
+			fallequationx = *heroy;
+		}
+
+		dir.wasfalling = true;
+		*heroy = ((fallequationx) * (fallequationx)) / TILE;
+
+		(fallequationx)++;
 	}
 
 	else
 	{
-		*wasfalling = false;
+		dir.wasfalling = false;
+		fallequationx = 0;
 	}
 
 
-	if (*delay == 10)		// Delay time
+	if (delay == 10)		// Delay time
 	{
-		*delay = 0;
+		delay = 0;
 	}
 
 
-	if (right)				// Go right
+	if (dir.right)				// Go right
 	{
-		if (*delay == 0)
+		if (delay == 0)
 		{
 			(*herox)++;
 		}
 
-		(*delay)++;
+		(delay)++;
 	}
 
-	if (left)				// Go left
+	if (dir.left)				// Go left
 	{
-		if (*delay == 0)
+		if (delay == 0)
 		{
 			(*herox)--;
 		}
 
-
-		(*delay)++;
+		(delay)++;
 	}
 
-	if (*jump == true)		// Jump
+	if (dir.jump == true)		// Jump
 	{
-		if (*heroy > *jumpmaxheight)		// Go up until max jump height
+		if (*heroy > jumpmaxheight)		// Go up until max jump height
 		{
 			*heroy = *heroy - float(0.1);
 		}
 
 		else
 		{
-			*jump = false;
+			dir.jump = false;
 		}
 	}
 
-	if (!right && !left && *delay != 0)		// If delay engaged but no key pressed at this frame, finish it anyway
+	if (!dir.right && !dir.left && delay != 0)		// If delay engaged but no key pressed at this frame, finish it anyway
 	{
-		(*delay)++;
+		(delay)++;
 	}
 
-	CheckCollision(herox, heroy, &right, &left, screensizex, screensizey, grid);		// Check collisions
+	CheckCollision(herox, heroy, screensizex, screensizey, grid);		// Check collisions
 
 
 	GfxSpriteSetPosition(hero, (*herox) * TILE, (*heroy) * TILE);				// Update hero x position

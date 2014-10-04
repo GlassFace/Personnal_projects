@@ -1,16 +1,20 @@
 #include "flib.h"
+#include "levelgesture.h"
 
 const int TILE = 32;		// Tiles size
 
 const int XSCREENLENGHT = 15;	// Number of tiles on x
 
 
-void LoadLevel(char grid[][15], TGfxFile *level)	// Loading level from level.txt
+void LoadLevel(char grid[][15])	// Loading level from level.txt
 {
 	int i = 0;
 	int j = 0;
 
 	unsigned char charread = 0;
+
+
+	TGfxFile * level = nullptr;			// File* for level.txt
 
 	level = GfxFileOpenRead("level.txt");		// Opening level.txt
 

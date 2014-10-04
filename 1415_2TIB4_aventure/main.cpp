@@ -36,8 +36,6 @@ TGfxSprite * g_pGround15 = nullptr;
 TGfxSprite * g_groundcases[15] = { g_pGround1, g_pGround2, g_pGround3, g_pGround4, g_pGround5, g_pGround6, g_pGround7, g_pGround8, g_pGround9, g_pGround10, g_pGround11, g_pGround12, g_pGround13, g_pGround14, g_pGround15 };
 
 
-int g_waterdelay = 0;		// Water animation delay
-
 
 					/* END OF GROUND VARIABLES */
 
@@ -51,12 +49,8 @@ TGfxSprite * g_pHero = nullptr;		// Sprite* for hero
 float g_herox = 0;				// Hero x position
 float g_heroy = 0;				// Hero y position
 
-int g_movedelay = 0;			// Hero move delay
-bool g_wasgoingleft = false;	// Hero was going left last frame
-bool g_wasgoingright = false;	// Hero was going right last frame
-bool g_wasfalling = false;		// Hero was falling last frame
-bool g_jump = false;			// Is hero jumping?
 float g_jumpmaxheight = 0;		// Hero max jump height
+float g_fallequationx = 0;		// X value for falling and jumping equations
 
 
 					/* END OF HERO VARIABLES */
@@ -83,8 +77,6 @@ void Initialize()
 	g_screensizex = float(GfxGetDisplaySizeX() / TILE);		// Getting screen size (+ downscaling)
 	g_screensizey = float(GfxGetDisplaySizeY() / TILE);
 
-	TGfxFile * levelfile = nullptr;			// File* for level.txt
-
 
 	TGfxTexture * pHeroTexture = GfxTextureLoad("hero.tga");			// Loading hero texture
 	g_pHero = GfxSpriteCreate(pHeroTexture);							// Putting texture into sprite
@@ -95,7 +87,7 @@ void Initialize()
 
 
 
-	LoadLevel(g_screengrid, levelfile);												//Load level from file to array
+	LoadLevel(g_screengrid);												//Load level from file to array
 	CreateGround(pGroundTexture, g_screengrid, g_groundcases, g_screensizey);		// Create ground sprites from array
 }
 
@@ -104,9 +96,9 @@ void Initialize()
 
 void Update()
 {
-	AnimateWater(g_screengrid, g_groundcases, &g_waterdelay);		// Animate water
+	AnimateWater(g_screengrid, g_groundcases);		// Animate water
 
-	MoveHero(g_pHero, &g_herox, &g_heroy, &g_movedelay, &g_wasgoingleft, &g_wasgoingright, &g_wasfalling, &g_jump, &g_jumpmaxheight, g_screengrid, g_screensizex, g_screensizey);				// Manage hero position
+	MoveHero(g_pHero, &g_herox, &g_heroy, g_screengrid, g_screensizex, g_screensizey);				// Manage hero position
 }
 
 
