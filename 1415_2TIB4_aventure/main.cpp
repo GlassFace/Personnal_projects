@@ -4,7 +4,7 @@
 #include "move.h"
 
 
-const int TILE = 32;		// Tiles size
+const float TILE = 32;		// Tiles size
 
 const int XSCREENLENGHT = 15;	// Number of tiles on x
 

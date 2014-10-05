@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <math.h>
 
-const int TILE = 32;		// Tiles size
+const float TILE = 32;		// Tiles size
 
 const int XSCREENLENGHT = 15;	// Number of tiles on x
 
@@ -11,7 +11,8 @@ direction dir = { 0 };		// Directions record structure
 
 int delay = 0;		// Move delay
 
-float heroxrelative = 0;		// X value for falling and jumping equations
+float heroxrelative = 0;	// Fake hero x position for falling equation
+float t = 0;				// Time for jump
 
 bool descending = false;
 
@@ -56,7 +57,7 @@ void CheckCollision(float *herox, float *heroy, const float screensizex, const f
 }
 
 
-void GetInput(float *herox, float *heroy)		// Get input
+void GetInput()		// Get input
 {
 	if (GfxInputIsPressed(EGfxInputID_KeyCharD))			// Go right
 	{
@@ -91,8 +92,6 @@ void GetInput(float *herox, float *heroy)		// Get input
 		if (!dir.jump && !dir.wasfalling)								// If hero wasn't jumping or falling yet...
 		{
 			dir.jump = true;
-
-			heroxrelative =  1;
 		}
 	}
 }
@@ -111,7 +110,7 @@ void MoveHero(TGfxSprite *hero, float *herox, float *heroy, const char grid[][15
 	*heroy = (GfxSpriteGetPositionY(hero) / TILE);
 
 
-	GetInput(herox, heroy);		// Get input at this frame
+	GetInput();		// Get input at this frame
 
 
 	if (grid[intheroy + 1][intherox] == '0' && dir.jump == false)				// Fall if nothing beneath hero
@@ -138,12 +137,15 @@ void MoveHero(TGfxSprite *hero, float *herox, float *heroy, const char grid[][15
 		}
 	}
 	
-	/*if (dir.jump && descending && grid[intheroy + 1][intherox] == '1' || dir.jump && descending && grid[intheroy + 1][intherox] == '2')		// If hitting
+	if (dir.jump && descending && grid[intheroy + 1][intherox] == '1' || dir.jump && descending && grid[intheroy + 1][intherox] == '2')		// If hitting
 	{
 		dir.jump = false;
 		descending = false;
-		heroxrelative = 0;
-	}*/
+		t = 0;
+
+		groundbeneathy = (GfxSpriteGetPositionY(cases[intherox - 1]) / TILE);
+		*heroy = groundbeneathy - 1;
+	}
 
 
 
@@ -175,18 +177,18 @@ void MoveHero(TGfxSprite *hero, float *herox, float *heroy, const char grid[][15
 
 	if (dir.jump == true)		// Jump
 	{
-		/*if (*heroy <= (heroxrelative * heroxrelative) + 2)
+		if (*heroy <= (t - float(sqrt(2.0))) * (t - float(sqrt(2.0))) + 5 && descending == false)
 		{
 			descending = false;
 		}
 		else
 		{
 			descending = true;
-		}*/
+		}
 
-		*heroy = *heroy - log(heroxrelative / TILE);
+		*heroy = (t - float(sqrt(2.0))) * (t - float(sqrt(2.0))) + 5;
 
-		heroxrelative = heroxrelative + 1;
+		t = t + 0.09;
 	}
 
 	if (!dir.right && !dir.left && delay != 0)		// If delay engaged but no key pressed at this frame, finish it anyway
