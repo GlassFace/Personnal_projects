@@ -1,21 +1,8 @@
 
-void CheckCollision(float *herox, float *heroy, const float screensizex, const float screensizey, const char grid[][15]);
+#include "structures.h"
 
-void GetInput();			// Get input
+void CheckCollision(hero Hero, const float screensizex, const float screensizey, const char grid[][15]);	// Chek collisions
 
-void MoveHero(TGfxSprite *hero, float *herox, float *heroy, const char grid[][15], TGfxSprite *cases[15], const float screensizex, const float screensizey);	// Move hero
+void GetInput(hero Hero);			// Get input
 
-
-
-typedef struct direction direction;		// Structure for directions
-struct direction
-{
-	bool right;
-	bool left;
-	bool wasgoingright;
-	bool wasgoingleft;
-	bool jump;
-	bool wasfalling;
-	
-	float v;
-};
+void MoveHero(hero Hero, const char grid[][15], TGfxSprite *cases[15], const float screensizex, const float screensizey);	// Move hero

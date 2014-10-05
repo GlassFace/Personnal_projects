@@ -115,11 +115,14 @@
     <ClCompile Include="animations.cpp" />
     <ClCompile Include="levelgesture.cpp" />
     <ClCompile Include="move.cpp" />
+    <ClCompile Include="gun.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animations.h" />
+    <ClInclude Include="gun.h" />
     <ClInclude Include="move.h" />
     <ClInclude Include="levelgesture.h" />
+    <ClInclude Include="structures.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

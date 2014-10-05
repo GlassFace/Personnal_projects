@@ -1,7 +1,9 @@
 #include "flib.h"
+#include "structures.h"
 #include "animations.h"
 #include "levelgesture.h"
 #include "move.h"
+#include "gun.h"
 
 
 const float TILE = 32;		// Tiles size
@@ -41,17 +43,23 @@ TGfxSprite * g_groundcases[15] = { g_pGround1, g_pGround2, g_pGround3, g_pGround
 
 
 
+/* Bullets structures */
 
-					/* HERO VARIABLES */
-
-TGfxSprite * g_pHero = nullptr;		// Sprite* for hero
-
-float g_herox = 0;				// Hero x position
-float g_heroy = 0;				// Hero y position
+bullet g_pBullet1 = { nullptr, 0, 0, false, false, false };
+bullet g_pBullet2 = { nullptr, 0, 0, false, false, false };
+bullet g_pBullet3 = { nullptr, 0, 0, false, false, false };
 
 
-					/* END OF HERO VARIABLES */
+/* Store bullets into array */
 
+bullet g_Bullets[3] = { g_pBullet1, g_pBullet2, g_pBullet3 };
+
+
+
+
+					/* HERO STRUCTURE */
+
+hero g_Hero = { nullptr, 0, 0, 0 };
 
 
 
@@ -77,8 +85,10 @@ void Initialize()
 
 
 	TGfxTexture * pHeroTexture = GfxTextureLoad("hero.tga");			// Loading hero texture
-	g_pHero = GfxSpriteCreate(pHeroTexture);							// Putting texture into sprite
-	GfxSpriteSetPosition(g_pHero, float(TILE), 0);		// Setting hero's first position
+	g_Hero.sprite = GfxSpriteCreate(pHeroTexture);							// Putting texture into sprite
+	GfxSpriteSetPosition(g_Hero.sprite, TILE, 0);		// Setting hero's first position
+	g_Hero.x = TILE;
+	g_Hero.y = 0;
 
 
 	TGfxTexture * pGroundTexture = GfxTextureLoad("ground.tga");		// Loading ground tileset
@@ -96,7 +106,9 @@ void Update()
 {
 	AnimateWater(g_screengrid, g_groundcases);		// Animate water
 
-	MoveHero(g_pHero, &g_herox, &g_heroy, g_screengrid, g_groundcases, g_screensizex, g_screensizey);	// Manage hero position
+	MoveHero(g_Hero, g_screengrid, g_groundcases, g_screensizex, g_screensizey);	// Manage hero position
+
+	GunShoot(g_Bullets, g_Hero);
 }
 
 
@@ -117,7 +129,15 @@ void Render()
 		}
 	}
 
-	GfxSpriteRender(g_pHero);						// Render hero
+	for (i = 0; i < 3; i++)
+	{
+		if (g_Bullets[i].sprite != nullptr)
+		{
+			GfxSpriteRender(g_Bullets[i].sprite);
+		}
+	}
+
+	GfxSpriteRender(g_Hero.sprite);						// Render hero
 }
 
 
