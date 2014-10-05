@@ -16,6 +16,6 @@ struct direction
 	bool wasgoingleft;
 	bool jump;
 	bool wasfalling;
-
-	float fallequationx;
+	
+	float v;
 };
