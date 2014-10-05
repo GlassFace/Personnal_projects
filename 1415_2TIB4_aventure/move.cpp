@@ -1,5 +1,7 @@
 #include "flib.h"
 #include "move.h"
+#include <stdio.h>
+#include <math.h>
 
 const int TILE = 32;		// Tiles size
 
@@ -10,6 +12,8 @@ direction dir = { 0 };		// Directions record structure
 int delay = 0;		// Move delay
 
 float heroxrelative = 0;		// X value for falling and jumping equations
+
+bool descending = false;
 
 
 void CheckCollision(float *herox, float *heroy, const float screensizex, const float screensizey, const char grid[][15])	// Check collisions
@@ -84,19 +88,12 @@ void GetInput(float *herox, float *heroy)		// Get input
 
 	else if (GfxInputIsJustPressed(EGfxInputID_KeyCharZ))	// Jump
 	{
-		if (!dir.jump)								// If hero wasn't jumping yet...
+		if (!dir.jump && !dir.wasfalling)								// If hero wasn't jumping or falling yet...
 		{
-			if (!dir.wasfalling)
-			{
-				dir.jump = true;
-			}
-		}
-	}
+			dir.jump = true;
 
-	else			// If nothing pressed, record that hero doesn't move this frame
-	{
-		dir.wasgoingleft = false;
-		dir.wasgoingright = false;
+			heroxrelative =  1;
+		}
 	}
 }
 
@@ -133,14 +130,20 @@ void MoveHero(TGfxSprite *hero, float *herox, float *heroy, const char grid[][15
 	{
 		if (dir.wasfalling)
 		{
-			groundbeneathy = (GfxSpriteGetPositionY(cases[intherox - 1]) / TILE);
+			groundbeneathy = (GfxSpriteGetPositionY(cases[intherox - 1]) / TILE);	// Correcting misplacing into the ground after a fall
 
 			*heroy = groundbeneathy - 1;
 
 			dir.wasfalling = false;
-			heroxrelative = 0;
 		}
 	}
+	
+	/*if (dir.jump && descending && grid[intheroy + 1][intherox] == '1' || dir.jump && descending && grid[intheroy + 1][intherox] == '2')		// If hitting
+	{
+		dir.jump = false;
+		descending = false;
+		heroxrelative = 0;
+	}*/
 
 
 
@@ -172,7 +175,18 @@ void MoveHero(TGfxSprite *hero, float *herox, float *heroy, const char grid[][15
 
 	if (dir.jump == true)		// Jump
 	{
-		
+		/*if (*heroy <= (heroxrelative * heroxrelative) + 2)
+		{
+			descending = false;
+		}
+		else
+		{
+			descending = true;
+		}*/
+
+		*heroy = *heroy - log(heroxrelative / TILE);
+
+		heroxrelative = heroxrelative + 1;
 	}
 
 	if (!dir.right && !dir.left && delay != 0)		// If delay engaged but no key pressed at this frame, finish it anyway
