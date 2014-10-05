@@ -49,11 +49,9 @@ TGfxSprite * g_pHero = nullptr;		// Sprite* for hero
 float g_herox = 0;				// Hero x position
 float g_heroy = 0;				// Hero y position
 
-float g_jumpmaxheight = 0;		// Hero max jump height
-float g_fallequationx = 0;		// X value for falling and jumping equations
-
 
 					/* END OF HERO VARIABLES */
+
 
 
 
@@ -87,7 +85,7 @@ void Initialize()
 
 
 
-	LoadLevel(g_screengrid);												//Load level from file to array
+	LoadLevel(g_screengrid);														//Load level from txt file to array
 	CreateGround(pGroundTexture, g_screengrid, g_groundcases, g_screensizey);		// Create ground sprites from array
 }
 
@@ -98,7 +96,7 @@ void Update()
 {
 	AnimateWater(g_screengrid, g_groundcases);		// Animate water
 
-	MoveHero(g_pHero, &g_herox, &g_heroy, g_screengrid, g_groundcases, g_screensizex, g_screensizey);				// Manage hero position
+	MoveHero(g_pHero, &g_herox, &g_heroy, g_screengrid, g_groundcases, g_screensizex, g_screensizey);	// Manage hero position
 }
 
 

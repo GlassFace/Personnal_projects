@@ -69,6 +69,11 @@ void GetInput()		// Get input
 	{
 		herodir.right = true;
 
+		if (GfxInputIsPressed(EGfxInputID_KeyCharZ) && !herodir.jump && !herodir.wasfalling)	// If up is pressed at the same time and hero wasn't falling or jumping
+		{
+			herodir.jump = true;
+		}
+
 		if (herodir.v < SPEEDMAX)			// Increasing speed
 		{
 			herodir.v = herodir.v + SPEED;
@@ -99,6 +104,11 @@ void GetInput()		// Get input
 	{
 		herodir.left = true;
 
+		if (GfxInputIsPressed(EGfxInputID_KeyCharZ) && !herodir.jump && !herodir.wasfalling)	// If up is pressed at the same time and hero wasn't falling or jumping
+		{
+			herodir.jump = true;
+		}
+
 		if (herodir.v < SPEEDMAX)			// Increasing speed
 		{
 			herodir.v = herodir.v + SPEED;
@@ -126,12 +136,9 @@ void GetInput()		// Get input
 		herodir.wasgoingleft = true;	// Record the direction of this frame for the next one
 	}
 
-	else if (GfxInputIsJustPressed(EGfxInputID_KeyCharZ))	// Jump
+	else if (GfxInputIsPressed(EGfxInputID_KeyCharZ) && !herodir.jump && !herodir.wasfalling)	// Jump (if hero wasn't falling or jumping)
 	{
-		if (!herodir.jump && !herodir.wasfalling)								// If hero wasn't jumping or falling yet...
-		{
-			herodir.jump = true;
-		}
+		herodir.jump = true;
 	}
 
 	else			// Decresing speed if hero stops moving

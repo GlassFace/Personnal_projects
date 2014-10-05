@@ -13,7 +13,6 @@ void LoadLevel(char grid[][15])	// Loading level from level.txt
 
 	unsigned char charread = 0;
 
-
 	TGfxFile * level = nullptr;			// File* for level.txt
 
 	level = GfxFileOpenRead("level.txt");		// Opening level.txt
