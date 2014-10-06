@@ -1,4 +1,4 @@
-/*
+
 #include "flib.h"
 #include "gun.h"
 #include "entities.h"
@@ -13,25 +13,27 @@ bool bulletexist = false;	// A bullet exists at this frame
 
 int delay = 0;				// Delay between shoots
 
-float screensizex = (GfxGetDisplaySizeX() / TILE);	// Screen X size
 
-
-void BulletGesture(bullet bullets[3])		// Move or destroy bullets
+void BulletGesture(bullet bullets[3], const float screensizex)		// Move or destroy bullets
 {
 	int i = 0;
 
 	for (i = 0; i < 3; i++)		// Browse bullet structures
 	{
-		if (bullets[i].exist)		// If bullet exists...
+		if (bullets[i].exist)		// If bullet n° i exists...
 		{
 			if (bullets[i].right)		// ... and is going right
 			{
-				GfxSpriteSetPosition(bullets[i].sprite, (bullets[i].x + 1), bullets[i].y);	// ... make it go right
+				(bullets[i].x)++;
+
+				GfxSpriteSetPosition(bullets[i].sprite, bullets[i].x * TILE, bullets[i].y);	// ... make it go right
 			}
 
 			else if (bullets[i].left)	// ... or if it's going left
 			{
-				GfxSpriteSetPosition(bullets[i].sprite, (bullets[i].x - 1), bullets[i].y);	// ... make it go left
+				(bullets[i].x)--;
+
+				GfxSpriteSetPosition(bullets[i].sprite, bullets[i].x * TILE, bullets[i].y);	// ... make it go left
 			}
 
 
@@ -62,25 +64,30 @@ void BulletGesture(bullet bullets[3])		// Move or destroy bullets
 	}
 }
 
-void BulletCreate(bullet bullets[3], hero Hero)		// Create bullet if one is shooted
+void BulletCreate(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture)		// Create bullet if one is shooted
 {
 	if (!bullets[n].exist)		// If bullet n° n doesn't exist, create it and set attributes
 	{
-		bullets[n].sprite = GfxLineSpriteCreate();		// Create a linesprite
+		bullets[n].sprite = GfxSpriteCreate(bulletTexture);
 
-		GfxSpriteSetPosition(bullets[n].sprite, Hero.x, Hero.y);	// Create it where the hero is
-
-		bullets[n].x = Hero.x;		// Record x position
-		bullets[n].y = Hero.y;		// Record y position
-
-		if (Hero.dir.wasgoingright)		// If hero is looking right, bullet goes right
+		if ((*Hero).dir.wasgoingright)		// If hero is looking right, bullet goes right
 		{
 			bullets[n].right = true;
+
+			bullets[n].x = (*Hero).x + 1;				// Record x position
+			bullets[n].y = (*Hero).y + (8 / TILE);		// Record y position
+
+			GfxSpriteSetPosition(bullets[n].sprite, bullets[n].x * TILE, bullets[n].y * TILE);
 		}
 
-		else if (Hero.dir.wasgoingleft)	// If hero is looking left, bullet goes left
+		else if ((*Hero).dir.wasgoingleft)	// If hero is looking left, bullet goes left
 		{
 			bullets[n].left = true;
+
+			bullets[n].x = (*Hero).x - (8 / TILE);		// Record x position
+			bullets[n].y = (*Hero).y + (8 / TILE);		// Record y position
+
+			GfxSpriteSetPosition(bullets[n].sprite, bullets[n].x * TILE, bullets[n].y * TILE);
 		}
 
 		bullets[n].exist = true;		// Record that bullet n° n now exists
@@ -101,17 +108,17 @@ void BulletCreate(bullet bullets[3], hero Hero)		// Create bullet if one is shoo
 		{
 			bullets[n].sprite = GfxLineSpriteCreate();		// Create a linesprite
 
-			GfxSpriteSetPosition(bullets[n].sprite, Hero.x, Hero.y);	// Create it where the hero is
+			GfxSpriteSetPosition(bullets[n].sprite, ((*Hero).x + 1) * TILE, ((*Hero).y * TILE));	// Create it where the hero is
 
-			bullets[n].x = Hero.x;		// Record x position
-			bullets[n].y = Hero.y;		// Record y position
+			bullets[n].x = (*Hero).x;		// Record x position
+			bullets[n].y = (*Hero).y;		// Record y position
 
-			if (Hero.dir.wasgoingright)		// If hero is looking right, bullet goes right
+			if ((*Hero).dir.wasgoingright)		// If hero is looking right, bullet goes right
 			{
 				bullets[n].right = true;
 			}
 
-			else if (Hero.dir.wasgoingleft)	// If hero is looking left, bullet goes left
+			else if ((*Hero).dir.wasgoingleft)	// If hero is looking left, bullet goes left
 			{
 				bullets[n].left = true;
 			}
@@ -123,13 +130,13 @@ void BulletCreate(bullet bullets[3], hero Hero)		// Create bullet if one is shoo
 	}
 }
 
-void GunShoot(bullet bullets[3], hero Hero)		// Check if player tries to shoot at this frame
+void GunShoot(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture, const float screensizex)		// Check if player tries to shoot at this frame
 {
 	int i = 0;
 
 	if (GfxInputIsPressed(EGfxInputID_KeyCharE) && delay == 0)	// If Z is pressed and delay is ok
 	{
-		BulletCreate(bullets, Hero);		// Create bullet
+		BulletCreate(bullets, Hero, bulletTexture);		// Create bullet
 
 		delay++;
 	}
@@ -159,6 +166,6 @@ void GunShoot(bullet bullets[3], hero Hero)		// Check if player tries to shoot a
 
 	if (bulletexist)		// If a bullet exists, manage it
 	{
-		BulletGesture(bullets);
+		BulletGesture(bullets, screensizex);
 	}
-}*/
+}
