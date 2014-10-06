@@ -35,39 +35,15 @@ struct hero
 };
 
 
-typedef struct bullet bullet;		// Bullet structure
-struct bullet
-{
-	TGfxSprite * sprite;		// Sprite
-
-	float x;		// X position
-	float y;		// Y position
-
-	bool right;		// Goind right
-	bool left;		// Goind left
-
-	bool exist;		// Have been created
-};
-
-
-
-/*		GUN HEADERS			*/
-
-void GunShoot(bullet bullets[3], hero Hero);		// Check if player tries to shoot at this frame
-
-void BulletCreate(bullet bullets[3], hero Hero);	// Create bullet if one is shooted
-
-void BulletGesture(bullet bullets[3]);				// Move or destroy bullets
-
 
 
 /*		MOVE HEADERS		*/
 
-void CheckCollision(hero Hero, const float screensizex, const float screensizey, const char grid[][15]);	// Chek collisions
+void CheckCollision(hero *Hero, const float screensizex, const float screensizey, const char grid[][15]);	// Chek collisions
 
-void GetInput(hero Hero);			// Get input
+void GetInput(hero *Hero);			// Get input
 
-void MoveHero(hero Hero, const char grid[][15], TGfxSprite *cases[15], const float screensizex, const float screensizey);	// Move hero
+void MoveHero(hero *Hero, const char grid[][15], TGfxSprite *cases[15], const float screensizex, const float screensizey);	// Move hero
 
 
 

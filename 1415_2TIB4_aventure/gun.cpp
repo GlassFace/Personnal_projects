@@ -1,8 +1,7 @@
-
+/*
 #include "flib.h"
-//#include "gun.h"
-//#include "move.h"
-#include "structures.h"
+#include "gun.h"
+#include "entities.h"
 
 
 const float TILE = 32;		// Tiles size
@@ -162,4 +161,4 @@ void GunShoot(bullet bullets[3], hero Hero)		// Check if player tries to shoot a
 	{
 		BulletGesture(bullets);
 	}
-}
+}*/

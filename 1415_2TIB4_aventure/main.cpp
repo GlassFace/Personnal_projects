@@ -1,9 +1,8 @@
 
 #include "flib.h"
-#include "structures.h"
+#include "entities.h"
 #include "animations.h"
 #include "levelgesture.h"
-//#include "move.h"
 //#include "gun.h"
 
 
@@ -15,45 +14,18 @@ const int XSCREENLENGHT = 15;	// Number of tiles on x
 
 					/* GROUND VARIABLES */
 
-/* Ground sprites */
-
-/*TGfxSprite * g_pGround1 = nullptr;
-TGfxSprite * g_pGround2 = nullptr;
-TGfxSprite * g_pGround3 = nullptr;
-TGfxSprite * g_pGround4 = nullptr;
-TGfxSprite * g_pGround5 = nullptr;
-TGfxSprite * g_pGround6 = nullptr;
-TGfxSprite * g_pGround7 = nullptr;
-TGfxSprite * g_pGround8 = nullptr;
-TGfxSprite * g_pGround9 = nullptr;
-TGfxSprite * g_pGround10 = nullptr;
-TGfxSprite * g_pGround11 = nullptr;
-TGfxSprite * g_pGround12 = nullptr;
-TGfxSprite * g_pGround13 = nullptr;
-TGfxSprite * g_pGround14 = nullptr;
-TGfxSprite * g_pGround15 = nullptr;*/
-
-
-/* Store ground sprites into array */
+/* Ground sprites array */
 
 TGfxSprite * g_groundcases[15] = { nullptr };
 
 
 
-					/* END OF GROUND VARIABLES */
 
 
 
-/* Bullets structures */
+/* Bullets structures array */
 
-/*bullet g_pBullet1 = { nullptr, 0, 0, false, false, false };
-bullet g_pBullet2 = { nullptr, 0, 0, false, false, false };
-bullet g_pBullet3 = { nullptr, 0, 0, false, false, false };*/
-
-
-/* Store bullets into array */
-
-bullet g_Bullets[3] = { { nullptr, 0, 0, false, false, false }, { nullptr, 0, 0, false, false, false }, { nullptr, 0, 0, false, false, false } };
+//bullet g_Bullets[3] = { { nullptr, 0, 0, false, false, false } };
 
 
 
@@ -87,7 +59,7 @@ void Initialize()
 
 	TGfxTexture * pHeroTexture = GfxTextureLoad("hero.tga");			// Loading hero texture
 	g_Hero.sprite = GfxSpriteCreate(pHeroTexture);							// Putting texture into sprite
-	GfxSpriteSetPosition(g_Hero.sprite, TILE, 0);		// Setting hero's first position
+	GfxSpriteSetPosition(g_Hero.sprite, TILE, (g_screensizey - 2) * TILE);		// Setting hero's first position
 	g_Hero.x = TILE;
 	g_Hero.y = 0;
 
@@ -107,9 +79,9 @@ void Update()
 {
 	AnimateWater(g_screengrid, g_groundcases);		// Animate water
 
-	MoveHero(g_Hero, g_screengrid, g_groundcases, g_screensizex, g_screensizey);	// Manage hero position
+	MoveHero(&g_Hero, g_screengrid, g_groundcases, g_screensizex, g_screensizey);	// Manage hero position
 
-	GunShoot(g_Bullets, g_Hero);		// Check if bullets are shot and manage them
+	//GunShoot(g_Bullets, g_Hero);		// Check if bullets are shot and manage them
 }
 
 
@@ -130,13 +102,13 @@ void Render()
 		}
 	}
 
-	for (i = 0; i < 3; i++)
+	/*for (i = 0; i < 3; i++)
 	{
 		if (g_Bullets[i].sprite != nullptr)
 		{
 			GfxSpriteRender(g_Bullets[i].sprite);
 		}
-	}
+	}*/
 
 	GfxSpriteRender(g_Hero.sprite);						// Render hero
 }
