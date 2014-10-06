@@ -1,10 +1,10 @@
 
 #include "flib.h"
-#include "main.h"
+#include "structures.h"
 #include "animations.h"
 #include "levelgesture.h"
-#include "move.h"
-#include "gun.h"
+//#include "move.h"
+//#include "gun.h"
 
 
 const float TILE = 32;		// Tiles size
@@ -17,7 +17,7 @@ const int XSCREENLENGHT = 15;	// Number of tiles on x
 
 /* Ground sprites */
 
-TGfxSprite * g_pGround1 = nullptr;
+/*TGfxSprite * g_pGround1 = nullptr;
 TGfxSprite * g_pGround2 = nullptr;
 TGfxSprite * g_pGround3 = nullptr;
 TGfxSprite * g_pGround4 = nullptr;
@@ -31,12 +31,12 @@ TGfxSprite * g_pGround11 = nullptr;
 TGfxSprite * g_pGround12 = nullptr;
 TGfxSprite * g_pGround13 = nullptr;
 TGfxSprite * g_pGround14 = nullptr;
-TGfxSprite * g_pGround15 = nullptr;
+TGfxSprite * g_pGround15 = nullptr;*/
 
 
 /* Store ground sprites into array */
 
-TGfxSprite * g_groundcases[15] = { g_pGround1, g_pGround2, g_pGround3, g_pGround4, g_pGround5, g_pGround6, g_pGround7, g_pGround8, g_pGround9, g_pGround10, g_pGround11, g_pGround12, g_pGround13, g_pGround14, g_pGround15 };
+TGfxSprite * g_groundcases[15] = { nullptr };
 
 
 
@@ -46,21 +46,21 @@ TGfxSprite * g_groundcases[15] = { g_pGround1, g_pGround2, g_pGround3, g_pGround
 
 /* Bullets structures */
 
-bullet g_pBullet1 = { nullptr, 0, 0, false, false, false };
+/*bullet g_pBullet1 = { nullptr, 0, 0, false, false, false };
 bullet g_pBullet2 = { nullptr, 0, 0, false, false, false };
-bullet g_pBullet3 = { nullptr, 0, 0, false, false, false };
+bullet g_pBullet3 = { nullptr, 0, 0, false, false, false };*/
 
 
 /* Store bullets into array */
 
-bullet g_Bullets[3] = { g_pBullet1, g_pBullet2, g_pBullet3 };
+bullet g_Bullets[3] = { { nullptr, 0, 0, false, false, false }, { nullptr, 0, 0, false, false, false }, { nullptr, 0, 0, false, false, false } };
 
 
 
 
 					/* HERO STRUCTURE */
 
-hero g_Hero = { nullptr, 0, 0, 0 };
+hero g_Hero = { 0 };
 
 
 

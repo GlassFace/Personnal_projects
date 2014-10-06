@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <math.h>
 #include "flib.h"
-#include "move.h"
-#include "main.h"
+//#include "move.h"
+#include "structures.h"
 
 
 const float TILE = 32;		// Tiles size
