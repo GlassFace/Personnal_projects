@@ -26,7 +26,7 @@ void GunShoot(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture, const 
 
 void BulletCreate(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture);	// Create bullet if one is shooted
 
-void BulletGesture(bullet bullets[3], const float screensizex);				// Move or destroy bullets
+void BulletGesture(bullet bullets[3], const int i, const float screensizex);				// Move or destroy bullets
 
 
 

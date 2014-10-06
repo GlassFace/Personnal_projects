@@ -9,58 +9,54 @@ const float TILE = 32;		// Tiles size
 
 int n = 0;		// Number of actual bullet
 
-bool bulletexist = false;	// A bullet exists at this frame
+bool (*Hero) = false;	// A bullet exists at this frame
 
 int delay = 0;				// Delay between shoots
 
 
-void BulletGesture(bullet bullets[3], const float screensizex)		// Move or destroy bullets
+void BulletGesture(bullet bullets[3], const int i, const float screensizex)		// Move or destroy bullets
 {
-	int i = 0;
-
-	for (i = 0; i < 3; i++)		// Browse bullet structures
+	if (bullets[i].right)		// If bullet is going right...
 	{
-		if (bullets[i].exist)		// If bullet n° i exists...
-		{
-			if (bullets[i].right)		// ... and is going right
-			{
-				(bullets[i].x)++;
+		(bullets[i].x)++;
 
-				GfxSpriteSetPosition(bullets[i].sprite, bullets[i].x * TILE, bullets[i].y);	// ... make it go right
-			}
+		GfxSpriteSetPosition(bullets[i].sprite, bullets[i].x * TILE, bullets[i].y * TILE);	// ... make it go right
+	}
 
-			else if (bullets[i].left)	// ... or if it's going left
-			{
-				(bullets[i].x)--;
+	else if (bullets[i].left)	// If bullet is going left...
+	{
+		(bullets[i].x)--;
 
-				GfxSpriteSetPosition(bullets[i].sprite, bullets[i].x * TILE, bullets[i].y);	// ... make it go left
-			}
+		GfxSpriteSetPosition(bullets[i].sprite, bullets[i].x * TILE, bullets[i].y * TILE);	// ... make it go left
+	}
 
 
-			if (bullets[i].x >= screensizex)		// If bullet hits right border...
-			{
-				GfxSpriteDestroy(bullets[i].sprite);	// ... destroy it and reinitialize datas
+	if (bullets[i].x >= screensizex)		// If bullet hits right border...
+	{
+		GfxSpriteDestroy(bullets[i].sprite);	// ... destroy it and reinitialize datas
 
-				bullets[i].x = 0;
-				bullets[i].y = 0;
+		bullets[i].sprite = nullptr;
 
-				bullets[i].right = false;
+		bullets[i].x = 0;
+		bullets[i].y = 0;
 
-				bullets[i].exist = false;
-			}
+		bullets[i].right = false;
 
-			else if (bullets[i].x <= 0)		// If bullet hits left border
-			{
-				GfxSpriteDestroy(bullets[i].sprite);	// ... destroy it and reinitialize datas
+		bullets[i].exist = false;
+	}
 
-				bullets[i].x = 0;
-				bullets[i].y = 0;
+	else if (bullets[i].x <= 0)		// If bullet hits left border
+	{
+		GfxSpriteDestroy(bullets[i].sprite);	// ... destroy it and reinitialize datas
 
-				bullets[i].right = false;
+		bullets[i].sprite = nullptr;
 
-				bullets[i].exist = false;
-			}
-		}
+		bullets[i].x = 0;
+		bullets[i].y = 0;
+
+		bullets[i].right = false;
+
+		bullets[i].exist = false;
 	}
 }
 
@@ -85,7 +81,7 @@ void BulletCreate(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture)		/
 			bullets[n].left = true;
 
 			bullets[n].x = (*Hero).x - (8 / TILE);		// Record x position
-			bullets[n].y = (*Hero).y + (8 / TILE);		// Record y position
+			bullets[n].y = (*Hero).y + (8 / TILE);					// Record y position
 
 			GfxSpriteSetPosition(bullets[n].sprite, bullets[n].x * TILE, bullets[n].y * TILE);
 		}
@@ -108,10 +104,10 @@ void BulletCreate(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture)		/
 		{
 			bullets[n].sprite = GfxLineSpriteCreate();		// Create a linesprite
 
-			GfxSpriteSetPosition(bullets[n].sprite, ((*Hero).x + 1) * TILE, ((*Hero).y * TILE));	// Create it where the hero is
+			bullets[n].x = (*Hero).x - (8 / TILE);		// Record x position
+			bullets[n].y = (*Hero).y;					// Record y position
 
-			bullets[n].x = (*Hero).x;		// Record x position
-			bullets[n].y = (*Hero).y;		// Record y position
+			GfxSpriteSetPosition(bullets[n].sprite, bullets[n].x * TILE, bullets[n].y * TILE);	// Create it where the hero is
 
 			if ((*Hero).dir.wasgoingright)		// If hero is looking right, bullet goes right
 			{
@@ -141,7 +137,7 @@ void GunShoot(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture, const 
 		delay++;
 	}
 
-	if (delay == 10)		// Delay duration
+	if (delay == 30)		// Delay duration
 	{
 		delay = 0;
 	}
@@ -155,17 +151,7 @@ void GunShoot(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture, const 
 	{
 		if (bullets[i].exist)		// If a bullet exists, record it
 		{
-			bulletexist = true;
+			BulletGesture(bullets, i, screensizex);
 		}
-
-		else						// If not, record that none exist.
-		{
-			bulletexist = false;
-		}
-	}
-
-	if (bulletexist)		// If a bullet exists, manage it
-	{
-		BulletGesture(bullets, screensizex);
 	}
 }
