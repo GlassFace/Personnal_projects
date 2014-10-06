@@ -1,6 +1,8 @@
+
 #include "flib.h"
 #include "gun.h"
-#include "structures.h"
+#include "move.h"
+#include "main.h"
 
 
 const float TILE = 32;		// Tiles size

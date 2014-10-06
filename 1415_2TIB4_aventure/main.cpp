@@ -1,5 +1,6 @@
+
 #include "flib.h"
-#include "structures.h"
+#include "main.h"
 #include "animations.h"
 #include "levelgesture.h"
 #include "move.h"
@@ -108,7 +109,7 @@ void Update()
 
 	MoveHero(g_Hero, g_screengrid, g_groundcases, g_screensizex, g_screensizey);	// Manage hero position
 
-	GunShoot(g_Bullets, g_Hero);
+	GunShoot(g_Bullets, g_Hero);		// Check if bullets are shot and manage them
 }
 
 
