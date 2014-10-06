@@ -6,12 +6,14 @@
 const float TILE = 32;		// Tiles size
 
 const int XSCREENLENGHT = 15;	// Number of tiles on x
+const int YSCREENLENGHT = 10;
 
 
-void LoadLevel(char grid[][15])	// Loading level from level.txt
+void LoadLevel(char grid[10][15], int tilenumber[10][15])	// Loading level from level.txt
 {
 	int i = 0;
 	int j = 0;
+	int e = 0;
 
 	unsigned char charread = 0;
 
@@ -26,7 +28,6 @@ void LoadLevel(char grid[][15])	// Loading level from level.txt
 		while (charread != 'e')		// While file not ended
 		{
 			charread = GfxFileReadChar(level);		// Read character
-			
 
 			if (charread == '0')		// Nothing at this case
 			{
@@ -36,11 +37,19 @@ void LoadLevel(char grid[][15])	// Loading level from level.txt
 			else if (charread == '1')	// Ground at this case
 			{
 				grid[i][j] = '1';
+
+				tilenumber[i][j] = e;
+
+				e++;
 			}
 
 			else if (charread == '2')	// Water at this case
 			{
 				grid[i][j] = '2';
+
+				tilenumber[i][j] = e;
+
+				e++;
 			}
 
 			else if (charread == ' ')	// End of line
@@ -49,8 +58,7 @@ void LoadLevel(char grid[][15])	// Loading level from level.txt
 				j = 0;
 			}
 
-
-			if (j < XSCREENLENGHT && charread != ' ')	// Next collumn
+			if (j < (XSCREENLENGHT - 1) && charread != ' ')	// Next collumn
 			{
 				j++;
 			}
@@ -70,25 +78,36 @@ void LoadLevel(char grid[][15])	// Loading level from level.txt
 }
 
 
-void CreateGround(TGfxTexture *groundset, char grid[][15], TGfxSprite *groundtiles[15], float screensizey)	// Creating level (ground only for now) from screen grid infos
+void CreateGround(TGfxTexture *groundset, char grid[10][15], TGfxSprite *groundtiles[20])	// Creating level (ground only for now) from screen grid infos
 {
 	int i = 0;
+	int j = 0;
+	int e = 0;
 
-	for (i = 0; i < XSCREENLENGHT; i++)		// Checking every floor case to create appropriate ground
+	for (i = 0; i < (YSCREENLENGHT); i++)		// Checking every floor case to create appropriate ground
 	{
-		switch (grid[9][i])
+		for (j = 0; j < (XSCREENLENGHT); j++)
 		{
-		case '1':		// If tile should be ground
-			groundtiles[i] = GfxSpriteCreate(groundset);												// Creating ground sprite
-			GfxSpriteSetCutout(groundtiles[i], 0 * TILE, 0 * TILE, TILE, TILE);							// Picking ground sprite on tileset
-			GfxSpriteSetPosition(groundtiles[i], float(i * TILE), float((screensizey - 1) * TILE));		// Placing ground
+			switch (grid[i][j])
+			{
+			case '1':		// If tile should be ground
+				groundtiles[e] = GfxSpriteCreate(groundset);												// Creating ground sprite
+				GfxSpriteSetCutout(groundtiles[e], int(0 * TILE), int(0 * TILE), int(TILE), int(TILE));							// Picking ground sprite on tileset
+				GfxSpriteSetPosition(groundtiles[e], float(j * TILE), float(i * TILE));		// Placing ground
 
-			break;
+				e++;
 
-		case '2':		// If tile should be water
-			groundtiles[i] = GfxSpriteCreate(groundset);												// Creating water sprite
-			GfxSpriteSetCutout(groundtiles[i], 1 * TILE, 0 * TILE, TILE, TILE);							// Picking water sprite on tileset
-			GfxSpriteSetPosition(groundtiles[i], float(i * TILE), float((screensizey - 1) * TILE));		// Placing water
+				break;
+
+			case '2':		// If tile should be water
+				groundtiles[e] = GfxSpriteCreate(groundset);												// Creating water sprite
+				GfxSpriteSetCutout(groundtiles[e], int(1 * TILE), int(0 * TILE), int(TILE), int(TILE));							// Picking water sprite on tileset
+				GfxSpriteSetPosition(groundtiles[e], float(j * TILE), float(i * TILE));		// Placing water
+
+				e++;
+
+				break;
+			}
 		}
 	}
 }

@@ -16,7 +16,7 @@ const int XSCREENLENGHT = 15;	// Number of tiles on x
 
 /* Ground sprites array */
 
-TGfxSprite * g_groundcases[15] = { nullptr };
+TGfxSprite * g_groundcases[20] = { nullptr };
 
 
 
@@ -39,7 +39,8 @@ hero g_Hero = { 0 };
 
 					/* SCREEN VARIABLES	*/
 
-char g_screengrid[10][15] = {{ 0 }, { 0 }};		// Screen grid array
+char g_screengrid[10][15] = { 0 };		// Screen grid array
+int g_tilenumbers[10][15] = { 0 };		// Numbers associated with created tiles
 
 
 float g_screensizex = 0;		// Screen x size
@@ -59,7 +60,7 @@ void Initialize()
 
 	TGfxTexture * pHeroTexture = GfxTextureLoad("hero.tga");			// Loading hero texture
 	g_Hero.sprite = GfxSpriteCreate(pHeroTexture);							// Putting texture into sprite
-	GfxSpriteSetPosition(g_Hero.sprite, TILE, (g_screensizey - 2) * TILE);		// Setting hero's first position
+	GfxSpriteSetPosition(g_Hero.sprite, TILE, 0 * TILE);		// Setting hero's first position
 	g_Hero.x = TILE;
 	g_Hero.y = 0;
 
@@ -68,8 +69,8 @@ void Initialize()
 
 
 
-	LoadLevel(g_screengrid);														//Load level from txt file to array
-	CreateGround(pGroundTexture, g_screengrid, g_groundcases, g_screensizey);		// Create ground sprites from array
+	LoadLevel(g_screengrid, g_tilenumbers);														//Load level from txt file to array
+	CreateGround(pGroundTexture, g_screengrid, g_groundcases);		// Create ground sprites from array
 }
 
 
@@ -77,9 +78,9 @@ void Initialize()
 
 void Update()
 {
-	AnimateWater(g_screengrid, g_groundcases);		// Animate water
+	AnimateWater(g_screengrid, g_groundcases, g_tilenumbers);		// Animate water
 
-	MoveHero(&g_Hero, g_screengrid, g_groundcases, g_screensizex, g_screensizey);	// Manage hero position
+	MoveHero(&g_Hero, g_screengrid, g_tilenumbers, g_groundcases, g_screensizex, g_screensizey);	// Manage hero position
 
 	//GunShoot(g_Bullets, g_Hero);		// Check if bullets are shot and manage them
 }
@@ -94,7 +95,7 @@ void Render()
 
 	GfxClear(EGfxColor_White);
 
-	for (i = 0; i < XSCREENLENGHT; i++)
+	for (i = 0; i < 19; i++)
 	{
 		if (g_groundcases[i] != nullptr)			// Render every ground sprite that aren't null
 		{

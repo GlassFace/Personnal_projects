@@ -4,25 +4,30 @@
 const float TILE = 32;		// Tiles size
 
 const int XSCREENLENGHT = 15;	// Number of tiles on x
+const int YSCREENLENGHT = 10;
 
 int waterdelay = 0;
 
 
-void AnimateWater(char grid[][15], TGfxSprite *groundcase[15])		// Animate water
+void AnimateWater(char grid[10][15], TGfxSprite *groundcase[20], const int tilenumber[10][15])		// Animate water
 {
 	int i = 0;
+	int j = 0;
 
-	for (i = 0; i < XSCREENLENGHT; i++)
+	for (i = 0; i < (YSCREENLENGHT); i++)
 	{
-		if (grid[9][i] == '2')								// If there is water at this ground tile...
+		for (j = 0; j < (XSCREENLENGHT); j++)
 		{
-			if (waterdelay < 10)
+			if (grid[i][j] == '2')								// If there is water at this ground tile...
 			{
-				GfxSpriteSetCutout(groundcase[i], 1 * TILE, 0 * TILE, TILE, TILE);	// First frame
-			}
-			else if (waterdelay < 20)
-			{
-				GfxSpriteSetCutout(groundcase[i], 2 * TILE, 0 * TILE, TILE, TILE);	// Second frame
+				if (waterdelay < 10)
+				{
+					GfxSpriteSetCutout(groundcase[tilenumber[i][j]], int(1 * TILE), int(0 * TILE), int(TILE), int(TILE));	// First frame
+				}
+				else if (waterdelay < 20)
+				{
+					GfxSpriteSetCutout(groundcase[tilenumber[i][j]], int(2 * TILE), int(0 * TILE), int(TILE), int(TILE));	// Second frame
+				}
 			}
 		}
 	}

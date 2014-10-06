@@ -11,22 +11,27 @@ const float SPEED = float(0.03);		// Speed increase every loop
 const float SPEEDMAX = float(0.6);		// Maximum speed
 
 
-void CheckCollision(hero *Hero, const float screensizex, const float screensizey, const char grid[][15])	// Check collisions
+void CheckCollision(hero *Hero, const float screensizex, const float screensizey, const char grid[10][15])	// Check collisions
 {
 	int intherox = int((*Hero).x);		// Conversion hero position from float to int
 	int intheroy = int((*Hero).y);		// Conversion hero position from float to int
 
 
-	if ((*Hero).x < 0 || (*Hero).x > screensizex - 1)							// Border collision
+	if ((*Hero).x < 0 || (*Hero).x > screensizex - 1 || (*Hero).y > screensizey - 1)							// Border collision
 	{
-		if ((*Hero).dir.right)
+		if ((*Hero).dir.right)				// Right border collision
 		{
 			(*Hero).x = screensizex - 1;
 		}
 
-		if ((*Hero).dir.left)
+		if ((*Hero).dir.left)				// Left border collision
 		{
 			(*Hero).x = 0;
+		}
+
+		if ((*Hero).y > screensizey - 1)	// Down border collision
+		{
+			(*Hero).y = screensizey - 1;
 		}
 	}
 
@@ -147,7 +152,7 @@ void GetInput(hero *Hero)		// Get input
 
 
 
-void MoveHero(hero *Hero, const char grid[][15], TGfxSprite *cases[15], const float screensizex, const float screensizey)		// Move hero
+void MoveHero(hero *Hero, const char grid[10][15], const int tilenumber[10][15], TGfxSprite *cases[15], const float screensizex, const float screensizey)		// Move hero
 {
 	int intherox = int((*Hero).x);		// Conversion hero position from float to int
 	int intheroy = int((*Hero).y);		// Conversion hero position from float to int
@@ -166,6 +171,7 @@ void MoveHero(hero *Hero, const char grid[][15], TGfxSprite *cases[15], const fl
 	{
 		(*Hero).y = (*Hero).y + (((*Hero).dir.t / TILE) * ((*Hero).dir.t / TILE));
 
+
 		if ((*Hero).dir.t < 25)
 		{
 			(*Hero).dir.t++;
@@ -178,7 +184,8 @@ void MoveHero(hero *Hero, const char grid[][15], TGfxSprite *cases[15], const fl
 	{
 		if ((*Hero).dir.wasfalling)			// Correcting misplacing into the ground after a fall
 		{
-			groundbeneathy = (GfxSpriteGetPositionY(cases[intheroy + 1]) / TILE);	// Getting y position of ground beneath
+			groundbeneathy = GfxSpriteGetPositionY(cases[tilenumber[intheroy + 1][intherox]]) / TILE;	// Getting y position of ground beneath
+			
 
 			(*Hero).y = groundbeneathy - 1;		// Placing hero exactly ne tile up this ground
 
@@ -194,7 +201,16 @@ void MoveHero(hero *Hero, const char grid[][15], TGfxSprite *cases[15], const fl
 		(*Hero).dir.descending = false;		// Record end of descent
 		(*Hero).dir.t = 0;					// Reinitialize time for fall equation
 
-		groundbeneathy = (GfxSpriteGetPositionY(cases[intherox - 1]) / TILE);	// Correcting misplacing into the ground after jump
+		if ((*Hero).x >= 0)
+		{
+			groundbeneathy = (GfxSpriteGetPositionY(cases[tilenumber[intheroy + 1][intherox]]) / TILE);	// Correcting misplacing into the ground after jump
+		}
+
+		else		// Prevent function to get Y position of a tile outside the left screen border
+		{
+			groundbeneathy = (GfxSpriteGetPositionY(cases[tilenumber[intheroy + 1][intherox + 1]]) / TILE);
+		}
+
 		(*Hero).y = groundbeneathy - 1;
 	}
 
