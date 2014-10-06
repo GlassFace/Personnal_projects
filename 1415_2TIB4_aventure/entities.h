@@ -16,7 +16,7 @@ struct direction
 
 	int movedelay;			// Delay between moves
 
-	float xrelative;		// X fake position for falling equation
+	float yinitial;			// Y first position when jumping
 
 	float v;				// Speed of movement
 	float t;				// Time for jump equation
@@ -39,11 +39,11 @@ struct hero
 
 /*		MOVE HEADERS		*/
 
-void CheckCollision(hero *Hero, const float screensizex, const float screensizey, const char grid[10][15][2]);	// Chek collisions
+void CheckCollision(hero *Hero, const float screensizex, const float screensizey, const char grid[10][15]);	// Chek collisions
 
 void GetInput(hero *Hero);			// Get input
 
-void MoveHero(hero *Hero, const char grid[10][15], const int tilenumber[10][15], TGfxSprite *cases[15], const float screensizex, const float screensizey);	// Move hero
+void MoveHero(hero *Hero, const char grid[10][15], const int tilenumber[10][15], TGfxSprite *cases[20], const float screensizex, const float screensizey);	// Move hero
 
 
 

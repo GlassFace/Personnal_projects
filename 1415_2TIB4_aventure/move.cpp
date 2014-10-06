@@ -17,37 +17,30 @@ void CheckCollision(hero *Hero, const float screensizex, const float screensizey
 	int intheroy = int((*Hero).y);		// Conversion hero position from float to int
 
 
-	if ((*Hero).x < 0 || (*Hero).x > screensizex - 1 || (*Hero).y > screensizey - 1)							// Border collision
+	if ((*Hero).dir.right)
 	{
-		if ((*Hero).dir.right)				// Right border collision
+		if ((*Hero).x > screensizex - 1 - (1 / TILE))
 		{
-			(*Hero).x = screensizex - 1;
+			(*Hero).dir.right = false;
+
+			(*Hero).x = float(intherox);
 		}
 
-		if ((*Hero).dir.left)				// Left border collision
+		else if (grid[intheroy][intherox + 1] == '1' || grid[intheroy][intherox + 1] == '2')
 		{
-			(*Hero).x = 0;
-		}
+			(*Hero).dir.right = false;
 
-		if ((*Hero).y > screensizey - 1)	// Down border collision
-		{
-			(*Hero).y = screensizey - 1;
+			(*Hero).x = float(intherox);
 		}
 	}
 
-	else
+	if ((*Hero).dir.left)
 	{
-		if (grid[intheroy][intherox] == '1' || grid[intheroy][intherox] == '2')		// Wall collision
+		if ((*Hero).x <= 0 || grid[intheroy][intherox - 1] == '1' || grid[intheroy][intherox - 1] == '2')
 		{
-			if ((*Hero).dir.right)
-			{
-				((*Hero).x)--;
-			}
+			(*Hero).dir.left = false;
 
-			if ((*Hero).dir.left)
-			{
-				((*Hero).x)++;
-			}
+			(*Hero).x = float(intherox);
 		}
 	}
 
@@ -61,7 +54,10 @@ void CheckCollision(hero *Hero, const float screensizex, const float screensizey
 
 void GetInput(hero *Hero)		// Get input
 {
-	if (GfxInputIsPressed(EGfxInputID_KeyCharD))			// Go right
+
+
+
+	if (GfxInputIsPressed(EGfxInputID_KeyCharD))			// Right
 	{
 		(*Hero).dir.right = true;
 
@@ -96,7 +92,10 @@ void GetInput(hero *Hero)		// Get input
 		(*Hero).dir.wasgoingright = true;	// Record the direction of this frame for the next one
 	}
 
-	else if (GfxInputIsPressed(EGfxInputID_KeyCharQ))		// Go left
+
+
+
+	else if (GfxInputIsPressed(EGfxInputID_KeyCharQ))		// Left
 	{
 		(*Hero).dir.left = true;
 
@@ -132,9 +131,14 @@ void GetInput(hero *Hero)		// Get input
 		(*Hero).dir.wasgoingleft = true;	// Record the direction of this frame for the next one
 	}
 
-	else if (GfxInputIsPressed(EGfxInputID_KeyCharZ) && !(*Hero).dir.jump && !(*Hero).dir.wasfalling)	// Jump (if hero wasn't falling or jumping)
+
+
+
+	else if (GfxInputIsJustPressed(EGfxInputID_KeyCharZ) && !(*Hero).dir.jump && !(*Hero).dir.wasfalling)	// Jump
 	{
 		(*Hero).dir.jump = true;
+
+		(*Hero).dir.yinitial = (*Hero).y;
 	}
 
 	else			// Decresing speed if hero stops moving
@@ -152,12 +156,10 @@ void GetInput(hero *Hero)		// Get input
 
 
 
-void MoveHero(hero *Hero, const char grid[10][15], const int tilenumber[10][15], TGfxSprite *cases[15], const float screensizex, const float screensizey)		// Move hero
+void MoveHero(hero *Hero, const char grid[10][15], const int tilenumber[10][15], TGfxSprite *cases[20], const float screensizex, const float screensizey)		// Move hero
 {
 	int intherox = int((*Hero).x);		// Conversion hero position from float to int
 	int intheroy = int((*Hero).y);		// Conversion hero position from float to int
-
-	float groundbeneathy = 0;
 
 
 	(*Hero).x = (GfxSpriteGetPositionX((*Hero).sprite) / TILE);			// Getting hero position + downscaling
@@ -166,8 +168,12 @@ void MoveHero(hero *Hero, const char grid[10][15], const int tilenumber[10][15],
 
 	GetInput(Hero);		// Get input at this frame
 
+	CheckCollision(Hero, screensizex, screensizey, grid);		// Check collisions
 
-	if (grid[intheroy + 1][intherox] == '0' && (*Hero).dir.jump == false)				// Fall if nothing beneath hero
+
+														/*			 FALL			*/
+
+	if (grid[intheroy + 1][intherox] == '0' && (*Hero).dir.jump == false && grid[intheroy + 1][intherox + 1] == '0')				// Fall if nothing beneath hero
 	{
 		(*Hero).y = (*Hero).y + (((*Hero).dir.t / TILE) * ((*Hero).dir.t / TILE));
 
@@ -184,37 +190,22 @@ void MoveHero(hero *Hero, const char grid[10][15], const int tilenumber[10][15],
 	{
 		if ((*Hero).dir.wasfalling)			// Correcting misplacing into the ground after a fall
 		{
-			groundbeneathy = GfxSpriteGetPositionY(cases[tilenumber[intheroy + 1][intherox]]) / TILE;	// Getting y position of ground beneath
-			
-
-			(*Hero).y = groundbeneathy - 1;		// Placing hero exactly ne tile up this ground
+			(*Hero).y = float(intheroy);		// Placing hero exactly ne tile up this ground
 
 			(*Hero).dir.t = 0;
+
+			(*Hero).dir.jump = false;
 
 			(*Hero).dir.wasfalling = false;
 		}
 	}
-	
-	if ((*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1][intherox] == '1' || (*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1][intherox] == '2')		// If hitting the ground after jumping
-	{
-		(*Hero).dir.jump = false;		// Record end of the jump
-		(*Hero).dir.descending = false;		// Record end of descent
-		(*Hero).dir.t = 0;					// Reinitialize time for fall equation
 
-		if ((*Hero).x >= 0)
-		{
-			groundbeneathy = (GfxSpriteGetPositionY(cases[tilenumber[intheroy + 1][intherox]]) / TILE);	// Correcting misplacing into the ground after jump
-		}
-
-		else		// Prevent function to get Y position of a tile outside the left screen border
-		{
-			groundbeneathy = (GfxSpriteGetPositionY(cases[tilenumber[intheroy + 1][intherox + 1]]) / TILE);
-		}
-
-		(*Hero).y = groundbeneathy - 1;
-	}
+													/*			  END OF FALL				*/
 
 
+
+
+															/*			MOVE			*/
 
 	if ((*Hero).dir.movedelay == 1)		// Delay time
 	{
@@ -242,9 +233,32 @@ void MoveHero(hero *Hero, const char grid[10][15], const int tilenumber[10][15],
 		((*Hero).dir.movedelay)++;
 	}
 
+													/*				END OF MOVE				 */
+
+
+
+													/*				   JUMP					*/
+
+
+		/* If hitting the ground after jumping  */
+
+	// (Long if because of the possibility to walk on left edge of tiles)
+
+	if ((*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1 - (1 / 2)][intherox] == '1' || (*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1][intherox] == '2' || (*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1][intherox + 1 + (1 / int(TILE))] == '1' || (*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1][intherox + 1 + (1 / int(TILE))] == '2')
+	{
+		(*Hero).dir.jump = false;		// Record end of the jump
+		(*Hero).dir.descending = false;		// Record end of descent
+		(*Hero).dir.t = 0;					// Reinitialize time for fall equation
+
+		(*Hero).y = float(intheroy);
+	}
+
+
+
+
 	if ((*Hero).dir.jump == true)		// Jump
 	{
-		if ((*Hero).y <= ((*Hero).dir.t - float(sqrt(2.0))) * ((*Hero).dir.t - float(sqrt(2.0))) + 5 && (*Hero).dir.descending == false)		// If hero is going up
+		if ((*Hero).y >= ((*Hero).dir.t - float(sqrt(2.0))) * ((*Hero).dir.t - float(sqrt(2.0))) - (3 - (*Hero).dir.yinitial) && (*Hero).dir.descending == false)	// If hero is going up
 		{
 			(*Hero).dir.descending = false;
 		}
@@ -253,18 +267,19 @@ void MoveHero(hero *Hero, const char grid[10][15], const int tilenumber[10][15],
 			(*Hero).dir.descending = true;
 		}
 
-		(*Hero).y = ((*Hero).dir.t - float(sqrt(2.0))) * ((*Hero).dir.t - float(sqrt(2.0))) + 5;		// Jumping equation
+		(*Hero).y = ((*Hero).dir.t - float(sqrt(2.0))) * ((*Hero).dir.t - float(sqrt(2.0))) - (3 - (*Hero).dir.yinitial);		// Jumping equation
 
 		(*Hero).dir.t = (*Hero).dir.t + float(0.09);		// Time update
 	}
+
+													/*				END OF JUMP				*/
+
+
 
 	if (!(*Hero).dir.right && !(*Hero).dir.left && (*Hero).dir.movedelay != 0)		// If delay engaged but no key pressed at this frame, finish it anyway
 	{
 		((*Hero).dir.movedelay)++;
 	}
-
-	CheckCollision(Hero, screensizex, screensizey, grid);		// Check collisions
-
 
 	GfxSpriteSetPosition((*Hero).sprite, ((*Hero).x) * TILE, ((*Hero).y) * TILE);				// Update hero x position
 }
