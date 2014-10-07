@@ -22,11 +22,11 @@ bool exist;		// Have been created
 
 /*		GUN HEADERS			*/
 
-void GunShoot(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture, const float screensizex);		// Check if player tries to shoot at this frame
+void GunShoot(bullet bullets[4], hero *Hero, TGfxTexture * bulletTexture, const float screensizex);		// Check if player tries to shoot at this frame or have already
 
-void BulletCreate(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture);	// Create bullet if one is shooted
+void BulletCreate(bullet bullets[4], hero *Hero, TGfxTexture * bulletTexture);	// Create bullet if one is shooted
 
-void BulletGesture(bullet bullets[3], const int i, const float screensizex);				// Move or destroy bullets
+void BulletGesture(bullet bullets[4], const int i, const float screensizex);				// Move or destroy bullets
 
 
 

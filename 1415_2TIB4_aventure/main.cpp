@@ -23,9 +23,11 @@ TGfxSprite * g_groundcases[20] = { nullptr };
 
 /* Bullets structures array */
 
-bullet g_Bullets[3] = { { nullptr, 0, 0, false, false, false } };
+bullet g_Bullets[4] = { { nullptr, 0, 0, false, false, false } };
 
 TGfxTexture * g_bulletTexture = nullptr;
+
+const int BULLETSMAXAMMOUNT = 4;	// Maximum ammount of bullets existing at the same time
 
 
 
@@ -97,7 +99,7 @@ void Render()
 
 	GfxClear(EGfxColor_White);
 
-	for (i = 0; i < 19; i++)
+	for (i = 0; i < 20; i++)
 	{
 		if (g_groundcases[i] != nullptr)			// Render every ground sprite that aren't null
 		{
@@ -105,7 +107,7 @@ void Render()
 		}
 	}
 
-	for (i = 0; i < 3; i++)
+	for (i = 0; i < BULLETSMAXAMMOUNT; i++)	// Maximum ammount of bullets existing at the same time; i++)
 	{
 		if (g_Bullets[i].sprite != nullptr)
 		{

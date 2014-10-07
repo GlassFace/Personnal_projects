@@ -6,6 +6,8 @@
 
 const float TILE = 32;		// Tiles size
 
+const int BULLETSMAXAMMOUNT = 4;	// Maximum ammount of bullets existing at the same time
+
 
 int n = 0;		// Number of actual bullet
 
@@ -14,7 +16,7 @@ bool (*Hero) = false;	// A bullet exists at this frame
 int delay = 0;				// Delay between shoots
 
 
-void BulletGesture(bullet bullets[3], const int i, const float screensizex)		// Move or destroy bullets
+void BulletGesture(bullet bullets[4], const int i, const float screensizex)		// Move or destroy bullets
 {
 	if (bullets[i].right)		// If bullet is going right...
 	{
@@ -60,7 +62,7 @@ void BulletGesture(bullet bullets[3], const int i, const float screensizex)		// 
 	}
 }
 
-void BulletCreate(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture)		// Create bullet if one is shooted
+void BulletCreate(bullet bullets[4], hero *Hero, TGfxTexture * bulletTexture)		// Create bullet if one is shooted
 {
 	if (!bullets[n].exist)		// If bullet n° n doesn't exist, create it and set attributes
 	{
@@ -70,7 +72,7 @@ void BulletCreate(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture)		/
 		{
 			bullets[n].right = true;
 
-			bullets[n].x = (*Hero).x + 1;				// Record x position
+			bullets[n].x = (*Hero).x + ((1) / TILE);				// Record x position
 			bullets[n].y = (*Hero).y + (8 / TILE);		// Record y position
 
 			GfxSpriteSetPosition(bullets[n].sprite, bullets[n].x * TILE, bullets[n].y * TILE);
@@ -80,7 +82,7 @@ void BulletCreate(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture)		/
 		{
 			bullets[n].left = true;
 
-			bullets[n].x = (*Hero).x - (8 / TILE);		// Record x position
+			bullets[n].x = (*Hero).x - (10 / TILE);		// Record x position
 			bullets[n].y = (*Hero).y + (8 / TILE);					// Record y position
 
 			GfxSpriteSetPosition(bullets[n].sprite, bullets[n].x * TILE, bullets[n].y * TILE);
@@ -95,7 +97,7 @@ void BulletCreate(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture)		/
 	{
 		n++;	// Jump to next bullet structure
 
-		if (n == 3)		// Go to the first if we passed the last
+		if (n == BULLETSMAXAMMOUNT)		// Go to the first if we passed the last
 		{
 			n = 0;
 		}
@@ -124,9 +126,14 @@ void BulletCreate(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture)		/
 			n++;		// Increase n number to jump to next bullet structure for next time
 		}
 	}
+
+	if (n == BULLETSMAXAMMOUNT)		// Go to the first if we passed the last
+	{
+		n = 0;
+	}
 }
 
-void GunShoot(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture, const float screensizex)		// Check if player tries to shoot at this frame
+void GunShoot(bullet bullets[4], hero *Hero, TGfxTexture * bulletTexture, const float screensizex)		// Check if player tries to shoot at this frame or have already
 {
 	int i = 0;
 
@@ -137,7 +144,7 @@ void GunShoot(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture, const 
 		delay++;
 	}
 
-	if (delay == 30)		// Delay duration
+	if (delay == 10)		// Delay duration
 	{
 		delay = 0;
 	}
@@ -147,7 +154,7 @@ void GunShoot(bullet bullets[3], hero *Hero, TGfxTexture * bulletTexture, const 
 		delay++;
 	}
 
-	for (i = 0; i < 3; i++)		// Browse bullet structures
+	for (i = 0; i < BULLETSMAXAMMOUNT; i++)		// Browse bullet structures
 	{
 		if (bullets[i].exist)		// If a bullet exists, record it
 		{

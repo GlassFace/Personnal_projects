@@ -75,6 +75,8 @@ void GetInput(hero *Hero)		// Get input
 		{
 			(*Hero).dir.left = false;
 
+			GfxSpriteSetScale((*Hero).sprite, 1, 1);	// Mirroring hero sprite
+
 			if ((*Hero).dir.v > 0)
 			{
 				(*Hero).dir.v = 0;			// And reinitializing speed
@@ -112,6 +114,8 @@ void GetInput(hero *Hero)		// Get input
 		if ((*Hero).dir.wasgoingright)		// If turning back, reinitialize delay to move instantly
 		{
 			(*Hero).dir.right = false;
+
+			GfxSpriteSetScale((*Hero).sprite, -1, 1);	// Mirroring hero sprite
 
 			if ((*Hero).dir.v > 0)
 			{
