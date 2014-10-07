@@ -5,6 +5,11 @@
 #include "entities.h"
 
 
+
+/*			Headers are in entities.h			 */
+
+
+
 const float TILE = 32;		// Tiles size
 
 const float SPEED = float(0.03);		// Speed increase every loop
@@ -17,30 +22,30 @@ void CheckCollision(hero *Hero, const float screensizex, const float screensizey
 	int intheroy = int((*Hero).y);		// Conversion hero position from float to int
 
 
-	if ((*Hero).dir.right)
+	if ((*Hero).dir.right)		// If going right
 	{
-		if ((*Hero).x > screensizex - 1 - (1 / TILE))
+		if ((*Hero).x > screensizex - 1 - (1 / TILE))		// Screen border collision
 		{
 			(*Hero).dir.right = false;
 
-			(*Hero).x = float(intherox);
+			(*Hero).x = float(intherox);	// Rounding hero position to avoid glitches
 		}
 
-		else if (grid[intheroy][intherox + 1] == '1' || grid[intheroy][intherox + 1] == '2')
+		else if (grid[intheroy][intherox + 1] == '1' || grid[intheroy][intherox + 1] == '2')	// Sprites collision
 		{
 			(*Hero).dir.right = false;
 
-			(*Hero).x = float(intherox);
+			(*Hero).x = float(intherox);	// Rounding hero position to avoid glitches
 		}
 	}
 
-	if ((*Hero).dir.left)
+	if ((*Hero).dir.left)		// If going left
 	{
-		if ((*Hero).x <= 0 || grid[intheroy][intherox - 1] == '1' || grid[intheroy][intherox - 1] == '2')
+		if ((*Hero).x <= 0 || grid[intheroy][intherox - 1] == '1' || grid[intheroy][intherox - 1] == '2')	// Screen border and sprites collision
 		{
 			(*Hero).dir.left = false;
 
-			(*Hero).x = float(intherox);
+			(*Hero).x = float(intherox);	// Rounding hero position to avoid glitches
 		}
 	}
 
@@ -75,7 +80,8 @@ void GetInput(hero *Hero)		// Get input
 		{
 			(*Hero).dir.left = false;
 
-			GfxSpriteSetScale((*Hero).sprite, 1, 1);	// Mirroring hero sprite
+			GfxSpriteSetScale((*Hero).sprite, 1, 1);			// Mirroring hero sprite
+			GfxSpriteSetCutout((*Hero).sprite, 0, 0, 32, 32);	// Setting cutout to avoid sprite misplacing
 
 			if ((*Hero).dir.v > 0)
 			{
@@ -115,7 +121,8 @@ void GetInput(hero *Hero)		// Get input
 		{
 			(*Hero).dir.right = false;
 
-			GfxSpriteSetScale((*Hero).sprite, -1, 1);	// Mirroring hero sprite
+			GfxSpriteSetScale((*Hero).sprite, -1, 1);				// Mirroring hero sprite
+			GfxSpriteSetCutout((*Hero).sprite, 32, 0, -32, 32);		// Changing cutout to avoid sprite misplacing
 
 			if ((*Hero).dir.v > 0)
 			{
@@ -246,7 +253,7 @@ void MoveHero(hero *Hero, const char grid[10][15], const int tilenumber[10][15],
 
 		/* If hitting the ground after jumping  */
 
-	// (Long if because of the possibility to walk on left edge of tiles)
+	// (Long if because of the ability to walk on left edge of tiles)
 
 	if ((*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1 - (1 / 2)][intherox] == '1' || (*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1][intherox] == '2' || (*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1][intherox + 1 + (1 / int(TILE))] == '1' || (*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1][intherox + 1 + (1 / int(TILE))] == '2')
 	{
@@ -270,6 +277,7 @@ void MoveHero(hero *Hero, const char grid[10][15], const int tilenumber[10][15],
 		{
 			(*Hero).dir.descending = true;
 		}
+		GfxDbgPrintf("Hero y = %f\n", (*Hero).y);
 
 		(*Hero).y = ((*Hero).dir.t - float(sqrt(2.0))) * ((*Hero).dir.t - float(sqrt(2.0))) - (3 - (*Hero).dir.yinitial);		// Jumping equation
 
