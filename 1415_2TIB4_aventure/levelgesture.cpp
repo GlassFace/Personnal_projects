@@ -5,11 +5,11 @@
 
 const float TILE = 32;		// Tiles size
 
-const int XSCREENLENGHT = 15;	// Number of tiles on x
-const int YSCREENLENGHT = 10;
+const int XSCREENLENGHT = 16;	// Number of tiles on x
+const int YSCREENLENGHT = 11;
 
 
-void LoadLevel(char grid[10][15], int tilenumber[10][15])	// Loading level from level.txt
+void LoadLevel(char grid[11][16], int tilenumber[11][16])	// Loading level from level.txt
 {
 	int i = 0;
 	int j = 0;
@@ -32,6 +32,15 @@ void LoadLevel(char grid[10][15], int tilenumber[10][15])	// Loading level from 
 			if (charread == '0')		// Nothing at this case
 			{
 				grid[i][j] = '0';
+			}
+
+			else if (charread == '0')
+			{
+				grid[i][j] = '0';
+
+				tilenumber[i][j] = e;
+
+				e++;
 			}
 
 			else if (charread == '1')	// Ground at this case
@@ -78,7 +87,7 @@ void LoadLevel(char grid[10][15], int tilenumber[10][15])	// Loading level from 
 }
 
 
-void CreateGround(TGfxTexture *groundset, char grid[10][15], TGfxSprite *groundtiles[20])	// Creating level (ground only for now) from screen grid infos
+void CreateGround(TGfxTexture *groundset, char grid[11][16], TGfxSprite *groundtiles[20])	// Creating level (ground only for now) from screen grid infos
 {
 	int i = 0;
 	int j = 0;

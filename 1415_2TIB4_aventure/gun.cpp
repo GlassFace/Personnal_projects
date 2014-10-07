@@ -9,7 +9,8 @@ const float TILE = 32;		// Tiles size
 const int BULLETSMAXAMMOUNT = 4;	// Maximum ammount of bullets existing at the same time
 
 
-int n = 0;		// Number of actual bullet
+int n = 0;					// Cursor on actual bullet
+int bulletsexisting = 0;		// Number of bullets that exists at this frame
 
 bool (*Hero) = false;	// A bullet exists at this frame
 
@@ -45,6 +46,8 @@ void BulletGesture(bullet bullets[4], const int i, const float screensizex)		// 
 		bullets[i].right = false;
 
 		bullets[i].exist = false;
+
+		bulletsexisting--;		// Decreasing number of bullets
 	}
 
 	else if (bullets[i].x <= 0)		// If bullet hits left border
@@ -59,6 +62,8 @@ void BulletGesture(bullet bullets[4], const int i, const float screensizex)		// 
 		bullets[i].right = false;
 
 		bullets[i].exist = false;
+
+		bulletsexisting--;		// Decreasing number of bullets
 	}
 }
 
@@ -90,7 +95,8 @@ void BulletCreate(bullet bullets[4], hero *Hero, TGfxTexture * bulletTexture)		/
 
 		bullets[n].exist = true;		// Record that bullet n° n now exists
 
-		n++;		// Increase n number to jump to next bullet structure for next time
+		n++;				// Move cursor on next bullet
+		bulletsexisting++;	// Increasing number of bullets
 	}
 
 	else		// If bullet n° n already exists...
@@ -123,7 +129,8 @@ void BulletCreate(bullet bullets[4], hero *Hero, TGfxTexture * bulletTexture)		/
 
 			bullets[n].exist = true;		// Record that bullet n° n now exists
 
-			n++;		// Increase n number to jump to next bullet structure for next time
+			n++;				// Move cursor on next bullet
+			bulletsexisting++;	// Increasing number of bullets
 		}
 	}
 
@@ -136,6 +143,7 @@ void BulletCreate(bullet bullets[4], hero *Hero, TGfxTexture * bulletTexture)		/
 void GunShoot(bullet bullets[4], hero *Hero, TGfxTexture * bulletTexture, const float screensizex)		// Check if player tries to shoot at this frame or have already
 {
 	int i = 0;
+	int o = 0;	// Number of bullets found when browsing them
 
 	if (GfxInputIsPressed(EGfxInputID_KeyCharE) && delay == 0)	// If Z is pressed and delay is ok
 	{
@@ -154,11 +162,21 @@ void GunShoot(bullet bullets[4], hero *Hero, TGfxTexture * bulletTexture, const 
 		delay++;
 	}
 
-	for (i = 0; i < BULLETSMAXAMMOUNT; i++)		// Browse bullet structures
+	if (bulletsexisting > 0)
 	{
-		if (bullets[i].exist)		// If a bullet exists, record it
+		for (i = 0; i < BULLETSMAXAMMOUNT; i++)		// Browse bullet structures
 		{
-			BulletGesture(bullets, i, screensizex);
+			if (bullets[i].exist)		// If a bullet exists, record it
+			{
+				BulletGesture(bullets, i, screensizex);
+
+				o++;	// Increasing number of bullets found
+			}
+
+			if (o == bulletsexisting)
+			{
+				i = BULLETSMAXAMMOUNT;	// Forcing i to end the for
+			}
 		}
 	}
 }

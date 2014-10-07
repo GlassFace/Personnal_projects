@@ -8,8 +8,6 @@
 
 const float TILE = 32;		// Tiles size
 
-const int XSCREENLENGHT = 15;	// Number of tiles on x
-
 
 
 					/* GROUND VARIABLES */
@@ -41,8 +39,8 @@ hero g_Hero = { 0 };
 
 					/* SCREEN VARIABLES	*/
 
-char g_screengrid[10][15] = { 0 };		// Screen grid array
-int g_tilenumbers[10][15] = { 0 };		// Numbers associated with created tiles
+char g_screengrid[11][16] = { 0 };		// Screen grid array
+int g_tilenumbers[11][16] = { 0 };		// Numbers associated with created tiles
 
 
 float g_screensizex = 0;		// Screen x size

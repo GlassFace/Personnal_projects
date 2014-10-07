@@ -3,13 +3,13 @@
 
 const float TILE = 32;		// Tiles size
 
-const int XSCREENLENGHT = 15;	// Number of tiles on x
-const int YSCREENLENGHT = 10;
+const int XSCREENLENGHT = 16;	// Number of tiles on x
+const int YSCREENLENGHT = 11;
 
 int waterdelay = 0;
 
 
-void AnimateWater(char grid[10][15], TGfxSprite *groundcase[20], const int tilenumber[10][15])		// Animate water
+void AnimateWater(char grid[11][16], TGfxSprite *groundcase[20], const int tilenumber[11][16])		// Animate water
 {
 	int i = 0;
 	int j = 0;

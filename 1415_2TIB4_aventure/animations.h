@@ -2,6 +2,6 @@
 #ifndef ANIMATIONS
 #define ANIMATIONS
 
-void AnimateWater(char grid[10][15], TGfxSprite *groundcase[20], const int tilenumber[10][15]);		// Animate water
+void AnimateWater(char grid[11][16], TGfxSprite *groundcase[20], const int tilenumber[11][16]);		// Animate water
 
 #endif

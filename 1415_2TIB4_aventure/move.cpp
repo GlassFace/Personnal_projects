@@ -16,7 +16,7 @@ const float SPEED = float(0.03);		// Speed increase every loop
 const float SPEEDMAX = float(0.6);		// Maximum speed
 
 
-void CheckCollision(hero *Hero, const float screensizex, const float screensizey, const char grid[10][15])	// Check collisions
+void CheckCollision(hero *Hero, const float screensizex, const float screensizey, const char grid[11][16])	// Check collisions
 {
 	int intherox = int((*Hero).x);		// Conversion hero position from float to int
 	int intheroy = int((*Hero).y);		// Conversion hero position from float to int
@@ -145,7 +145,7 @@ void GetInput(hero *Hero)		// Get input
 
 
 
-	else if (GfxInputIsJustPressed(EGfxInputID_KeyCharZ) && !(*Hero).dir.jump && !(*Hero).dir.wasfalling)	// Jump
+	else if (GfxInputIsPressed(EGfxInputID_KeyCharZ) && !(*Hero).dir.jump && !(*Hero).dir.wasfalling)	// Jump
 	{
 		(*Hero).dir.jump = true;
 
@@ -167,7 +167,7 @@ void GetInput(hero *Hero)		// Get input
 
 
 
-void MoveHero(hero *Hero, const char grid[10][15], const int tilenumber[10][15], TGfxSprite *cases[20], const float screensizex, const float screensizey)		// Move hero
+void MoveHero(hero *Hero, const char grid[11][16], const int tilenumber[11][16], TGfxSprite *cases[20], const float screensizex, const float screensizey)		// Move hero
 {
 	int intherox = int((*Hero).x);		// Conversion hero position from float to int
 	int intheroy = int((*Hero).y);		// Conversion hero position from float to int
@@ -255,7 +255,7 @@ void MoveHero(hero *Hero, const char grid[10][15], const int tilenumber[10][15],
 
 	// (Long if because of the ability to walk on left edge of tiles)
 
-	if ((*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1 - (1 / 2)][intherox] == '1' || (*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1][intherox] == '2' || (*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1][intherox + 1 + (1 / int(TILE))] == '1' || (*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1][intherox + 1 + (1 / int(TILE))] == '2')
+	if ((*Hero).y >= screensizey - 1 && (*Hero).dir.descending || (*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1 - (1 / 2)][intherox] == '1' || (*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1][intherox] == '2' || (*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1][intherox + 1 + (1 / int(TILE))] == '1' || (*Hero).dir.jump && (*Hero).dir.descending && grid[intheroy + 1][intherox + 1 + (1 / int(TILE))] == '2')
 	{
 		(*Hero).dir.jump = false;		// Record end of the jump
 		(*Hero).dir.descending = false;		// Record end of descent
