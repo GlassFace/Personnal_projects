@@ -114,8 +114,21 @@
     <ClCompile Include="..\..\main\lib\flib\flib.cpp">
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
     </ClCompile>
+    <ClCompile Include="..\..\main\lib\flib\flib_vec2.cpp" />
+    <ClCompile Include="Building.cpp" />
+    <ClCompile Include="Dynamic.cpp" />
+    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="House.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Villager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Building.h" />
+    <ClInclude Include="Dynamic.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="House.h" />
+    <ClInclude Include="Villager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
