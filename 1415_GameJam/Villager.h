@@ -16,6 +16,8 @@ public:
 	void GetRandomName();
 
 
+	void SpecificUpdate();
+
 	void Die();
 
 	bool IsMouseOver(const TGfxVec2 & tMousePos) const;

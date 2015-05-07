@@ -11,6 +11,9 @@ public:
 	virtual ~TEntity();
 
 
+	virtual void Update() = 0;
+
+
 	void Render();
 
 

@@ -100,11 +100,16 @@ void TVillager::GetRandomName()
 }
 
 
+void TVillager::SpecificUpdate()
+{
+
+}
+
 void TVillager::Die()
 {
 	m_eState = EState_Dead;
 
-	THUD::OneMoreSuicide();
+	THUD::S_OneMoreSuicide();
 }
 
 bool TVillager::IsMouseOver(const TGfxVec2 & tMousePos) const

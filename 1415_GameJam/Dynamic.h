@@ -11,6 +11,10 @@ public:
 	virtual ~TDynamic();
 
 
+	void Update();
+	virtual void SpecificUpdate() = 0;
+
+
 protected:
 
 	float m_fSpeed;

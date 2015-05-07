@@ -13,7 +13,11 @@ public:
 	virtual ~TBuilding();
 
 
+	void Update();
+	virtual void SpecificUpdate() = 0;
+
 	void DropCivilian(TVillager & tVillager) const;
+
 
 protected:
 
