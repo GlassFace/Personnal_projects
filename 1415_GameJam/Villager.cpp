@@ -41,3 +41,17 @@ void TVillager::S_Initialize()
 {
 	s_pTexture = GfxTextureLoad(SPRITE_NAME);
 }
+
+
+bool TVillager::IsMouseOver(const TGfxVec2 & tMousePos) const
+{
+	const bool bMouseOnX = tMousePos.x >= m_tPos.x - (m_tSize.x / 2.0f) && tMousePos.x < m_tPos.x + (m_tSize.x / 2.0f);
+	const bool bMouseOnY = tMousePos.y >= m_tPos.y - m_tSize.y && tMousePos.y <= m_tPos.y;
+
+	if (bMouseOnX && bMouseOnY)
+	{
+		return true;
+	}
+
+	return false;
+}
