@@ -1,13 +1,15 @@
-
 #include "flib.h"
+#include "HUD.h"
 
 
 
 
-
+THUD * g_pHUD;
 void Initialize()
-{
-	GfxDbgPrintf("test");
+{	
+
+	g_pHUD = new THUD();
+	g_pHUD->Initialize();
 }
 
 
@@ -22,11 +24,13 @@ void Update()
 void Render()
 {
 	GfxClear(EGfxColor_Black);
+	g_pHUD->Render();
 }
 
 
 
 void GfxMain(int, char *[])
 {
+	GfxDefaultResolution(1920, 1080);
 	GfxCallbacks(Initialize, Update, Render);
 }
