@@ -9,14 +9,14 @@ void Initialize()
 {	
 
 	g_pHUD = new THUD();
-	g_pHUD->Initialize();
+	THUD::S_Initialize();
 }
 
 
 
 void Update()
 {
-	g_pHUD->Update();
+	THUD::S_Update();
 }
 
 
@@ -24,7 +24,7 @@ void Update()
 void Render()
 {
 	GfxClear(EGfxColor_Black);
-	g_pHUD->Render();
+	THUD::S_Render();
 }
 
 
