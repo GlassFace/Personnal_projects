@@ -1,8 +1,12 @@
 #include "flib.h"
+#include <math.h>
 #include "HUD.h"
 
+
+TGfxSprite * THUD::m_pVillagerCounter = nullptr;
+TSuicideInfo THUD::m_tSuicideInfo;
+
 THUD::THUD()
-: m_pVillagerCounter(GfxTextSpriteCreate())
 {
 }
 
@@ -11,8 +15,9 @@ THUD::~THUD()
 
 }
 
-void THUD::Initialize()
+void THUD::S_Initialize()
 {
+	m_pVillagerCounter = GfxTextSpriteCreate();
 	GfxSpriteSetFilteringEnabled(m_pVillagerCounter, false);
 	GfxTextSpritePrintf(m_pVillagerCounter, "%d villagers alive", 0); // Get Nbr Villager Alive
 
@@ -21,35 +26,54 @@ void THUD::Initialize()
 	unsigned int * pData = GfxImageGetData(pImage);
 	pData[0] = EGfxColor_White;
 	TGfxTexture * pTexture = GfxTextureCreate(pImage);
-	m_tSuicidInfo.pSuicidGauge = GfxSpriteCreate(pTexture);
-	GfxSpriteSetScale(m_tSuicidInfo.pSuicidGauge, 0, SUICID_GAUGE_SIZE_Y);
-	GfxSpriteSetColor(m_tSuicidInfo.pSuicidGauge, EGfxColor_Red);
-	GfxSpriteSetPosition(m_tSuicidInfo.pSuicidGauge, SUICID_GAUGE_POS_X, SUICID_GAUGE_POS_Y);
-	GfxSpriteSetFilteringEnabled(m_tSuicidInfo.pSuicidGauge, false);
+	m_tSuicideInfo.m_pSuicideGauge = GfxSpriteCreate(pTexture);
+	GfxSpriteSetScale(m_tSuicideInfo.m_pSuicideGauge, 0, SUICIDE_GAUGE_SIZE_Y);
+	GfxSpriteSetColor(m_tSuicideInfo.m_pSuicideGauge, EGfxColor_Red);
+	GfxSpriteSetPosition(m_tSuicideInfo.m_pSuicideGauge, SUICIDE_GAUGE_POS_X, SUICIDE_GAUGE_POS_Y);
+	GfxSpriteSetFilteringEnabled(m_tSuicideInfo.m_pSuicideGauge, false);
 
 	GfxImageDestroy(pImage);
 
+	m_tSuicideInfo.m_iLastFrameLost = GfxTimeGetMilliseconds();
 }
 
-void THUD::Update()
+void THUD::S_Update()
 {
-	UpdateVillagerCounter();
-	UpdateVillagerSuicid();
+	S_UpdateVillagerCounter();
+	S_UpdateVillagerSuicideGauge();
 }
 
-void THUD::UpdateVillagerCounter()
+void THUD::S_UpdateVillagerCounter()
 {
 	GfxTextSpritePrintf(m_pVillagerCounter, "%d villagers alive", 150); // Get Nbr Villager Alive
 }
 
-void THUD::UpdateVillagerSuicid()
+void THUD::S_UpdateVillagerSuicideGauge()
 {
-	GfxSpriteSetScale(m_tSuicidInfo.pSuicidGauge, m_tSuicidInfo.iSuicidMalus, SUICID_GAUGE_SIZE_Y);
+	int iSinceLastFrame = GfxTimeGetMilliseconds() - m_tSuicideInfo.m_iLastFrameLost;
+	float fLess = (iSinceLastFrame / 1000.f)* SUICIDE_GAUGE_SPEED;
+	GfxDbgPrintf("%f \n", fLess);
+	m_tSuicideInfo.m_fSuicideMalus -= fLess;
+
+	if (m_tSuicideInfo.m_fSuicideMalus < 0.f)
+	{
+		m_tSuicideInfo.m_fSuicideMalus = 0.f;
+	}
+
+	GfxSpriteSetScale(m_tSuicideInfo.m_pSuicideGauge, int(floorf(m_tSuicideInfo.m_fSuicideMalus)), SUICIDE_GAUGE_SIZE_Y);
+
+	m_tSuicideInfo.m_iLastFrameLost = GfxTimeGetMilliseconds();
 }
 
-void THUD::Render() const
+void THUD::S_OneMoreSuicide()
+{
+	m_tSuicideInfo.m_iTotalSuicide++;
+	m_tSuicideInfo.m_fSuicideMalus += SUICIDE_MALUS;
+	GfxSpriteSetScale(m_tSuicideInfo.m_pSuicideGauge, int(floorf(m_tSuicideInfo.m_fSuicideMalus)), SUICIDE_GAUGE_SIZE_Y);
+}
+void THUD::S_Render()
 {
 	GfxTextSpriteRender(m_pVillagerCounter, VILLAGER_COUNTER_POS_X, VILLAGER_COUNTER_POS_Y, EGfxColor_White, 2.f, false, false);
-	GfxSpriteRender(m_tSuicidInfo.pSuicidGauge);
+	GfxSpriteRender(m_tSuicideInfo.m_pSuicideGauge);
 }
 
