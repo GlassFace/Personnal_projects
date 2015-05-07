@@ -7,7 +7,7 @@
 
 void Initialize()
 {
-
+	GfxDbgPrintf("test");
 }
 
 
