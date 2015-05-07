@@ -124,6 +124,7 @@
     <ClCompile Include="House.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Villager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +134,7 @@
     <ClInclude Include="Dynamic.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="House.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Villager.h" />
   </ItemGroup>
   <ItemGroup>

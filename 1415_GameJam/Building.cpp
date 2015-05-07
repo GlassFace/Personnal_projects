@@ -21,3 +21,9 @@ TBuilding::~TBuilding()
 {
 
 }
+
+
+void TBuilding::Update()
+{
+	SpecificUpdate();
+}

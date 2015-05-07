@@ -23,3 +23,9 @@ TDynamic::~TDynamic()
 {
 
 }
+
+
+void TDynamic::Update()
+{
+	SpecificUpdate();
+}

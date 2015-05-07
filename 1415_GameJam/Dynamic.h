@@ -11,7 +11,8 @@ public:
 	virtual ~TDynamic();
 
 
-	virtual void S_Initialize() = 0;
+	void Update();
+	virtual void SpecificUpdate() = 0;
 
 
 protected:

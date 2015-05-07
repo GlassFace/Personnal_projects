@@ -14,9 +14,14 @@ public:
 	static void S_Initialize();
 
 
+	void SpecificUpdate();
+
+
 private:
 
 	static TGfxTexture * s_pTexture;
+
+	int m_iLastSpawnTime;
 };
 
 #endif
