@@ -11,9 +11,6 @@ public:
 	virtual ~TEntity();
 
 
-	virtual void S_Initialize() = 0;
-
-
 	void Render();
 
 

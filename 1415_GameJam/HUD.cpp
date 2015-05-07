@@ -44,7 +44,7 @@ void THUD::UpdateVillagerCounter()
 
 void THUD::UpdateVillagerSuicid()
 {
-	GfxSpriteSetScale(m_tSuicidInfo.pSuicidGauge, m_tSuicidInfo.iSuicidMalus, SUICID_GAUGE_SIZE_Y);
+	GfxSpriteSetScale(m_tSuicidInfo.pSuicidGauge, float(m_tSuicidInfo.iSuicidMalus), SUICID_GAUGE_SIZE_Y);
 }
 
 void THUD::Render() const

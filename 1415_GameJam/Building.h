@@ -2,7 +2,7 @@
 #ifndef BUILDING_H_INCLUDED
 #define BUILDING_H_INCLUDED
 
-class TCivilian;
+class TVillager;
 
 class TBuilding : public TEntity
 {
@@ -13,10 +13,7 @@ public:
 	virtual ~TBuilding();
 
 
-	virtual void S_Initialize() = 0;
-
-
-	void DropCivilian(TCivilian & tCivilian) const;
+	void DropCivilian(TVillager & tVillager) const;
 
 protected:
 

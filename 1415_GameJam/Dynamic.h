@@ -11,9 +11,6 @@ public:
 	virtual ~TDynamic();
 
 
-	virtual void S_Initialize() = 0;
-
-
 protected:
 
 	float m_fSpeed;
