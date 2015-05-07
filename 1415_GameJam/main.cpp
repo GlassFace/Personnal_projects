@@ -16,7 +16,7 @@ void Initialize()
 
 void Update()
 {
-
+	g_pHUD->Update();
 }
 
 

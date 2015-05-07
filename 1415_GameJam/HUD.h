@@ -3,7 +3,7 @@
 
 const float SUICID_GAUGE_SIZE_X_MAX = 300.f;
 const float SUICID_GAUGE_SIZE_Y = 20.f;
-const float SUICID_GAUGE_POS_X = 1000.f;
+const float SUICID_GAUGE_POS_X = 1520.f;
 const float SUICID_GAUGE_POS_Y = 100.f;
 const float VILLAGER_COUNTER_POS_X = 100.f;
 const float VILLAGER_COUNTER_POS_Y = 100.f;
@@ -13,7 +13,7 @@ struct TSuicidInfo
 {
 	TSuicidInfo()
 	:pSuicidGauge(nullptr),
-	iSuicidMalus(150),
+	iSuicidMalus(300),
 	iTotalSuicid(0)
 	{
 

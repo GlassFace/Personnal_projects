@@ -39,12 +39,12 @@ void THUD::Update()
 
 void THUD::UpdateVillagerCounter()
 {
-	GfxTextSpritePrintf(m_pVillagerCounter, "%d villagers alive", 0); // Get Nbr Villager Alive
+	GfxTextSpritePrintf(m_pVillagerCounter, "%d villagers alive", 150); // Get Nbr Villager Alive
 }
 
 void THUD::UpdateVillagerSuicid()
 {
-	GfxSpriteSetScale(m_tSuicidInfo.pSuicidGauge, m_tSuicidInfo.iSuicidMalus / 2.f, SUICID_GAUGE_SIZE_Y);
+	GfxSpriteSetScale(m_tSuicidInfo.pSuicidGauge, m_tSuicidInfo.iSuicidMalus, SUICID_GAUGE_SIZE_Y);
 }
 
 void THUD::Render() const
