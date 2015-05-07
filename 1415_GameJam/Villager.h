@@ -12,7 +12,7 @@ public:
 	static void S_Initialize();
 
 
-
+	bool IsMouseOver(const TGfxVec2 & tMousePos) const;
 
 protected:
 
