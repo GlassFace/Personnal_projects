@@ -11,6 +11,9 @@ public:
 
 	static void S_Initialize();
 
+
+
+
 protected:
 
 	static TGfxTexture * s_pTexture;
