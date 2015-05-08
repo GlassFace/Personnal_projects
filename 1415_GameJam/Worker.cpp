@@ -91,6 +91,7 @@ void TWorker::ProfessionUpdate(TVillager * pVillager)
 			} while (m_tDestinationToConstruct == TGfxVec2(0.0f, 0.0f));
 
 			pVillager->m_eDirection = (m_tDestinationToConstruct - pVillager->m_tPos).x >= 0.0f ? EDirection_Right : EDirection_Left;
+			//pVillager->m_tVelocity.x = pVillager->m_fSpeed * pVillager->m_eDirection == EDirection_Right ? 1.0f : -1.0f;
 		}
 		
 		else
@@ -101,11 +102,14 @@ void TWorker::ProfessionUpdate(TVillager * pVillager)
 
 	else if (pVillager->m_eAction == EAction_Walking && pVillager->m_tPos != m_tDestinationToConstruct)
 	{
-		if ((m_tDestinationToConstruct - pVillager->m_tPos).x <= ((pVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS())))
+		if ((m_tDestinationToConstruct - pVillager->m_tPos).x <= (pVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS()) &&
+			(m_tDestinationToConstruct - pVillager->m_tPos).x >= -(pVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS()))
 		{
 			pVillager->m_tPos = m_tDestinationToConstruct;
+			/*pVillager->m_tVelocity.x = 0.0f;*/
 
 			pVillager->m_eAction = EAction_Action;
+
 			m_iStartConstructionTime = GfxTimeGetMilliseconds();
 		}
 	}
@@ -118,6 +122,7 @@ void TWorker::ProfessionUpdate(TVillager * pVillager)
 
 			m_iStartConstructionTime = 0;
 
+			m_tDestinationToConstruct = TGfxVec2(0.0f, 0.0f);
 			pVillager->m_eAction = EAction_Idle;
 		}
 	}

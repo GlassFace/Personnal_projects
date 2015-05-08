@@ -152,26 +152,36 @@ void TVillager::SpecificUpdate()
 {
 	if (m_eAction != EAction_Grab)
 	{
-	if (m_pProfession == nullptr)
-	{
-		RandomMove();
+		if (m_pProfession == nullptr)
+		{
+			RandomMove();
+
+			if (m_eAction == EAction_Walking)
+			{
+				m_pSprite = m_pWalk->Play(m_eDirection);
+			}
+
+			else
+			{
+				m_pSprite = m_pIdle->Play(m_eDirection);
+			}
+		}
+		
+		else
+		{
+			m_pProfession->ProfessionUpdate(this);
+		}
 
 		if (m_eAction == EAction_Walking)
 		{
-			m_pSprite = m_pWalk->Play(m_eDirection);
+			m_tVelocity.x = (m_fSpeed / (GfxTimeFrameGetCurrentFPS() != 0.0f ? GfxTimeFrameGetCurrentFPS() : 60.0f)) * (m_eDirection == EDirection_Right ? 1.0f : -1.0f);
 		}
 
-		else
+		else if (m_eAction == EAction_Idle || m_eAction == EAction_Action)
 		{
-			m_pSprite = m_pIdle->Play(m_eDirection);
+			m_tVelocity.x = 0.0f;
 		}
 	}
-	
-	else
-	{
-		m_pProfession->ProfessionUpdate(this);
-	}
-}
 }
 
 void TVillager::RandomMove()
@@ -191,8 +201,8 @@ void TVillager::RandomMove()
 			}
 		}
 
-
 		m_tPos.y += m_tVelocity.y;
+
 		if (m_tPos.y > GfxGetDisplaySizeY())
 		{
 			Die();
@@ -203,7 +213,7 @@ void TVillager::RandomMove()
 		if (m_eAction == EAction_Walking && GfxTimeGetMilliseconds() - m_iStartMoveTime >= m_iMoveDuration)
 		{
 			m_eAction = EAction_Idle;
-			m_tVelocity.x = 0.0f;
+			/*m_tVelocity.x = 0.0f;*/
 
 			m_iIdleDuration = GfxMathGetRandomInteger(IDLE_DURATION_MIN, IDLE_DURATION_MAX);
 		}
@@ -211,7 +221,7 @@ void TVillager::RandomMove()
 		else if (m_eAction == EAction_Idle && GfxTimeGetMilliseconds() - (m_iStartMoveTime + m_iMoveDuration) >= m_iIdleDuration)
 		{
 			m_eAction = EAction_Walking;
-			m_tVelocity.x = (m_fSpeed / (GfxTimeFrameGetCurrentFPS() != 0.0f ? GfxTimeFrameGetCurrentFPS() : 60.0f)) * (m_eDirection == EDirection_Right ? 1.0f : -1.0f);
+			/*m_tVelocity.x = (m_fSpeed / (GfxTimeFrameGetCurrentFPS() != 0.0f ? GfxTimeFrameGetCurrentFPS() : 60.0f)) * (m_eDirection == EDirection_Right ? 1.0f : -1.0f);*/
 
 			m_iMoveDuration = GfxMathGetRandomInteger(MOVE_DURATION_MIN, MOVE_DURATION_MAX);
 			m_iStartMoveTime = GfxTimeGetMilliseconds();

@@ -59,7 +59,10 @@ void TWorkshop::S_Initialize()
 
 void TWorkshop::SpecificUpdate()
 {
-	GetInput();
+	if (GfxInputIsJustPressed(EGfxInputID_MouseLeft))
+	{
+		GetInput();
+	}
 }
 
 bool TWorkshop::AssignVillager(TVillager * pVillager)
@@ -106,6 +109,7 @@ void TWorkshop::GetInput()
 		for (int i = 0; i < m_iAssignedVillagersCount; i++)
 		{
 			reinterpret_cast<TWorker*>(m_pAssignedVillagers[i])->SetBuildingsToCreate(m_eBuildingType);
+			GfxDbgPrintf("Yo\n");
 		}
 	}
 }
