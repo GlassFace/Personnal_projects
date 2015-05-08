@@ -52,7 +52,24 @@ void TDynamic::Update()
 
 void TDynamic::Move()
 {
+	// Move on Y
+	if (m_tPos.y < TFloor::GetPosition().y
+		|| (m_tPos.x < TFloor::GetPosition().x - TFloor::GetLeftSize()
+		|| m_tPos.x > TFloor::GetPosition().x + TFloor::GetRightSize()))
+	{
+		if (m_tVelocity.y < MAX_FALL_SPEED)
+		{
+			m_tVelocity.y += GRAVITY;
+
+			if (m_tVelocity.y > MAX_FALL_SPEED)
+			{
+				m_tVelocity.y = MAX_FALL_SPEED;
+			}
+		}
+	}
+
 	m_tPos += m_tVelocity;
+
 	if (m_tPos.x < TFloor::GetPosition().x + TFloor::GetRightSize()
 		&& m_tPos.x > TFloor::GetPosition().x - TFloor::GetLeftSize()
 		&& m_tPos.y > TFloor::GetPosition().y)
