@@ -140,13 +140,17 @@ void TVillager::GetRandomName()
 
 	char pName[NAME_MAX_SIZE] = { 0 };
 
-	for (int iLetter = 0/*, i = i*/; pCursor[i] != '\r' && pCursor[i] != '\n' && pCursor[i] != '\0'; iLetter++, i++)
+	int iNameSize = 0;
+
+	for (int iLetter = 0; pCursor[i] != '\r' && pCursor[i] != '\n' && pCursor[i] != '\0'; iLetter++, i++)
 	{
 		pName[iLetter] = pCursor[i];
+		iNameSize++;
 	}
 
 	m_pName = new char[NAME_MAX_SIZE]{ 0 };
 	strcpy(m_pName, pName);
+	m_pName[iNameSize] = '\0';
 }
 
 
@@ -185,59 +189,38 @@ void TVillager::SpecificUpdate()
 		{
 			m_tVelocity.x = 0.0f;
 		}
-	}
-}
 
-void TVillager::RandomMove()
-{
-	// Move on Y
-	if (m_tPos.y < TFloor::GetPosition().y
-		|| (m_tPos.x < TFloor::GetPosition().x - TFloor::GetLeftSize()
-		|| m_tPos.x > TFloor::GetPosition().x + TFloor::GetRightSize()))
-	{
-		if (m_tVelocity.y < MAX_FALL_SPEED)
-		{
-			m_tVelocity.y += GRAVITY;
-
-			if (m_tVelocity.y > MAX_FALL_SPEED)
-			{
-				m_tVelocity.y = MAX_FALL_SPEED;
-			}
-		}
-
-		m_tPos.y += m_tVelocity.y;
 
 		if (m_tPos.y > GfxGetDisplaySizeY())
 		{
 			Die();
 		}
 	}
-	else
+}
+
+void TVillager::RandomMove()
+{
+	if (m_eAction == EAction_Walking && GfxTimeGetMilliseconds() - m_iStartMoveTime >= m_iMoveDuration)
 	{
-		if (m_eAction == EAction_Walking && GfxTimeGetMilliseconds() - m_iStartMoveTime >= m_iMoveDuration)
-		{
-			m_eAction = EAction_Idle;
-			/*m_tVelocity.x = 0.0f;*/
+		m_eAction = EAction_Idle;
 
-			m_iIdleDuration = GfxMathGetRandomInteger(IDLE_DURATION_MIN, IDLE_DURATION_MAX);
-		}
+		m_iIdleDuration = GfxMathGetRandomInteger(IDLE_DURATION_MIN, IDLE_DURATION_MAX);
+	}
 
-		else if (m_eAction == EAction_Idle && GfxTimeGetMilliseconds() - (m_iStartMoveTime + m_iMoveDuration) >= m_iIdleDuration)
-		{
-			m_eAction = EAction_Walking;
-			/*m_tVelocity.x = (m_fSpeed / (GfxTimeFrameGetCurrentFPS() != 0.0f ? GfxTimeFrameGetCurrentFPS() : 60.0f)) * (m_eDirection == EDirection_Right ? 1.0f : -1.0f);*/
+	else if (m_eAction == EAction_Idle && GfxTimeGetMilliseconds() - (m_iStartMoveTime + m_iMoveDuration) >= m_iIdleDuration)
+	{
+		m_eAction = EAction_Walking;
 
-			m_iMoveDuration = GfxMathGetRandomInteger(MOVE_DURATION_MIN, MOVE_DURATION_MAX);
-			m_iStartMoveTime = GfxTimeGetMilliseconds();
-		}
+		m_iMoveDuration = GfxMathGetRandomInteger(MOVE_DURATION_MIN, MOVE_DURATION_MAX);
+		m_iStartMoveTime = GfxTimeGetMilliseconds();
+	}
 
-		if (GfxTimeGetMilliseconds() % SECONDS >= 950 &&
-			GfxTimeGetMilliseconds() % SECONDS <= 1050 &&
-			GfxMathGetRandomFloat(0.0f, 100.0f) <= DIRECTION_CHANGE_CHANCES)
-		{
-			m_eDirection = EDirection(!m_eDirection);
-			m_tVelocity.x *= -1.0f;
-		}
+	if (GfxTimeGetMilliseconds() % SECONDS >= 950 &&
+		GfxTimeGetMilliseconds() % SECONDS <= 1050 &&
+		GfxMathGetRandomFloat(0.0f, 100.0f) <= DIRECTION_CHANGE_CHANCES)
+	{
+		m_eDirection = EDirection(!m_eDirection);
+		m_tVelocity.x *= -1.0f;
 	}
 }
 

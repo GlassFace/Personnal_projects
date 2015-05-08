@@ -78,7 +78,7 @@ void TWorker::ProfessionUpdate(TVillager * pVillager)
 	
 	if (pVillager->m_eAction != EAction_Action && m_tDestinationToConstruct == TGfxVec2(0.0f, 0.0f))
 	{
-		if (GfxTimeGetMilliseconds() - (m_iStartConstructionTime + CONSTRUCTION_TIME) >= TIME_BETWEEN_CONSTRUCTIONS)
+		if (GfxTimeGetMilliseconds() - (m_iStartConstructionTime + CONSTRUCTION_TIME) >= TIME_BETWEEN_CONSTRUCTIONS)			// Find a spot to build after waiting
 		{
 			do
 			{
@@ -92,22 +92,21 @@ void TWorker::ProfessionUpdate(TVillager * pVillager)
 			} while (m_tDestinationToConstruct == TGfxVec2(0.0f, 0.0f));
 
 			pVillager->m_eDirection = (m_tDestinationToConstruct - pVillager->m_tPos).x >= 0.0f ? EDirection_Right : EDirection_Left;
-			//pVillager->m_tVelocity.x = pVillager->m_fSpeed * pVillager->m_eDirection == EDirection_Right ? 1.0f : -1.0f;
 		}
 
 		
-		else
+		else																													// Wait
 		{
 			pVillager->RandomMove();
 		}
 	}
-	else if (pVillager->m_eAction == EAction_Walking && pVillager->m_tPos != m_tDestinationToConstruct)
+
+	else if (pVillager->m_eAction == EAction_Walking && pVillager->m_tPos != m_tDestinationToConstruct)							// Go to spot
 	{
 		if ((m_tDestinationToConstruct - pVillager->m_tPos).x <= (pVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS()) &&
 			(m_tDestinationToConstruct - pVillager->m_tPos).x >= -(pVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS()))
 		{
 			pVillager->m_tPos = m_tDestinationToConstruct;
-			/*pVillager->m_tVelocity.x = 0.0f;*/
 
 			pVillager->m_eAction = EAction_Action;
 
@@ -115,13 +114,11 @@ void TWorker::ProfessionUpdate(TVillager * pVillager)
 		}
 	}
 
-	else if (pVillager->m_eAction == EAction_Action)
+	else if (pVillager->m_eAction == EAction_Action)																			// Build
 	{
 		if (GfxTimeGetMilliseconds() - m_iStartConstructionTime >= CONSTRUCTION_TIME)
 		{
 			TMap::S_CreateBuilding(m_eConstructionToDo, m_tDestinationToConstruct);
-
-			m_iStartConstructionTime = 0;
 
 			m_tDestinationToConstruct = TGfxVec2(0.0f, 0.0f);
 			pVillager->m_eAction = EAction_Idle;
