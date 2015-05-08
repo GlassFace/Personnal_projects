@@ -56,7 +56,7 @@ void THouse::SpecificUpdate()
 {
 	if (GfxTimeGetMilliseconds() - m_iLastSpawnTime >= VILLAGERS_SPAWN_RATE)
 	{
-		TMap::S_CreateVillager(m_tPos - TGfxVec2(0.0f, VILLAGERS_SIZE_Y));
+		TMap::S_CreateVillager(m_tPos - TGfxVec2(0.0f, VILLAGERS_SIZE_Y / 2.0f));
 		m_iLastSpawnTime = GfxTimeGetMilliseconds();
 	}
 }

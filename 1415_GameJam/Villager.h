@@ -69,6 +69,8 @@ protected:
 	int m_iMoveDuration;
 	int m_iIdleDuration;
 
+private:
+
 	TAnim * m_pIdle;
 	static TGfxTexture * s_pIdleTileSet;
 	TAnim * m_pWalk;
