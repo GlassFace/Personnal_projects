@@ -13,9 +13,9 @@
 
 namespace
 {
-	const char * const IDLE_TILESET_NAME = "Worker\Worker_Idle.tga";
-	const char * const WALK_TILESET_NAME = "Worker\Worker_Walk.tga";
-	const char * const ACTION_TILESET_NAME = "Worker\Worker_Action.tga";
+	const char * const IDLE_TILESET_NAME = "Worker\\Worker_Idle.tga";
+	const char * const WALK_TILESET_NAME = "Worker\\Worker_Walk.tga";
+	const char * const ACTION_TILESET_NAME = "Worker\\Worker_Action.tga";
 }
 
 
