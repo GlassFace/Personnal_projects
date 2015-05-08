@@ -34,7 +34,7 @@ m_iFPS(iFPS)
 {
 	m_pTileSet = GfxTextureLoad(pTileSetName);
 	m_pSprite = GfxSpriteCreate(m_pTileSet);
-	GfxSpriteSetPivot(m_pSprite, (iSizeX / 2.0f), iSizeY);
+	GfxSpriteSetPivot(m_pSprite, (iSizeX / 2.0f), float(iSizeY));
 
 	m_iFrames = GfxSpriteGetSizeX(m_pSprite) / iSizeX;
 

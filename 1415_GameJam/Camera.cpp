@@ -1,5 +1,6 @@
 #include "flib.h"
 #include "flib_vec2.h"
+#include "generics.h"
 #include "Camera.h"
 #include "Floor.h"
 #include "Entity.h"

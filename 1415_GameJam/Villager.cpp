@@ -144,7 +144,12 @@ void TVillager::Die()
 {
 	m_eState = EState_Dead;
 
-	THUD::S_OneMoreSuicide(this);
+	THUD::S_OneMoreSuicide();
+}
+
+bool TVillager::IsAlive() const
+{
+	return m_eState == EState_Alive;
 }
 
 bool TVillager::IsMouseOver(const TGfxVec2 & tMousePos) const
