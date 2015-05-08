@@ -69,7 +69,7 @@ public:
 		return s_iBirdsCount;
 	}
 
-	/*		Render		*/
+	static void S_GenerateBird();
 
 	static void S_Render();
 
@@ -89,6 +89,8 @@ private:
 	static int s_iBuildingsCount;
 
 	static TFloor * s_pFloor;
+
+	static int s_iLastTimeBirdGeneration;
 };
 
 #endif
