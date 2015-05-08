@@ -2,9 +2,18 @@
 #ifndef VILLAGER_H_INCLUDED
 #define VILLAGER_H_INCLUDED
 
+enum EAction
+{
+	EAction_Idle,
+	EAction_Walking,
+	EAction_Running,
+	EAction_Action,
+	EAction_Grab,
+};
+
 class TAnim;
 class TProfession;
-
+//enum EAction;
 class TVillager : public TDynamic
 {
 public:
@@ -24,7 +33,10 @@ public:
 	{
 		return m_tPos;
 	}
-
+	EAction GetAction() const
+	{
+		return m_eAction;
+	}
 	void GetRandomName();
 
 	void SetPosition(const TGfxVec2 & tPos)
@@ -42,7 +54,7 @@ public:
 	bool IsAlive() const;
 	bool IsOldEnough(const int iAgeNeeded) const;
 	bool IsMouseOver(const TGfxVec2 & tMousePos) const;
-
+	void SetAction(EAction eAction);
 	void SetProfession(TProfession * pProfession);
 
 
@@ -60,14 +72,6 @@ protected:
 
 	char * m_pName;
 	int m_iAge;
-
-	enum EAction
-	{
-		EAction_Idle,
-		EAction_Walking,
-		EAction_Running,
-		EAction_Action
-	};
 
 	EAction m_eAction;
 

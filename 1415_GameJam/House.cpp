@@ -16,7 +16,7 @@ namespace
 {
 	const char * const SPRITE_NAME = "House.tga";
 
-	const TGfxVec2 HOUSE_SIZE = TGfxVec2(96.0f, 96.0f);
+	const TGfxVec2 HOUSE_SIZE = TGfxVec2(112.0f, 112.0f);
 
 	const int VILLAGERS_SPAWN_RATE = 30 * SECONDS;
 	const float VILLAGERS_SIZE_Y = 32.0f;

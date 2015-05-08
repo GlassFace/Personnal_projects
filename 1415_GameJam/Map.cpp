@@ -28,7 +28,7 @@ namespace
 
 	const int BIRDS_MAX_COUNT = 60;
 
-	const float BIRDS_GENERATION_RATE = 15.f;
+	const float BIRDS_GENERATION_RATE = 5.f;
 }
 
 
@@ -70,7 +70,7 @@ void TMap::S_Initialize()
 	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0, 500));
 
 	THouse::S_Initialize();
-	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(300,0));
+	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(-1000,0));
 	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(0, 0));
 	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(-300, 0));
 
@@ -202,6 +202,7 @@ void TMap::S_Update()
 	{
 		s_pBuildings[i]->Update();
 	}
+	S_GenerateBird();
 }
 
 bool TMap::S_EnoughRoomToConstruct(const TGfxVec2 & tPos, const float tBuildingSizeX)
@@ -225,16 +226,15 @@ bool TMap::S_EnoughRoomToConstruct(const TGfxVec2 & tPos, const float tBuildingS
 		}
 	}
 
-	return true;
-	S_GenerateBird();
 
+	return true;
 }
 
 void TMap::S_GenerateBird()
 {
 	if (BIRDS_GENERATION_RATE * 1000.f < (GfxTimeGetMilliseconds() - s_iLastTimeBirdGeneration))
 	{
-		S_CreateBird(TFloor::GetPosition() + TGfxVec2(-500, -500));
+		S_CreateBird(TFloor::GetPosition() + TGfxVec2(-500, 500));
 		s_iLastTimeBirdGeneration = GfxTimeGetMilliseconds();
 	}
 }

@@ -54,7 +54,13 @@ protected:
 		EState_Dead
 	};
 
+	enum EBirdAction
+	{
+		EBirdAction_ToTarget,
+		EBirdAction_DelivringTarget,
+	};
 	EState m_eState;
+	EBirdAction m_eAction;
 	//EStateChase m_eChaseState;
 	TVillager * m_pTarget;
 
