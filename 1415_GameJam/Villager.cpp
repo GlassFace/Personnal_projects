@@ -50,6 +50,7 @@ TGfxFile * TVillager::s_pNamesFile = nullptr;
 TVillager::TVillager() :
 TDynamic(),
 m_eState(EState_Alive),
+m_tLocalName(0, 0),
 m_pName(nullptr),
 m_iAge(0),
 m_eAction(EAction_Idle),
@@ -68,6 +69,7 @@ m_pWalk(nullptr)
 TVillager::TVillager(const TGfxVec2 & tPos) :
 TDynamic(tPos, VILLAGER_SIZE, VILLAGER_WALK_SPEED),
 m_eState(EState_Alive),
+m_tLocalName(0, 0),
 m_pName(nullptr),
 m_iAge(60),
 m_eAction(EAction_Idle),

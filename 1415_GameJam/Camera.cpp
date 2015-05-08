@@ -76,6 +76,13 @@ void TCamera::S_UpdateLocal()
 		tLocalPosition.x += GfxGetDisplaySizeX() / 2.f;
 		GfxSpriteSetPosition(pBird->GetSprite(), tLocalPosition.x, tLocalPosition.y);
 	}
+	for (int i = 0; i < TMap::S_GetVillagerCount(); i++)
+	{
+		TVillager * pVillager = TMap::S_GetVillagers()[i];
+		TGfxVec2 tLocalPosition = pVillager->GetPosition() - m_tWorldPosition;
+		tLocalPosition.x += GfxGetDisplaySizeX() / 2.f;
+		pVillager->SetLocalName(tLocalPosition);
+	}
 }
 void TCamera::S_Render()
 {
