@@ -2,10 +2,10 @@
 #include "flib.h"
 #include "flib_vec2.h"
 #include "generics.h"
-#include "Entity.h"
-#include "House.h"
+#include "Map.h"
 #include "Entity.h"
 #include "Building.h"
+#include "House.h"
 #include "Map.h"
 
 
@@ -29,13 +29,15 @@ THouse::THouse() :
 TBuilding(),
 m_iLastSpawnTime(0)
 {
-
+	m_eBuildingType = EBuildingType_House;
 }
 
 THouse::THouse(const TGfxVec2 & tPos) :
 TBuilding(tPos, HOUSE_SIZE),
 m_iLastSpawnTime(0)
 {
+	m_eBuildingType = EBuildingType_House;
+
 	m_pSprite = GfxSpriteCreate(s_pTexture);
 	GfxSpriteSetPivot(m_pSprite, (m_tSize.x / 2.0f), m_tSize.y);
 	GfxSpriteSetPosition(m_pSprite, m_tPos.x, m_tPos.y);

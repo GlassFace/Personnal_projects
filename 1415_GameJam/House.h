@@ -20,16 +20,6 @@ public:
 
 	static float S_GetSizeX();
 
-	TGfxSprite * GetSprite() const
-	{
-		return m_pSprite;
-	}
-
-	const TGfxVec2 & GetPosition() const
-	{
-		return m_tPos;
-	}
-
 
 private:
 

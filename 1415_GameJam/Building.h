@@ -2,13 +2,6 @@
 #ifndef BUILDING_H_INCLUDED
 #define BUILDING_H_INCLUDED
 
-enum EBuildingType
-{
-	EBuildingType_House,
-	EBuildingType_Workshop,
-	EBuildingType_Tower
-};
-
 class TVillager;
 
 class TBuilding : public TEntity
@@ -28,7 +21,9 @@ public:
 
 protected:
 
+	EBuildingType m_eBuildingType;
 
+	int m_iRequiredAge;
 };
 
 #endif

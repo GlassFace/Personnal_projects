@@ -2,6 +2,14 @@
 #ifndef MAP_H_INCLUDED
 #define MAP_H_INCLUDED
 
+enum EBuildingType
+{
+	EBuildingType_House,
+	EBuildingType_Workshop,
+	EBuildingType_Tower
+};
+
+class TBuilding;
 class THouse;
 class TFloor;
 class TVillager;
@@ -37,9 +45,9 @@ public:
 		return s_pVillagers;
 	}
 
-	static THouse ** S_GetHouses()
+	static TBuilding ** S_GetBuildings()
 	{
-		return s_pHouses;
+		return s_pBuildings;
 	}
 	static TBird ** S_GetBirds()
 	{
@@ -52,9 +60,9 @@ public:
 		return s_iVillagersCount;
 	}
 
-	static int S_GetHouseCount()
+	static int S_GetBuildingsCount()
 	{
-		return s_iHousesCount;
+		return s_iBuildingsCount;
 	}
 	static int S_GetBirdsCount()
 	{

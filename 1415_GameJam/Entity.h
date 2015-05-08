@@ -16,6 +16,11 @@ public:
 	const TGfxVec2 & GetPos() const;
 	const TGfxVec2 & GetSize() const;
 
+	TGfxSprite * GetSprite()
+	{
+		return m_pSprite;
+	}
+
 
 	void Render();
 

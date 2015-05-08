@@ -60,12 +60,12 @@ void TCamera::S_UpdateLocal()
 		GfxSpriteSetPosition(pVillager->GetSprite(), tLocalPosition.x, tLocalPosition.y);
 	}
 
-	for (int i = 0; i < TMap::S_GetHouseCount(); i++)
+	for (int i = 0; i < TMap::S_GetBuildingsCount(); i++)
 	{
-		THouse * pHouse = TMap::S_GetHouses()[i];
-		TGfxVec2 tLocalPosition = pHouse->GetPosition() - m_tWorldPosition;
-		tLocalPosition.x += GfxGetDisplaySizeX() / 2.f;
-		GfxSpriteSetPosition(pHouse->GetSprite(), tLocalPosition.x, tLocalPosition.y);
+		TBuilding * pBuildings = TMap::S_GetBuildings()[i];
+		TGfxVec2 tLocalPosition = pBuildings->GetPos() - m_tWorldPosition;
+		tLocalPosition.x += GfxGetDisplaySizeX() / 2.0f;
+		GfxSpriteSetPosition(pBuildings->GetSprite(), tLocalPosition.x, tLocalPosition.y);
 	}
 	for (int i = 0; i < TMap::S_GetBirdsCount(); i++)
 	{

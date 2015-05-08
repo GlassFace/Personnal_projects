@@ -3,6 +3,7 @@
 #define VILLAGER_H_INCLUDED
 
 class TAnim;
+class TProfession;
 
 class TVillager : public TDynamic
 {
@@ -39,7 +40,11 @@ public:
 	void Die();
 
 	bool IsAlive() const;
+	bool IsOldEnough(const int iAgeNeeded) const;
 	bool IsMouseOver(const TGfxVec2 & tMousePos) const;
+
+	void SetProfession(TProfession * pProfession);
+
 
 	void Render() const;
 
@@ -54,6 +59,7 @@ protected:
 	EState m_eState;
 
 	char * m_pName;
+	int m_iAge;
 
 	enum EAction
 	{
@@ -64,6 +70,8 @@ protected:
 	};
 
 	EAction m_eAction;
+
+	TProfession * m_pProfession;
 
 	int m_iStartMoveTime;
 	int m_iMoveDuration;

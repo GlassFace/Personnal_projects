@@ -6,6 +6,7 @@
 #include "Dynamic.h"
 #include "Anim.h"
 #include "Villager.h"
+#include "Profession.h"
 #include "HUD.h"
 #include "Floor.h"
 #include <string.h>
@@ -45,6 +46,9 @@ TVillager::TVillager() :
 TDynamic(),
 m_eState(EState_Alive),
 m_pName(nullptr),
+m_iAge(0),
+m_eAction(EAction_Idle),
+m_pProfession(nullptr),
 m_iStartMoveTime(0),
 m_iMoveDuration(0),
 m_iIdleDuration(0),
@@ -58,6 +62,9 @@ TVillager::TVillager(const TGfxVec2 & tPos) :
 TDynamic(tPos, VILLAGER_SIZE, VILLAGER_WALK_SPEED),
 m_eState(EState_Alive),
 m_pName(nullptr),
+m_iAge(0),
+m_eAction(EAction_Idle),
+m_pProfession(nullptr),
 m_iStartMoveTime(0),
 m_iMoveDuration(0),
 m_iIdleDuration(0),
@@ -136,16 +143,24 @@ void TVillager::GetRandomName()
 
 void TVillager::SpecificUpdate()
 {
-	RandomMove();
-
-	if (m_eAction == EAction_Walking)
+	if (m_pProfession == nullptr)
 	{
-		m_pSprite = m_pWalk->Play(m_eDirection);
+		RandomMove();
+
+		if (m_eAction == EAction_Walking)
+		{
+			m_pSprite = m_pWalk->Play(m_eDirection);
+		}
+
+		else
+		{
+			m_pSprite = m_pIdle->Play(m_eDirection);
+		}
 	}
 	
 	else
 	{
-		m_pSprite = m_pIdle->Play(m_eDirection);
+		m_pProfession->ProfessionUpdate();
 	}
 }
 
@@ -190,6 +205,11 @@ bool TVillager::IsAlive() const
 	return m_eState == EState_Alive;
 }
 
+bool TVillager::IsOldEnough(const int iAgeNeeded) const
+{
+	return m_iAge >= iAgeNeeded;
+}
+
 bool TVillager::IsMouseOver(const TGfxVec2 & tMousePos) const
 {
 	const bool bMouseOnX = tMousePos.x >= m_tPos.x - (m_tSize.x / 2.0f) && tMousePos.x < m_tPos.x + (m_tSize.x / 2.0f);
@@ -201,6 +221,11 @@ bool TVillager::IsMouseOver(const TGfxVec2 & tMousePos) const
 	}
 
 	return false;
+}
+
+void TVillager::SetProfession(TProfession * pProfession)
+{
+	m_pProfession = pProfession;
 }
 
 void TVillager::Render() const
