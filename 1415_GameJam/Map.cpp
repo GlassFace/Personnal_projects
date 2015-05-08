@@ -33,7 +33,7 @@ namespace
 
 	const int BIRDS_MAX_COUNT = 60;
 
-	const float BIRDS_GENERATION_RATE = 5.f;
+	const float BIRDS_GENERATION_RATE = 20.f;
 }
 
 
@@ -76,9 +76,9 @@ void TMap::S_Initialize()
 	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0.0f, 500.0f));
 
 	TBuilding::S_InitializeBuildings();
-	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(300.0f, 0.0f));
-	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(0.0f, 0.0f));
-	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(-300.0f, 0.0f));
+	//S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(300.0f, 0.0f));
+	//S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(0.0f, 0.0f));
+	//S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(-300.0f, 0.0f));
 	S_CreateBuilding(EBuildingType_Workshop, TFloor::GetPosition() + TGfxVec2(100.0f, 0.0f));
 
 	TBird::S_Initialize();

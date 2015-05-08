@@ -18,7 +18,7 @@ using namespace Generics;
 
 namespace
 {
-	const char * const SPRITE_NAME = "House.tga";
+	const char * const SPRITE_NAME = "Cabane.tga";
 
 	const int ASSIGNED_VILLAGERS_MAX = 3;
 
