@@ -18,22 +18,32 @@ using namespace Generics;
 
 namespace
 {
+	const char * const SPRITE_NAME = "House.tga";
+
 	const int ASSIGNED_VILLAGERS_MAX = 3;
 
 	const TGfxVec2 WORKSHOP_SIZE = TGfxVec2(96.0f, 96.0f);
 }
 
 
+TGfxTexture * TWorkshop::s_pTexture = nullptr;
+
 TWorkshop::TWorkshop() :
 TBuilding()
 {
-
+	m_eBuildingType = EBuildingType_House;
 }
 
 TWorkshop::TWorkshop(const TGfxVec2 & tPos) :
 TBuilding(tPos, WORKSHOP_SIZE)
 {
 	m_pAssignedVillagers = new TVillager*[ASSIGNED_VILLAGERS_MAX];
+
+	m_eBuildingType = EBuildingType_House;
+
+	m_pSprite = GfxSpriteCreate(s_pTexture);
+	GfxSpriteSetPivot(m_pSprite, (m_tSize.x / 2.0f), m_tSize.y);
+	GfxSpriteSetPosition(m_pSprite, m_tPos.x, m_tPos.y);
 }
 
 TWorkshop::~TWorkshop()
@@ -41,6 +51,11 @@ TWorkshop::~TWorkshop()
 	
 }
 
+
+void TWorkshop::S_Initialize()
+{
+	s_pTexture = GfxTextureLoad(SPRITE_NAME);
+}
 
 void TWorkshop::SpecificUpdate()
 {
@@ -90,7 +105,12 @@ void TWorkshop::GetInput()
 
 		for (int i = 0; i < m_iAssignedVillagersCount; i++)
 		{
-			static_cast<TWorker*>(m_pAssignedVillagers[i])->SetBuildingsToCreate(m_eBuildingType);
+			reinterpret_cast<TWorker*>(m_pAssignedVillagers[i])->SetBuildingsToCreate(m_eBuildingType);
 		}
 	}
+}
+
+float TWorkshop::S_GetSizeX()
+{
+	return WORKSHOP_SIZE.x;
 }

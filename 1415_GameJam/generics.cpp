@@ -11,6 +11,6 @@ namespace Generics
 {
 	const TGfxVec2 GetCurrentMouse()
 	{
-		return TGfxVec2(float(GfxInputGetMousePositionX()), float(GfxInputGetMousePositionY())) + (TCamera::S_GetWorldPosition());
+		return TGfxVec2(float(GfxGetCurrentMouseX()), float(GfxGetCurrentMouseY())) + (TCamera::S_GetWorldPosition());
 	}
 }

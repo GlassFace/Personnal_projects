@@ -14,7 +14,7 @@ public:
 	static void S_Initialize();
 
 
-	void ProfessionUpdate();
+	void ProfessionUpdate(TVillager * pVillager);
 
 	void SetBuildingsToCreate(EBuildingType eBuildingToConstruct);
 

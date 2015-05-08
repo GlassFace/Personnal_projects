@@ -2,7 +2,7 @@
 #ifndef PROFESSION_H_INCLUDED
 #define PROFESSION_H_INCLUDED
 
-class TProfession : public TVillager
+class TProfession
 {
 public:
 
@@ -13,7 +13,7 @@ public:
 	static void S_InitializeProfessions();
 
 	
-	virtual void ProfessionUpdate() = 0;
+	virtual void ProfessionUpdate(TVillager * pVillager) = 0;
 };
 
 #endif

@@ -13,10 +13,13 @@ public:
 	virtual ~TBuilding();
 
 
+	static void S_InitializeBuildings();
+
+
 	void Update();
 	virtual void SpecificUpdate() = 0;
 
-	void DropCivilian(TVillager & tVillager);
+	bool DropCivilian(TVillager * pVillager);
 
 	virtual bool AssignVillager(TVillager * pVillager) = 0;
 	virtual void UnassignVillager(TVillager * pVillager) = 0;
