@@ -24,7 +24,8 @@ public:
 	static float S_GetSizeX();
 
 private:
-
+	
+	TGfxSprite * m_pTypeSprite;
 	static TGfxTexture * s_pTexture;
 
 	EBuildingType m_eBuildingToCreateType;

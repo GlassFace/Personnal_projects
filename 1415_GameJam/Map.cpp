@@ -33,7 +33,7 @@ namespace
 
 	const int BIRDS_MAX_COUNT = 60;
 
-	const float BIRDS_GENERATION_RATE = 4.f;
+	const float BIRDS_GENERATION_RATE = 30.f;
 }
 
 
