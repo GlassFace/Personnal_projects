@@ -14,6 +14,8 @@ public:
 	~TBird();
 
 
+	static void S_Initialize();
+
 	void Initialize();
 
 	TGfxSprite * GetSprite() const
@@ -57,8 +59,7 @@ protected:
 	TVillager * m_pTarget;
 
 	TAnim * m_pFly;
-
-	static TGfxTexture * s_pTexture;
+	static TGfxTexture * s_pBirdTileSet;
 	static TGfxFile * s_pNamesFile;
 
 	int m_iLastMove;

@@ -151,6 +151,7 @@ void TVillager::SpecificUpdate()
 
 void TVillager::RandomMove()
 {
+	GfxDbgPrintf("%f, %f\n", m_tVelocity.x, m_tVelocity.y);
 	if (m_eAction == EAction_Walking && GfxTimeGetMilliseconds() - m_iStartMoveTime >= m_iMoveDuration)
 	{
 		m_eAction = EAction_Idle;
@@ -162,7 +163,7 @@ void TVillager::RandomMove()
 	else if (m_eAction == EAction_Idle && GfxTimeGetMilliseconds() - (m_iStartMoveTime + m_iMoveDuration) >= m_iIdleDuration)
 	{
 		m_eAction = EAction_Walking;
-		m_tVelocity.x = m_fSpeed * (m_eDirection == EDirection_Right ? 1.0f : -1.0f);
+		m_tVelocity.x = (m_fSpeed / (GfxTimeFrameGetCurrentFPS() != 0.0f ? GfxTimeFrameGetCurrentFPS() : 60.0f)) * (m_eDirection == EDirection_Right ? 1.0f : -1.0f);
 
 		m_iMoveDuration = GfxMathGetRandomInteger(MOVE_DURATION_MIN, MOVE_DURATION_MAX);
 		m_iStartMoveTime = GfxTimeGetMilliseconds();

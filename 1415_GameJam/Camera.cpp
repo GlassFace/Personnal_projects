@@ -9,6 +9,7 @@
 #include "Map.h"
 #include "Building.h"
 #include "House.h"
+#include "Bird.h"
 
 TGfxVec2 TCamera::m_tWorldPosition;
 
@@ -65,6 +66,13 @@ void TCamera::S_UpdateLocal()
 		TGfxVec2 tLocalPosition = pHouse->GetPosition() - m_tWorldPosition;
 		tLocalPosition.x += GfxGetDisplaySizeX() / 2.f;
 		GfxSpriteSetPosition(pHouse->GetSprite(), tLocalPosition.x, tLocalPosition.y);
+	}
+	for (int i = 0; i < TMap::S_GetBirdsCount(); i++)
+	{
+		TBird * pBird = TMap::S_GetBirds()[i];
+		TGfxVec2 tLocalPosition = pBird->GetPosition() - m_tWorldPosition;
+		tLocalPosition.x += GfxGetDisplaySizeX() / 2.f;
+		GfxSpriteSetPosition(pBird->GetSprite(), tLocalPosition.x, tLocalPosition.y);
 	}
 }
 void TCamera::S_Render()
