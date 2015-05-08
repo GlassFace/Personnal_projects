@@ -85,6 +85,14 @@ void TMap::S_Render()
 {
 	GfxClear(EGfxColor_Black);
 	THUD::S_Render();
+	TFloor::S_Render();
 
-	s_pFloor->S_Render();
+	for (int i = 0; i < s_iVillagersCount; i++)
+	{
+		s_pVillagers[i]->Render();
+	}
+	for (int i = 0; i < s_iHousesCount; i++)
+	{
+		s_pHouses[i]->Render();
+	}
 }
