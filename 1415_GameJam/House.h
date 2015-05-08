@@ -2,6 +2,8 @@
 #ifndef HOUSE_H_INCLUDED
 #define HOUSE_H_INCLUDED
 
+#include "Building.h"
+
 class THouse : public TBuilding
 {
 public:

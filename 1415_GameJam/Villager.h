@@ -2,6 +2,8 @@
 #ifndef VILLAGER_H_INCLUDED
 #define VILLAGER_H_INCLUDED
 
+#include "Dynamic.h"
+
 class TVillager : public TDynamic
 {
 public:
@@ -15,12 +17,19 @@ public:
 
 	void GetRandomName();
 
+	void SetPosition(TGfxVec2 & tPos)
+	{
+		 m_tPos = tPos;
+		 GfxSpriteSetPosition(m_pSprite, m_tPos.x, m_tPos.y);
+	}
 
 	void SpecificUpdate();
 
 	void Die();
 
 	bool IsMouseOver(const TGfxVec2 & tMousePos) const;
+
+	void Render() const;
 
 protected:
 

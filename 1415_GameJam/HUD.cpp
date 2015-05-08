@@ -1,6 +1,13 @@
 #include "flib.h"
+#include "flib_vec2.h"
 #include <math.h>
 #include "HUD.h"
+#include "Entity.h"
+#include "Dynamic.h"
+#include "Villager.h"
+#include "Building.h"
+#include "House.h"
+#include "Map.h"
 
 
 TGfxSprite * THUD::m_pVillagerCounter = nullptr;
@@ -19,7 +26,7 @@ void THUD::S_Initialize()
 {
 	m_pVillagerCounter = GfxTextSpriteCreate();
 	GfxSpriteSetFilteringEnabled(m_pVillagerCounter, false);
-	GfxTextSpritePrintf(m_pVillagerCounter, "%d villagers alive", 0); // Get Nbr Villager Alive
+	GfxTextSpritePrintf(m_pVillagerCounter, "%d villagers alive", TMap::S_GetVillagerCount()); // Get Nbr Villager Alive
 
 	// Initialize suicid gauge sprite
 	TGfxImage * pImage = GfxImageCreate(1, 1);
@@ -45,14 +52,13 @@ void THUD::S_Update()
 
 void THUD::S_UpdateVillagerCounter()
 {
-	GfxTextSpritePrintf(m_pVillagerCounter, "%d villagers alive", 150); // Get Nbr Villager Alive
+	GfxTextSpritePrintf(m_pVillagerCounter, "%d villagers alive", TMap::S_GetVillagerCount()); // Get Nbr Villager Alive
 }
 
 void THUD::S_UpdateVillagerSuicideGauge()
 {
 	int iSinceLastFrame = GfxTimeGetMilliseconds() - m_tSuicideInfo.m_iLastFrameLost;
 	float fLess = (iSinceLastFrame / 1000.f)* SUICIDE_GAUGE_SPEED;
-	GfxDbgPrintf("%f \n", fLess);
 	m_tSuicideInfo.m_fSuicideMalus -= fLess;
 
 	if (m_tSuicideInfo.m_fSuicideMalus < 0.f)

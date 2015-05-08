@@ -1,13 +1,15 @@
 
 #include "flib.h"
 #include "flib_vec2.h"
+#include "Map.h"
 #include "Entity.h"
 #include "Dynamic.h"
 #include "Villager.h"
 #include "Building.h"
 #include "House.h"
-#include "Map.h"
+#include "Floor.h"
 #include "HUD.h"
+#include "Control.h"
 
 
 
@@ -23,6 +25,7 @@ TVillager ** TMap::s_pVillagers = nullptr;
 int TMap::s_iVillagersCount = 0;
 THouse ** TMap::s_pHouses = nullptr;
 int TMap::s_iHousesCount = 0;
+TFloor * TMap::s_pFloor = nullptr;
 
 
 void TMap::S_Initialize()
@@ -31,6 +34,12 @@ void TMap::S_Initialize()
 
 	s_pVillagers = new TVillager *[VILLAGERS_MAX_COUNT]{ 0 };
 	s_pHouses = new THouse *[HOUSES_MAX_COUNT]{ 0 };
+	
+	s_pFloor->S_Initialize();
+
+	TVillager::S_Initialize();
+	S_CreateVillager(TFloor::GetPosition());
+
 }
 
 void TMap::S_CreateVillager(const TGfxVec2 & tPos)
@@ -48,8 +57,8 @@ void TMap::S_CreateHouse(const TGfxVec2 & tPos)
 
 void TMap::S_Update()
 {
-	THUD::S_Initialize();
-
+	THUD::S_Update();
+	TControl::CheckInput();
 	for (int i = 0; i < s_iVillagersCount; i++)
 	{
 		s_pVillagers[i]->Update();
@@ -64,5 +73,10 @@ void TMap::S_Update()
 
 void TMap::S_Render()
 {
+	GfxClear(EGfxColor_Black);
 	THUD::S_Render();
+	for (int i = 0; i < s_iVillagersCount; i++)
+	{
+		s_pVillagers[i]->Render();
+	}
 }

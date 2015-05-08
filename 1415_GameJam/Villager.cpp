@@ -1,9 +1,9 @@
 
 #include "flib.h"
 #include "flib_vec2.h"
+#include "Villager.h"
 #include "Entity.h"
 #include "Dynamic.h"
-#include "Villager.h"
 #include "HUD.h"
 #include <string.h>
 
@@ -74,6 +74,7 @@ void TVillager::GetRandomName()
 		{
 			iNamesCount++;
 		}
+
 	}
 
 	const int iRandomNameLine = GfxMathGetRandomInteger(0, iNamesCount);
@@ -102,7 +103,6 @@ void TVillager::GetRandomName()
 
 void TVillager::SpecificUpdate()
 {
-
 }
 
 void TVillager::Die()
@@ -123,4 +123,9 @@ bool TVillager::IsMouseOver(const TGfxVec2 & tMousePos) const
 	}
 
 	return false;
+}
+
+void TVillager::Render() const
+{
+	GfxSpriteRender(m_pSprite);
 }

@@ -2,6 +2,7 @@
 #ifndef BUILDING_H_INCLUDED
 #define BUILDING_H_INCLUDED
 
+#include "Entity.h"
 class TVillager;
 
 class TBuilding : public TEntity

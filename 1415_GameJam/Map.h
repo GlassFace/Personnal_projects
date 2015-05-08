@@ -2,9 +2,14 @@
 #ifndef MAP_H_INCLUDED
 #define MAP_H_INCLUDED
 
+class THouse;
+class TFloor;
+class TVillager;
+
 class TMap
 {
 public:
+	
 
 	static void S_Initialize();
 
@@ -17,7 +22,23 @@ public:
 
 	static void S_Render();
 
+	static TVillager ** S_GetVillagers()
+	{
+		return s_pVillagers;
+	}
+	static THouse ** S_GetHouses()
+	{
+		return s_pHouses;
+	}
 
+	static int S_GetVillagerCount()
+	{
+		return s_iVillagersCount;
+	}
+	static int S_GetHouseCount()
+	{
+		return s_iHousesCount;
+	}
 private:
 
 	static TVillager ** s_pVillagers;
@@ -25,6 +46,8 @@ private:
 
 	static THouse ** s_pHouses;
 	static int s_iHousesCount;
+
+	static TFloor * s_pFloor;
 };
 
 #endif

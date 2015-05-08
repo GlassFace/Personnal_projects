@@ -121,6 +121,7 @@
     <ClCompile Include="Control.cpp" />
     <ClCompile Include="Dynamic.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Floor.cpp" />
     <ClCompile Include="House.cpp" />
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="main.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Dynamic.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Floor.h" />
     <ClInclude Include="House.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Villager.h" />

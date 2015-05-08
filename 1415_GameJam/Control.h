@@ -1,6 +1,7 @@
 #ifndef CONTROL_H_INCLUDED
 #define CONTROL_H_INCLUDED
 
+class TVillager;
 struct TGfxVec2;
 
 class TControl
@@ -12,11 +13,12 @@ public:
 	const TGfxVec2 & GetMousePosition() const;
 
 
-	void Update();
-	void CheckInput() const;
+	static void Update();
+	static void CheckInput();
+
 private:
-	//TGfxVec2 m_tMousePosition;
-	
+	static TVillager * s_pDraggedVillager;
+	static bool s_bClicked;
 };
 
 #endif
