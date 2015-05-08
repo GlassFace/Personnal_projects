@@ -15,6 +15,8 @@ namespace
 {
 	const int NAME_MAX_SIZE = 250;
 
+	const char * const FLY_TILESET_NAME = "Bird_Fly.tga";
+
 	const TGfxVec2 BIRD_SIZE = TGfxVec2(32.0f, 64.0f);
 	const float BIRD_FLY_SPEED = 64.0f;					// Pixels per seconds
 
@@ -23,24 +25,27 @@ namespace
 }
 
 
-TGfxTexture * TBird::s_pTexture = nullptr;
+TGfxTexture * TBird::s_pBirdTileSet = nullptr;
 
 TBird::TBird() :
 TDynamic(),
 m_eState(EState_Alive),
+m_pTarget(nullptr),
 m_pFly(nullptr),
 m_iLastMove(0)
 {
+
 
 }
 
 TBird::TBird(const TGfxVec2 & tPos) :
 TDynamic(tPos, BIRD_SIZE, BIRD_FLY_SPEED),
 m_eState(EState_Alive),
+m_pTarget(nullptr),
 m_pFly(nullptr),
 m_iLastMove(0)
 {
-	m_pFly = new TAnim("Bird_Fly.tga", 7, 48, 48);
+	m_pFly = new TAnim(s_pBirdTileSet, 7, 48, 48);
 
 }
 
@@ -48,6 +53,11 @@ TBird::~TBird()
 {
 }
 
+
+void TBird::S_Initialize()
+{
+	s_pBirdTileSet = GfxTextureLoad(FLY_TILESET_NAME);
+}
 
 void TBird::Initialize()
 {
@@ -85,16 +95,16 @@ void TBird::FindTarget()
 }
 void TBird::GoToTarget()
 {
-	GfxDbgPrintf("%f, %f \n", m_tPos.x, m_tPos.y);
 	TGfxVec2 tDirection = m_pTarget->GetPosition() - m_tPos;
-	tDirection = tDirection.Normalize();
-	m_tVelocity = tDirection * m_fSpeed;
-	m_tVelocity = ((GfxTimeGetMilliseconds() - float(m_iLastMove)) / SECONDS) * m_tVelocity;
+	tDirection = tDirection.SquaredLength() >= -0.0f && tDirection.SquaredLength() <= 0.01f ? tDirection.Normalize() : TGfxVec2(0.0f, 0.0f);
+	m_tVelocity = tDirection * (m_fSpeed * ((GfxTimeGetMilliseconds() - float(m_iLastMove)) / SECONDS));
+	m_iLastMove = GfxTimeGetMilliseconds();
 }
 void TBird::Escape()
 {
 
 }
+
 
 bool TBird::IsAlive() const
 {

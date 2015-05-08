@@ -34,6 +34,11 @@ public:
 	{
 		return s_pHouses;
 	}
+	static TBird ** S_GetBirds()
+	{
+		return s_pBirds;
+	}
+
 
 	static int S_GetVillagerCount()
 	{
@@ -44,7 +49,10 @@ public:
 	{
 		return s_iHousesCount;
 	}
-
+	static int S_GetBirdsCount()
+	{
+		return s_iBirdsCount;
+	}
 
 	static void S_Render();
 

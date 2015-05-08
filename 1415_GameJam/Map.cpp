@@ -66,8 +66,8 @@ void TMap::S_Initialize()
 	S_CreateHouse(TFloor::GetPosition() + TGfxVec2(0, 0));
 	S_CreateHouse(TFloor::GetPosition() + TGfxVec2(-300, 0));
 
-	
-	S_CreateBird(TFloor::GetPosition() + TGfxVec2(-1000, -3000));
+	TBird::S_Initialize();
+	S_CreateBird(TFloor::GetPosition() + TGfxVec2(-500, -500));
 	
 
 
@@ -166,15 +166,16 @@ void TMap::S_Update()
 		}
 	}
 
+	for (int i = 0; i < s_iBirdsCount; i++)
+	{
+		s_pBirds[i]->Update();
+	}
+
 	TCamera::S_Update();
 
 	for (int i = 0; i < s_iHousesCount; i++)
 	{
 		s_pHouses[i]->Update();
-	}
-	for (int i = 0; i < s_iBirdsCount; i++)
-	{
-		s_pBirds[i]->Update();
 	}
 }
 
