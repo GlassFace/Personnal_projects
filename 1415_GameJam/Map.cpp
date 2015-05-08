@@ -57,8 +57,7 @@ void TMap::S_Initialize()
 	THouse::S_Initialize();
 	S_CreateHouse(TFloor::GetPosition() + TGfxVec2(300,0));
 
-	//TFloor::S_AddExtension(true);
-	//TFloor::S_AddExtension(false);
+	TFloor::S_AddExtension(true);
 }
 
 void TMap::S_CreateVillager(const TGfxVec2 & tPos)

@@ -17,7 +17,7 @@ public:
 
 	static TGfxVec2 & S_GetWorldPosition()
 	{
-		return m_tWorldPosition;
+		return m_tWorldPosition - TGfxVec2((GfxGetDisplaySizeX()/2.f),0.f);
 	}
 	
 	static void S_Scroll(float fXVelocity);
