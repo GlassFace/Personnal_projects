@@ -53,6 +53,7 @@ public:
 	{
 		return s_pBuildings;
 	}
+
 	static TBird ** S_GetBirds()
 	{
 		return s_pBirds;

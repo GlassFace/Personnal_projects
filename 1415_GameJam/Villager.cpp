@@ -66,7 +66,7 @@ m_pWalk(nullptr)
 
 }
 
-TVillager::TVillager(const TGfxVec2 & tPos) :
+TVillager::TVillager(const TGfxVec2 & tPos, const int iNum) :
 TDynamic(tPos, VILLAGER_SIZE, VILLAGER_WALK_SPEED),
 m_eState(EState_Alive),
 m_tLocalName(0, 0),
@@ -144,7 +144,7 @@ void TVillager::GetRandomName()
 
 	int iNameSize = 0;
 
-	for (int iLetter = 0; pCursor[i] != '\r' && pCursor[i] != '\n' && pCursor[i] != '\0'; iLetter++, i++)
+	for (int iLetter = 0; pCursor[i] != '\r' && pCursor[i] != '\n' && i < GfxFileSize(s_pNamesFile); iLetter++, i++)
 	{
 		pName[iLetter] = pCursor[i];
 		iNameSize++;
@@ -180,11 +180,12 @@ void TVillager::SpecificUpdate()
 			m_pProfession->ProfessionUpdate(this);
 		}
 
+
 		if (m_eAction == EAction_Walking)
 		{
-			GfxDbgPrintf("1 %f \n", m_tVelocity.x);
+			//GfxDbgPrintf("1 %f \n", m_tVelocity.x);
 			m_tVelocity.x = (m_fSpeed / (GfxTimeFrameGetCurrentFPS() != 0.0f ? GfxTimeFrameGetCurrentFPS() : 60.0f)) * (m_eDirection == EDirection_Right ? 1.0f : -1.0f);
-			GfxDbgPrintf("2 %f \n", m_tVelocity.x);
+			//GfxDbgPrintf("2 %f \n", m_tVelocity.x);
 		}
 
 		else if (m_eAction == EAction_Idle || m_eAction == EAction_Action)

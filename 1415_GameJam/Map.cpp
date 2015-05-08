@@ -71,9 +71,9 @@ void TMap::S_Initialize()
 
 	TVillager::S_Initialize();
 	TProfession::S_InitializeProfessions();
+	//S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0.0f, 500.0f));
 	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0.0f, 500.0f));
-	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0.0f, 500.0f));
-	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0.0f, 500.0f));
+	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(20.0f, 500.0f));
 
 	TBuilding::S_InitializeBuildings();
 	//S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(300.0f, 0.0f));
@@ -86,18 +86,18 @@ void TMap::S_Initialize()
 	
 
 
-	TFloor::S_AddExtension(false);
-	TFloor::S_AddExtension(false);
-	TFloor::S_AddExtension(true);
-	TFloor::S_AddExtension(true);
-	TFloor::S_AddExtension(true);
-	TFloor::S_AddExtension(true);
-	TFloor::S_AddExtension(true);
+	//TFloor::S_AddExtension(false);
+	//TFloor::S_AddExtension(false);
+	//TFloor::S_AddExtension(true);
+	//TFloor::S_AddExtension(true);
+	//TFloor::S_AddExtension(true);
+	//TFloor::S_AddExtension(true);
+	//TFloor::S_AddExtension(true);
 }
 
 void TMap::S_CreateVillager(const TGfxVec2 & tPos)
 {
-	s_pVillagers[s_iVillagersCount] = new TVillager(tPos);
+	s_pVillagers[s_iVillagersCount] = new TVillager(tPos, s_iVillagersCount);
 	s_iVillagersCount++;
 }
 
@@ -109,20 +109,22 @@ void TMap::S_CreateBuilding(EBuildingType eBuildingToCreate, const TGfxVec2 & tP
 
 		s_pBuildings[s_iBuildingsCount] = new THouse(tPos);
 
+		s_iBuildingsCount++;
+
 		break;
 
 	case EBuildingType_Workshop:
 
 		s_pBuildings[s_iBuildingsCount] = new TWorkshop(tPos);
 
-		break;
-
-	case EBuildingType_Tower:
+		s_iBuildingsCount++;
 
 		break;
-}
-	
-	s_iBuildingsCount++;
+
+	/*case EBuildingType_Tower:
+
+		break;*/
+	}
 }
 
 void TMap::S_CreateBird(const TGfxVec2 & tPos)
@@ -276,7 +278,6 @@ void TMap::S_Render()
 		GfxSpriteRender(s_pBackGroundSprite);
 	}
 
-	THUD::S_Render();
 	TFloor::S_Render();
 
 	for (int i = 0; i < s_iBuildingsCount; i++)
@@ -293,4 +294,6 @@ void TMap::S_Render()
 	{
 		s_pBirds[i]->Render();
 	}
+
+	THUD::S_Render();
 }
