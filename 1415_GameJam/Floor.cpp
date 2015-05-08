@@ -87,7 +87,7 @@ void TFloor::S_Render()
 
 }
 
-void TFloor::S_AddExtension(bool bSide) // left = true  / right = false
+void TFloor::S_AddExtension(EDirection eDirection) // left = true  / right = false
 {
 	for (int i = 0; i < MAX_EXTENSION; i++)
 	{
@@ -99,12 +99,14 @@ void TFloor::S_AddExtension(bool bSide) // left = true  / right = false
 				s_pExtensionsPositions[i] = new TGfxVec2(fPositionX, s_tPosition.y);
 				s_fLeftSize += EXTENSION_SIZE_X - FLOOR_PENETRATION;
 			}
+
 			else
 			{
 				float fPositionX = (s_tPosition.x + s_fRightSize) + (EXTENSION_SIZE_X / 2.f) - FLOOR_PENETRATION;
 				s_pExtensionsPositions[i] = new TGfxVec2(fPositionX, s_tPosition.y);
 				s_fRightSize += EXTENSION_SIZE_X - FLOOR_PENETRATION;
 			}
+
 			s_pSprite[i] = GfxSpriteCreate(s_pExtensionTexture);
 			GfxSpriteSetPosition(s_pSprite[i], s_pExtensionsPositions[i]->x, s_pExtensionsPositions[i]->y);
 			GfxSpriteSetPivot(s_pSprite[i], EXTENSION_SIZE_X / 2.f, 0.f);

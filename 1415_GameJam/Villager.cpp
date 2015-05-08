@@ -270,6 +270,11 @@ void TVillager::SetAction(EAction eAction)
 
 void TVillager::SetProfession(TProfession * pProfession, TBuilding * pBuilding)
 {
+	if (m_pProfession != nullptr)
+	{
+		m_pAssignedBuilding->UnassignVillager(this);
+	}
+
 	m_pProfession = pProfession;
 	m_pAssignedBuilding = pBuilding;
 }

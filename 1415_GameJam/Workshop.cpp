@@ -75,6 +75,14 @@ bool TWorkshop::AssignVillager(TVillager * pVillager)
 {
 	if (m_iAssignedVillagersCount < ASSIGNED_VILLAGERS_MAX)
 	{
+		for (int i = 0; i < m_iAssignedVillagersCount; i++)
+		{
+			if (m_pAssignedVillagers[i] == pVillager)
+			{
+				return false;
+			}
+		}
+
 		m_pAssignedVillagers[m_iAssignedVillagersCount] = pVillager;
 		m_iAssignedVillagersCount++;
 
@@ -94,6 +102,7 @@ void TWorkshop::UnassignVillager(TVillager * pVillager)
 		if (m_pAssignedVillagers[i] == pVillager)
 		{
 			m_pAssignedVillagers[i]->Unassign();
+			m_pAssignedVillagers[i] = nullptr;
 			m_pAssignedVillagers[i] = m_pAssignedVillagers[m_iAssignedVillagersCount - 1];
 			m_pAssignedVillagers[m_iAssignedVillagersCount - 1] = nullptr;
 			m_iAssignedVillagersCount--;
