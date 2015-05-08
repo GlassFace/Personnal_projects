@@ -117,7 +117,7 @@ void THUD::S_Render()
 	for (int i = 0; i < TMap::S_GetVillagerCount(); i++)
 	{
 		TVillager * pVillager = TMap::S_GetVillagers()[i];
-		GfxTextSpriteRender(pVillager->GetNameSprite(), pVillager->GetPosition().x, pVillager->GetPosition().y - pVillager->GetSize().y + 10.f, EGfxColor_Black, 1.f, true, true);
+		GfxTextSpriteRender(pVillager->GetNameSprite(), pVillager->GetNameLocal().x, pVillager->GetNameLocal().y - pVillager->GetSize().y + 10.f, EGfxColor_Black, 1.f, true, true);
 	}
 }
 

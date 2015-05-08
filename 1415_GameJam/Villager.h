@@ -33,6 +33,10 @@ public:
 	{
 		return m_pSpriteName;
 	}
+	const TGfxVec2 & GetNameLocal() const
+	{
+		return m_tLocalName;
+	}
 
 	TGfxSprite * GetSprite() const
 	{
@@ -66,7 +70,10 @@ public:
 		 m_tPos = tPos + TGfxVec2(0.0f, m_tSize.y / 2.0f);
 		 GfxSpriteSetPosition(m_pSprite, m_tPos.x, m_tPos.y);
 	}
-
+	void SetLocalName(const TGfxVec2 & tPos)
+	{
+		m_tLocalName = tPos;
+	}
 	void SpecificUpdate();
 
 	void RandomMove();
@@ -112,6 +119,7 @@ protected:
 private:
 
 	TGfxSprite * m_pSpriteName;
+	TGfxVec2 m_tLocalName;
 
 	TAnim * m_pIdle;
 	static TGfxTexture * s_pIdleTileSet;
