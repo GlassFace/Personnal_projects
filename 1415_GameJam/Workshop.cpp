@@ -107,11 +107,14 @@ void TWorkshop::GetInput()
 	if (bCollisionX && bCollisionY)
 	{
 		m_eBuildingToCreateType = EBuildingType((m_eBuildingToCreateType + 1) % BUILDINGS_TYPES_COUNT);
+		if (m_eBuildingToCreateType == EBuildingType_Tower)
+		{
+			m_eBuildingToCreateType = EBuildingType_House;
+		}
 
 		for (int i = 0; i < m_iAssignedVillagersCount; i++)
 		{
 			static_cast<TWorker*>(m_pAssignedVillagers[i]->GetProfession())->SetBuildingsToCreate(m_eBuildingToCreateType);
-			//GfxDbgPrintf("Yo\n");
 		}
 	}
 }
