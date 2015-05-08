@@ -57,8 +57,7 @@ void TMap::S_Initialize()
 	THouse::S_Initialize();
 	S_CreateHouse(TFloor::GetPosition() + TGfxVec2(300,0));
 
-	//TFloor::S_AddExtension(true);
-	//TFloor::S_AddExtension(false);
+	TFloor::S_AddExtension(true);
 }
 
 void TMap::S_CreateVillager(const TGfxVec2 & tPos)
@@ -111,13 +110,14 @@ void TMap::S_DeleteHouse(THouse * pHouse)
 void TMap::S_Update()
 {
 	THUD::S_Update();
-	TCamera::S_Update();
 	TControl::CheckInput();
 
 	for (int i = 0; i < s_iVillagersCount; i++)
 	{
 		s_pVillagers[i]->Update();
 	}
+
+	TCamera::S_Update();
 
 	for (int i = 0; i < s_iHousesCount; i++)
 	{

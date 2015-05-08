@@ -2,10 +2,10 @@
 #include "flib_vec2.h"
 #include "generics.h"
 #include <math.h>
-#include "HUD.h"
 #include "Entity.h"
 #include "Dynamic.h"
 #include "Villager.h"
+#include "HUD.h"
 #include "Building.h"
 #include "House.h"
 #include "Map.h"

@@ -52,8 +52,6 @@ public:
 	{
 		return s_tPosition;
 	}
-	static void S_Initialize();
-	static void S_Update();
 
 
 	/*		Render		*/

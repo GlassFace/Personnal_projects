@@ -48,7 +48,7 @@ void TControl::CheckInput()
 
 	if (GfxInputIsJustPressed(EGfxInputID_MouseLeft))				// Click on villager
 	{
-		const TGfxVec2 tMousePosition = TGfxVec2(float(GfxInputGetMousePositionX()), float(GfxInputGetMousePositionY()));
+		const TGfxVec2 tMousePosition = TGfxVec2(float(GfxInputGetMousePositionX()), float(GfxInputGetMousePositionY())) + (TCamera::S_GetWorldPosition());
 
 		for (int i = 0; i < TMap::S_GetVillagerCount(); i++)
 		{
@@ -67,7 +67,7 @@ void TControl::CheckInput()
 	{
 		if (s_bClicked == true)
 		{
-			const TGfxVec2 tMousePosition = TGfxVec2(float(GfxInputGetMousePositionX()), float(GfxInputGetMousePositionY()));
+			const TGfxVec2 tMousePosition = TGfxVec2(float(GfxInputGetMousePositionX()), float(GfxInputGetMousePositionY())) + (TCamera::S_GetWorldPosition());
 			s_pDraggedVillager->SetPosition(tMousePosition);
 			s_pDraggedVillager->SetFallVelocity(0.0f);
 		}
