@@ -49,7 +49,6 @@ void TControl::CheckInput()
 			TVillager * pVillager = TMap::S_GetVillagers()[i];
 			if (pVillager->IsMouseOver(tMousePosition))
 			{
-				GfxDbgPrintf("isok \n");
 				s_pDraggedVillager = pVillager;
 				s_bClicked = true;
 				break;
@@ -61,7 +60,6 @@ void TControl::CheckInput()
 	{
 		if (s_bClicked == true)
 		{
-			GfxDbgPrintf("ispressed\n");
 			TGfxVec2 tMousePosition(GfxInputGetMousePositionX(), GfxInputGetMousePositionY());
 			s_pDraggedVillager->SetPosition(tMousePosition);
 		}

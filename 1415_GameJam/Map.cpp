@@ -38,7 +38,16 @@ void TMap::S_Initialize()
 	s_pFloor->S_Initialize();
 
 	TVillager::S_Initialize();
-	S_CreateVillager(TFloor::GetPosition());
+	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0,500));
+	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0, 500));
+	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0, 500));
+
+	THouse::S_Initialize();
+	S_CreateHouse(TFloor::GetPosition() + TGfxVec2(300,0));
+
+	TFloor::S_AddExtension(true);
+	TFloor::S_AddExtension(false);
+
 
 }
 
@@ -75,8 +84,13 @@ void TMap::S_Render()
 {
 	GfxClear(EGfxColor_Black);
 	THUD::S_Render();
+	TFloor::S_Render();
 	for (int i = 0; i < s_iVillagersCount; i++)
 	{
 		s_pVillagers[i]->Render();
+	}
+	for (int i = 0; i < s_iHousesCount; i++)
+	{
+		s_pHouses[i]->Render();
 	}
 }

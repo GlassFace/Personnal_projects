@@ -25,6 +25,9 @@ public:
 
 	void SpecificUpdate();
 
+	void RandomMove();
+	void Move();
+
 	void Die();
 
 	bool IsMouseOver(const TGfxVec2 & tMousePos) const;
@@ -39,7 +42,14 @@ protected:
 		EState_Dead
 	};
 
+	TGfxVec2 m_tVelocity;
+	
 	EState m_eState;
+
+	int m_iLastMoveChoice;
+	int m_iNextMoveChoice;
+
+	int m_iLastMove;
 
 	char * m_pName;
 

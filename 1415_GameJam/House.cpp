@@ -14,7 +14,7 @@ namespace
 
 	const TGfxVec2 HOUSE_SIZE = TGfxVec2(96.0f, 96.0f);
 
-	const int VILLAGERS_SPAWN_RATE = 60 * 1000;		// Milliseconds
+	const int VILLAGERS_SPAWN_RATE = 1* 1000;		// Milliseconds
 }
 
 
@@ -32,7 +32,9 @@ TBuilding(tPos, HOUSE_SIZE),
 m_iLastSpawnTime(0)
 {
 	m_pSprite = GfxSpriteCreate(s_pTexture);
-	GfxSpriteSetPosition(m_pSprite, tPos.x - (m_tSize.x / 2.0f), tPos.y - m_tSize.y);
+	GfxSpriteSetPivot(m_pSprite, (m_tSize.x / 2.0f), m_tSize.y);
+	GfxSpriteSetPosition(m_pSprite, m_tPos.x, m_tPos.y);
+	GfxDbgPrintf("%f, %f", m_tPos.x, m_tPos.y);
 }
 
 THouse::~THouse()
@@ -52,5 +54,6 @@ void THouse::SpecificUpdate()
 	if (GfxTimeGetMilliseconds() - m_iLastSpawnTime >= VILLAGERS_SPAWN_RATE)
 	{
 		TMap::S_CreateVillager(m_tPos);
+		m_iLastSpawnTime = GfxTimeGetMilliseconds();
 	}
 }
