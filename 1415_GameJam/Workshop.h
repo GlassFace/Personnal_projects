@@ -26,6 +26,8 @@ public:
 private:
 
 	static TGfxTexture * s_pTexture;
+
+	EBuildingType m_eBuildingToCreateType;
 };
 
 #endif

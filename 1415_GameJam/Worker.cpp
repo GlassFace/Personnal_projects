@@ -75,11 +75,20 @@ void TWorker::S_Initialize()
 
 void TWorker::ProfessionUpdate(TVillager * pVillager)
 {
-	
 	if (pVillager->m_eAction != EAction_Action && m_tDestinationToConstruct == TGfxVec2(0.0f, 0.0f))
 	{
+		if (pVillager->iNum == 0)
+		{
+			//GfxDbgPrintf("First\n");
+		}
+
 		if (GfxTimeGetMilliseconds() - (m_iStartConstructionTime + CONSTRUCTION_TIME) >= TIME_BETWEEN_CONSTRUCTIONS)			// Find a spot to build after waiting
 		{
+			if (pVillager->iNum == 0)
+			{
+				//GfxDbgPrintf("Dot\n");
+			}
+
 			do
 			{
 				const TGfxVec2 tRandomPos = TGfxVec2(GfxMathGetRandomFloat(TFloor::GetPosition().x - TFloor::GetLeftSize(), TFloor::GetPosition().x + TFloor::GetRightSize()), TFloor::GetPosition().y);
@@ -97,15 +106,32 @@ void TWorker::ProfessionUpdate(TVillager * pVillager)
 		
 		else																													// Wait
 		{
+			if (pVillager->iNum == 0)
+			{
+				//GfxDbgPrintf("PoCH\n");
+			}
+
 			pVillager->RandomMove();
 		}
 	}
 
 	else if (pVillager->m_eAction == EAction_Walking && pVillager->m_tPos != m_tDestinationToConstruct)							// Go to spot
 	{
+		if (pVillager->iNum == 0)
+		{
+			//GfxDbgPrintf("Second\n");
+
+			//GfxDbgPrintf("Speed = %f, Velocity = %f\n", pVillager->m_fSpeed, pVillager->m_tVelocity.x);
+		}
+
 		if ((m_tDestinationToConstruct - pVillager->m_tPos).x <= (pVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS()) &&
 			(m_tDestinationToConstruct - pVillager->m_tPos).x >= -(pVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS()))
 		{
+			if (pVillager->iNum == 0)
+			{
+				//GfxDbgPrintf("SHCLTOU\n");
+			}
+
 			pVillager->m_tPos = m_tDestinationToConstruct;
 
 			pVillager->m_eAction = EAction_Action;
@@ -116,12 +142,30 @@ void TWorker::ProfessionUpdate(TVillager * pVillager)
 
 	else if (pVillager->m_eAction == EAction_Action)																			// Build
 	{
+		if (pVillager->iNum == 0)
+		{
+			//GfxDbgPrintf("Third\n");
+		}
+
 		if (GfxTimeGetMilliseconds() - m_iStartConstructionTime >= CONSTRUCTION_TIME)
 		{
+			if (pVillager->iNum == 0)
+			{
+				//GfxDbgPrintf("Caillou\n");
+			}
+
 			TMap::S_CreateBuilding(m_eConstructionToDo, m_tDestinationToConstruct);
 
 			m_tDestinationToConstruct = TGfxVec2(0.0f, 0.0f);
 			pVillager->m_eAction = EAction_Idle;
+		}
+	}
+
+	else
+	{
+		if (pVillager->iNum == 0)
+		{
+			//GfxDbgPrintf("Pilou\n");
 		}
 	}
 
@@ -140,11 +184,18 @@ void TWorker::ProfessionUpdate(TVillager * pVillager)
 	{
 		pVillager->m_pSprite = m_pIdle->Play(pVillager->m_eDirection);
 	}
+
+	if (pVillager->iNum == 0)
+	{
+		//GfxDbgPrintf("OUT\n");
+	}
 }
 
 void TWorker::SetBuildingsToCreate(EBuildingType eBuildingToConstruct)
 {
 	m_eConstructionToDo = eBuildingToConstruct;
+
+	GfxDbgPrintf("%s\n", m_eConstructionToDo == EBuildingType_Tower ? "Tower" : m_eConstructionToDo == EBuildingType_House ? "House" : "Workshop");
 
 	if (m_iStartConstructionTime != 0)
 	{

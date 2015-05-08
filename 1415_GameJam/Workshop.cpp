@@ -29,17 +29,19 @@ namespace
 TGfxTexture * TWorkshop::s_pTexture = nullptr;
 
 TWorkshop::TWorkshop() :
-TBuilding()
+TBuilding(),
+m_eBuildingToCreateType(EBuildingType_Workshop)
 {
-	m_eBuildingType = EBuildingType_House;
+	m_eBuildingType = EBuildingType_Workshop;
 }
 
 TWorkshop::TWorkshop(const TGfxVec2 & tPos) :
-TBuilding(tPos, WORKSHOP_SIZE)
+TBuilding(tPos, WORKSHOP_SIZE),
+m_eBuildingToCreateType(EBuildingType_Workshop)
 {
 	m_pAssignedVillagers = new TVillager*[ASSIGNED_VILLAGERS_MAX];
 
-	m_eBuildingType = EBuildingType_House;
+	m_eBuildingType = EBuildingType_Workshop;
 
 	m_pSprite = GfxSpriteCreate(s_pTexture);
 	GfxSpriteSetPivot(m_pSprite, (m_tSize.x / 2.0f), m_tSize.y);
@@ -61,8 +63,8 @@ void TWorkshop::SpecificUpdate()
 {
 	if (GfxInputIsJustPressed(EGfxInputID_MouseLeft))
 	{
-	GetInput();
-}
+		GetInput();
+	}
 }
 
 bool TWorkshop::AssignVillager(TVillager * pVillager)
@@ -104,12 +106,12 @@ void TWorkshop::GetInput()
 
 	if (bCollisionX && bCollisionY)
 	{
-		m_eBuildingType = EBuildingType((m_eBuildingType + 1) % BUILDINGS_TYPES_COUNT);
+		m_eBuildingToCreateType = EBuildingType((m_eBuildingToCreateType + 1) % BUILDINGS_TYPES_COUNT);
 
 		for (int i = 0; i < m_iAssignedVillagersCount; i++)
 		{
-			reinterpret_cast<TWorker*>(m_pAssignedVillagers[i])->SetBuildingsToCreate(m_eBuildingType);
-			GfxDbgPrintf("Yo\n");
+			static_cast<TWorker*>(m_pAssignedVillagers[i]->GetProfession())->SetBuildingsToCreate(m_eBuildingToCreateType);
+			//GfxDbgPrintf("Yo\n");
 		}
 	}
 }

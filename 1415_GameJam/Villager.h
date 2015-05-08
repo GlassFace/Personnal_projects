@@ -23,7 +23,7 @@ class TVillager : public TDynamic
 public:
 
 	TVillager();
-	TVillager(const TGfxVec2 & tPos);
+	TVillager(const TGfxVec2 & tPos, const int iNum);
 	~TVillager();
 
 
@@ -38,18 +38,27 @@ public:
 	{
 		return m_pSprite;
 	}
+
 	const TGfxVec2 & GetPosition() const
 	{
 		return m_tPos;
 	}
+
 	EAction GetAction() const
 	{
 		return m_eAction;
 	}
+
 	char * GetName() const
 	{
 		return m_pName;
 	}
+
+	TProfession * GetProfession()
+	{
+		return m_pProfession;
+	}
+
 	void GetRandomName();
 
 	void SetPosition(const TGfxVec2 & tPos)
@@ -86,6 +95,8 @@ protected:
 	
 	EState m_eState;
 
+	int iNum;
+
 	char * m_pName;
 	int m_iAge;
 
@@ -99,6 +110,7 @@ protected:
 	int m_iIdleDuration;
 
 private:
+
 	TGfxSprite * m_pSpriteName;
 
 	TAnim * m_pIdle;
