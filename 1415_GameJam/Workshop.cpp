@@ -61,8 +61,8 @@ void TWorkshop::SpecificUpdate()
 {
 	if (GfxInputIsJustPressed(EGfxInputID_MouseLeft))
 	{
-		GetInput();
-	}
+	GetInput();
+}
 }
 
 bool TWorkshop::AssignVillager(TVillager * pVillager)

@@ -75,6 +75,7 @@ void TWorker::S_Initialize()
 
 void TWorker::ProfessionUpdate(TVillager * pVillager)
 {
+	
 	if (pVillager->m_eAction != EAction_Action && m_tDestinationToConstruct == TGfxVec2(0.0f, 0.0f))
 	{
 		if (GfxTimeGetMilliseconds() - (m_iStartConstructionTime + CONSTRUCTION_TIME) >= TIME_BETWEEN_CONSTRUCTIONS)
@@ -93,13 +94,13 @@ void TWorker::ProfessionUpdate(TVillager * pVillager)
 			pVillager->m_eDirection = (m_tDestinationToConstruct - pVillager->m_tPos).x >= 0.0f ? EDirection_Right : EDirection_Left;
 			//pVillager->m_tVelocity.x = pVillager->m_fSpeed * pVillager->m_eDirection == EDirection_Right ? 1.0f : -1.0f;
 		}
+
 		
 		else
 		{
 			pVillager->RandomMove();
 		}
 	}
-
 	else if (pVillager->m_eAction == EAction_Walking && pVillager->m_tPos != m_tDestinationToConstruct)
 	{
 		if ((m_tDestinationToConstruct - pVillager->m_tPos).x <= (pVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS()) &&

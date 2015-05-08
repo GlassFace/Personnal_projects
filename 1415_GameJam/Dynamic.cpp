@@ -46,7 +46,7 @@ TDynamic::~TDynamic()
 void TDynamic::Update()
 {
 	SpecificUpdate();
-
+	GfxDbgPrintf("%f, %f\n", m_tVelocity.x, m_tVelocity.y);
 	Move();
 }
 
