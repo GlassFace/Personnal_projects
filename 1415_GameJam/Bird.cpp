@@ -16,6 +16,7 @@ namespace
 	const int NAME_MAX_SIZE = 250;
 
 	const char * const FLY_TILESET_NAME = "Bird_Fly.tga";
+	const char * const BIRD_BLOOD_NAME = "Bird_Blood.tga";
 
 	const TGfxVec2 BIRD_SIZE = TGfxVec2(32.0f, 64.0f);
 	const float BIRD_FLY_SPEED = 180.0f;					// Pixels per seconds
@@ -25,7 +26,7 @@ namespace
 
 	const float EMPTY_SPACE_RANGE = 300.f;
 
-	const int HIT_TO_KILL = 3;
+	const int HIT_TO_KILL = 5;
 	TGfxVec2 LEFT_ESCAPE_POINT ;
 	TGfxVec2 RIGHT_ESCAPE_POINT;
 
@@ -42,6 +43,7 @@ TGfxTexture * TBird::s_pBirdTileSet = nullptr;
 
 TBird::TBird() :
 TDynamic(),
+//m_pBlood(nullptr),
 m_eState(EState_Alive),
 m_eAction(EBirdAction_ToTarget),
 m_pTarget(nullptr),
@@ -55,6 +57,7 @@ m_iHitLeft(HIT_TO_KILL)
 
 TBird::TBird(const TGfxVec2 & tPos) :
 TDynamic(tPos, BIRD_SIZE, BIRD_FLY_SPEED),
+//m_pBlood(nullptr),
 m_eState(EState_Alive),
 m_eAction(EBirdAction_ToTarget),
 m_pTarget(nullptr),
@@ -74,7 +77,9 @@ TBird::~TBird()
 
 void TBird::S_Initialize()
 {
+
 	s_pBirdTileSet = GfxTextureLoad(FLY_TILESET_NAME);
+	//s_pBirdBlood = GfxTextureLoad(BIRD_BLOOD_NAME);
 	LEFT_ESCAPE_POINT = TGfxVec2(TFloor::GetPosition().x - TFloor::GetLeftSize() - EMPTY_SPACE_RANGE, 500.f);
 	RIGHT_ESCAPE_POINT = TGfxVec2(TFloor::GetPosition().x + TFloor::GetRightSize() + EMPTY_SPACE_RANGE, 500.f);
 }
@@ -209,6 +214,13 @@ void TBird::TakeHit()
 	if (m_iHitLeft == 0 )
 	{
 		Die();
+		if (m_pTarget != nullptr)
+		{
+			if (m_pTarget->GetAction() == EAction_Grab)
+			{
+				m_pTarget->SetAction(EAction_Walking);
+			}
+		}
 	}
 }
 

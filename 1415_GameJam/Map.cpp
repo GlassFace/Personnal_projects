@@ -33,7 +33,7 @@ namespace
 
 	const int BIRDS_MAX_COUNT = 60;
 
-	const float BIRDS_GENERATION_RATE = 30.f;
+	const float BIRDS_GENERATION_RATE = 7.f;
 }
 
 
@@ -86,9 +86,9 @@ void TMap::S_Initialize()
 	
 
 
-	//TFloor::S_AddExtension(false);
-	//TFloor::S_AddExtension(false);
-	//TFloor::S_AddExtension(true);
+	TFloor::S_AddExtension(EDirection_Right);
+	TFloor::S_AddExtension(EDirection_Right);
+	TFloor::S_AddExtension(EDirection_Left);
 	//TFloor::S_AddExtension(true);
 	//TFloor::S_AddExtension(true);
 	//TFloor::S_AddExtension(true);

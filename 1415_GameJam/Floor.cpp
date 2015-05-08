@@ -3,6 +3,7 @@
 #include "generics.h"
 #include "floor.h"
 
+using namespace Generics;
 
 
 using namespace Generics;
@@ -86,13 +87,13 @@ void TFloor::S_Render()
 
 }
 
-void TFloor::S_AddExtension(EDirection eSide) // left = true  / right = false
+void TFloor::S_AddExtension(bool bSide) // left = true  / right = false
 {
 	for (int i = 0; i < MAX_EXTENSION; i++)
 	{
 		if (s_pSprite[i] == 0)
 		{
-			if (eSide == EDirection_Left)
+			if (eDirection == EDirection_Left)
 			{
 				float fPositionX = (s_tPosition.x - s_fLeftSize) - (EXTENSION_SIZE_X / 2.f) + FLOOR_PENETRATION;
 				s_pExtensionsPositions[i] = new TGfxVec2(fPositionX, s_tPosition.y);
