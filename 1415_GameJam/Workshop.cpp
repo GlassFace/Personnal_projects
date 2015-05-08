@@ -78,7 +78,7 @@ bool TWorkshop::AssignVillager(TVillager * pVillager)
 		m_pAssignedVillagers[m_iAssignedVillagersCount] = pVillager;
 		m_iAssignedVillagersCount++;
 
-		TWorker * pProfession = new TWorker(m_eBuildingToCreateType);
+		TWorker * pProfession = new TWorker(m_eBuildingToCreateType, pVillager);
 		pVillager->SetProfession(pProfession, this);
 
 		return true;
@@ -113,7 +113,6 @@ void TWorkshop::GetInput()
 	if (bCollisionX && bCollisionY)
 	{
 		m_eBuildingToCreateType = EBuildingType((m_eBuildingToCreateType + 1) % BUILDINGS_TYPES_COUNT);
-
 
 		for (int i = 0; i < m_iAssignedVillagersCount; i++)
 		{
