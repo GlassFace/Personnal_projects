@@ -10,11 +10,12 @@ namespace
 
 	const float FLOOR_POSITION_X = 960.f;
 	const float FLOOR_POSITION_Y = 830.f;
-	const float FLOOR_SIZE_X = 1800.f;
+	const float FLOOR_SIZE_X = 1750.f;
 
 	const int MAX_EXTENSION = 30;
 	const float EXTENSION_SIZE_X = 250.f;
 	const float EMPTY_SPACE_MARGIN = 200.f;
+	const float FLOOR_PENETRATION = 20.f;
 }
 
 TGfxSprite ** TFloor::s_pSprite = nullptr;
@@ -88,15 +89,15 @@ void TFloor::S_AddExtension(bool bSide) // left = true  / right = false
 		{
 			if (bSide)
 			{
-				float fPositionX = (s_tPosition.x - s_fLeftSize) - (EXTENSION_SIZE_X / 2.f);
+				float fPositionX = (s_tPosition.x - s_fLeftSize) - (EXTENSION_SIZE_X / 2.f) + FLOOR_PENETRATION;
 				s_pPosition[i] = new TGfxVec2(fPositionX, s_tPosition.y);
-				s_fLeftSize += EXTENSION_SIZE_X;
+				s_fLeftSize += EXTENSION_SIZE_X - FLOOR_PENETRATION;
 			}
 			else
 			{
-				float fPositionX = (s_tPosition.x + s_fRightSize) + (EXTENSION_SIZE_X / 2.f);
+				float fPositionX = (s_tPosition.x + s_fRightSize) + (EXTENSION_SIZE_X / 2.f) - FLOOR_PENETRATION;
 				s_pPosition[i] = new TGfxVec2(fPositionX, s_tPosition.y);
-				s_fRightSize += EXTENSION_SIZE_X;
+				s_fRightSize += EXTENSION_SIZE_X - FLOOR_PENETRATION;
 			}
 			s_pSprite[i] = GfxSpriteCreate(s_pExtensionTexture);
 			GfxSpriteSetPosition(s_pSprite[i], s_pPosition[i]->x, s_pPosition[i]->y);
