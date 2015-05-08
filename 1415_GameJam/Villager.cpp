@@ -255,13 +255,12 @@ bool TVillager::IsMouseOver(const TGfxVec2 & tMousePos) const
 	return false;
 }
 
-void TVillager::SetProfession(TProfession * pProfession, const TBuilding * pBuilding)
 void TVillager::SetAction(EAction eAction)
 {
 	m_eAction = eAction;
 }
 
-void TVillager::SetProfession(TProfession * pProfession)
+void TVillager::SetProfession(TProfession * pProfession, const TBuilding * pBuilding)
 {
 	m_pProfession = pProfession;
 	m_pAssignedBuilding = pBuilding;
