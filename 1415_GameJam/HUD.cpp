@@ -58,7 +58,7 @@ void THUD::S_Update()
 
 void THUD::S_UpdateVillagerCounter()
 {
-	GfxTextSpritePrintf(m_pVillagerCounter, "%d villagers alive", TMap::S_GetVillagerCount()); // Get Nbr Villager Alive
+	GfxTextSpritePrintf(m_pVillagerCounter, "%d villagers alive", TMap::S_GetVillagerCount());	// Get alive villagers count
 }
 
 void THUD::S_UpdateVillagerSuicideGauge()
@@ -77,7 +77,7 @@ void THUD::S_UpdateVillagerSuicideGauge()
 	m_tSuicideInfo.m_iLastFrameLost = GfxTimeGetMilliseconds();
 }
 
-void THUD::S_OneMoreSuicide(TVillager * pVillager)
+void THUD::S_OneMoreSuicide()
 {
 	m_tSuicideInfo.m_iTotalSuicide++;
 	m_tSuicideInfo.m_fSuicideMalus += SUICIDE_MALUS;
@@ -87,8 +87,6 @@ void THUD::S_OneMoreSuicide(TVillager * pVillager)
 		m_tSuicideInfo.m_fSuicideMalus = SUICID_CAP;
 	}
 	GfxSpriteSetScale(m_tSuicideInfo.m_pSuicideGauge, (floorf(m_tSuicideInfo.m_fSuicideMalus)), SUICIDE_GAUGE_SIZE_Y);
-
-	TMap::S_DeleteVillager(pVillager);
 }
 
 void THUD::S_Render()

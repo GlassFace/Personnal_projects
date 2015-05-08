@@ -35,6 +35,7 @@ TVillager::TVillager() :
 TDynamic(),
 m_eState(EState_Alive),
 m_pName(nullptr),
+m_pIdle(nullptr),
 m_pWalk(nullptr)
 {
 
@@ -44,8 +45,10 @@ TVillager::TVillager(const TGfxVec2 & tPos) :
 TDynamic(tPos, VILLAGER_SIZE, VILLAGER_WALK_SPEED),
 m_eState(EState_Alive),
 m_pName(nullptr),
+m_pIdle(nullptr),
 m_pWalk(nullptr)
 {
+	m_pIdle = new TAnim("Villager_Idle.tga", 1, 32, 64);
 	m_pWalk = new TAnim("Villager_Walk.tga", 7, 32, 64);
 
 	GetRandomName();
@@ -144,7 +147,12 @@ void TVillager::Die()
 {
 	m_eState = EState_Dead;
 
-	THUD::S_OneMoreSuicide(this);
+	THUD::S_OneMoreSuicide();
+}
+
+bool TVillager::IsAlive() const
+{
+	return m_eState == EState_Alive;
 }
 
 bool TVillager::IsMouseOver(const TGfxVec2 & tMousePos) const

@@ -79,7 +79,7 @@ void TMap::S_DeleteVillager(TVillager * pVillager)
 		if (s_pVillagers[i] == pVillager)
 		{
 			delete s_pVillagers[i];
-			s_pVillagers[i] = s_pVillagers[s_iVillagersCount];
+			s_pVillagers[i] = s_pVillagers[s_iVillagersCount - 1];
 			s_pVillagers[s_iVillagersCount] = nullptr;
 
 			s_iVillagersCount--;
@@ -115,6 +115,13 @@ void TMap::S_Update()
 	for (int i = 0; i < s_iVillagersCount; i++)
 	{
 		s_pVillagers[i]->Update();
+
+		if (!s_pVillagers[i]->IsAlive())
+		{
+			S_DeleteVillager(s_pVillagers[i]);
+
+			i--;
+		}
 	}
 
 	TCamera::S_Update();

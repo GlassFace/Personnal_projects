@@ -38,6 +38,7 @@ public:
 
 	void Die();
 
+	bool IsAlive() const;
 	bool IsMouseOver(const TGfxVec2 & tMousePos) const;
 
 	void Render() const;
@@ -54,6 +55,7 @@ protected:
 
 	char * m_pName;
 
+	TAnim * m_pIdle;
 	TAnim * m_pWalk;
 
 	static TGfxTexture * s_pTexture;
