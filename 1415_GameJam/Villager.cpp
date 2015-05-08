@@ -15,7 +15,7 @@ namespace
 	const char * const SPRITE_NAME = "Villager.tga";
 	const char * const NAMES_FILE = "Names.txt";
 
-	const int NAME_MAX_SIZE = 50;
+	const int NAME_MAX_SIZE = 250;
 
 	const TGfxVec2 VILLAGER_SIZE = TGfxVec2(32.0f, 64.0f);
 	const float VILLAGER_WALK_SPEED = 64.f;				// Pixels per seconds
