@@ -18,11 +18,11 @@ using namespace Generics;
 
 namespace
 {
-	const char * const SPRITE_NAME = "House.tga";
+	const char * const SPRITE_NAME = "Workshop.tga";
 
 	const int ASSIGNED_VILLAGERS_MAX = 3;
 
-	const TGfxVec2 WORKSHOP_SIZE = TGfxVec2(96.0f, 96.0f);
+	const TGfxVec2 WORKSHOP_SIZE = TGfxVec2(136.0f, 112.0f);
 }
 
 

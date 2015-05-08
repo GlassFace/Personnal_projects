@@ -18,7 +18,6 @@ namespace
 }
 
 TVillager * TControl::s_pDraggedVillager = nullptr;
-bool TControl::s_bClicked = false;
 
 TControl::TControl()
 {
@@ -37,6 +36,8 @@ void TControl::Update()
 
 void TControl::CheckInput()
 {
+	const TGfxVec2 tMousePosition = GetCurrentMouse();
+
 	if (GfxInputIsPressed(EGfxInputID_KeyArrowLeft))
 	{
 		TCamera::S_Scroll(-SCROLL_SPEED);
@@ -49,39 +50,29 @@ void TControl::CheckInput()
 
 	if (GfxInputIsJustPressed(EGfxInputID_MouseLeft))				// Click on villager
 	{
-		const TGfxVec2 tMousePosition = GetCurrentMouse();
-
 		for (int i = 0; i < TMap::S_GetVillagerCount(); i++)
 		{
-			TVillager * const pVillager = TMap::S_GetVillagers()[i];
+			TVillager * pVillager = TMap::S_GetVillagers()[i];
+
 			if (pVillager->IsMouseOver(tMousePosition))
 			{
 				s_pDraggedVillager = pVillager;
-				s_bClicked = true;
 				break;
-
 			}
 		}
 	}
 
-	else if (GfxInputIsPressed(EGfxInputID_MouseLeft))				// Drag villager
+	else if (GfxInputIsPressed(EGfxInputID_MouseLeft) &&
+			 s_pDraggedVillager != nullptr)							// Drag villager
 	{
-		if (s_bClicked == true)
-		{
-			const TGfxVec2 tMousePosition = TGfxVec2(float(GfxInputGetMousePositionX()), float(GfxInputGetMousePositionY())) + (TCamera::S_GetWorldPosition());
-			s_pDraggedVillager->SetPosition(tMousePosition);
-			s_pDraggedVillager->SetFallVelocity(0.0f);
-		}
+		s_pDraggedVillager->SetPosition(tMousePosition);
+		s_pDraggedVillager->SetFallVelocity(0.0f);
 	}
 
-	if (GfxInputIsJustReleased(EGfxInputID_MouseLeft))
+	if (GfxInputIsJustReleased(EGfxInputID_MouseLeft) &&
+		s_pDraggedVillager != nullptr)
 	{
-		s_bClicked = false;
-
-		if (s_pDraggedVillager != nullptr)
-		{
-			TMap::S_AssignToBuilding(s_pDraggedVillager);
-		}
+		TMap::S_AssignToBuilding(s_pDraggedVillager);
 
 		s_pDraggedVillager = nullptr;
 	}
