@@ -2,8 +2,6 @@
 #ifndef DYNAMIC_H_INCLUDED
 #define DYNAMIC_H_INCLUDED
 
-#include "Entity.h"
-
 class TDynamic : public TEntity
 {
 public:
@@ -16,10 +14,22 @@ public:
 	void Update();
 	virtual void SpecificUpdate() = 0;
 
+	void Move();
+
+	void SetFallVelocity(const float fVelocity);
+
+	virtual void Die() = 0;
+
 
 protected:
 
 	float m_fSpeed;
+	TGfxVec2 m_tVelocity;
+
+	int m_iLastMoveChoice;
+	int m_iNextMoveChoice;
+
+	int m_iLastMove;
 };
 
 #endif

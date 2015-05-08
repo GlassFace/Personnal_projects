@@ -2,8 +2,6 @@
 #ifndef ENTITY_H_INCLUDED
 #define ENTITY_H_INCLUDED
 
-#include "flib_vec2.h"
-
 class TEntity
 {
 public:

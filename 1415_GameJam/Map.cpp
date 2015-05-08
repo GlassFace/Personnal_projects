@@ -47,8 +47,6 @@ void TMap::S_Initialize()
 
 	TFloor::S_AddExtension(true);
 	TFloor::S_AddExtension(false);
-
-
 }
 
 void TMap::S_CreateVillager(const TGfxVec2 & tPos)

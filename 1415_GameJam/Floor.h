@@ -1,6 +1,6 @@
+
 #ifndef FLOOR_H_INCLUDED
 #define FLOOR_H_INCLUDED
-
 
 struct TGfxSprite;
 struct TGfxVec2;

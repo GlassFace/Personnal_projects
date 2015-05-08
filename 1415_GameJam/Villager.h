@@ -2,8 +2,6 @@
 #ifndef VILLAGER_H_INCLUDED
 #define VILLAGER_H_INCLUDED
 
-#include "Dynamic.h"
-
 class TVillager : public TDynamic
 {
 public:
@@ -17,7 +15,7 @@ public:
 
 	void GetRandomName();
 
-	void SetPosition(TGfxVec2 & tPos)
+	void SetPosition(const TGfxVec2 & tPos)
 	{
 		 m_tPos = tPos;
 		 GfxSpriteSetPosition(m_pSprite, m_tPos.x, m_tPos.y);
@@ -26,7 +24,6 @@ public:
 	void SpecificUpdate();
 
 	void RandomMove();
-	void Move();
 
 	void Die();
 
@@ -41,15 +38,8 @@ protected:
 		EState_Alive,
 		EState_Dead
 	};
-
-	TGfxVec2 m_tVelocity;
 	
 	EState m_eState;
-
-	int m_iLastMoveChoice;
-	int m_iNextMoveChoice;
-
-	int m_iLastMove;
 
 	char * m_pName;
 
