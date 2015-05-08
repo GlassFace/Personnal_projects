@@ -18,7 +18,6 @@ public:
 
 private:
 	static TVillager * s_pDraggedVillager;
-	static bool s_bClicked;
 };
 
 #endif

@@ -18,11 +18,11 @@ using namespace Generics;
 
 namespace
 {
-	const char * const SPRITE_NAME = "Cabane.tga";
+	const char * const SPRITE_NAME = "Workshop.tga";
 
 	const int ASSIGNED_VILLAGERS_MAX = 3;
 
-	const TGfxVec2 WORKSHOP_SIZE = TGfxVec2(96.0f, 96.0f);
+	const TGfxVec2 WORKSHOP_SIZE = TGfxVec2(136.0f, 112.0f);
 }
 
 
@@ -59,7 +59,10 @@ void TWorkshop::S_Initialize()
 
 void TWorkshop::SpecificUpdate()
 {
+	if (GfxInputIsJustPressed(EGfxInputID_MouseLeft))
+	{
 	GetInput();
+}
 }
 
 bool TWorkshop::AssignVillager(TVillager * pVillager)
@@ -106,6 +109,7 @@ void TWorkshop::GetInput()
 		for (int i = 0; i < m_iAssignedVillagersCount; i++)
 		{
 			reinterpret_cast<TWorker*>(m_pAssignedVillagers[i])->SetBuildingsToCreate(m_eBuildingType);
+			GfxDbgPrintf("Yo\n");
 		}
 	}
 }
