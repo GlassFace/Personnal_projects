@@ -33,7 +33,7 @@ namespace
 
 	const int BIRDS_MAX_COUNT = 60;
 
-	const float BIRDS_GENERATION_RATE = 20.f;
+	const float BIRDS_GENERATION_RATE = 4.f;
 }
 
 
@@ -205,7 +205,14 @@ void TMap::S_Update()
 
 	for (int i = 0; i < s_iBirdsCount; i++)
 	{
-		s_pBirds[i]->Update();
+		if (!s_pBirds[i]->IsAlive())
+		{
+			S_DeleteBird(s_pBirds[i]);
+		}
+		else
+		{
+			s_pBirds[i]->Update();
+		}
 	}
 
 	TCamera::S_Update();
