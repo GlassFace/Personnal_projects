@@ -75,7 +75,7 @@ void TWorker::S_Initialize()
 
 void TWorker::ProfessionUpdate(TVillager * pVillager)
 {
-	if (pVillager->m_eAction != TVillager::EAction_Action && m_tDestinationToConstruct == TGfxVec2(0.0f, 0.0f))
+	if (pVillager->m_eAction != EAction_Action && m_tDestinationToConstruct == TGfxVec2(0.0f, 0.0f))
 	{
 		if (GfxTimeGetMilliseconds() - (m_iStartConstructionTime + CONSTRUCTION_TIME) >= TIME_BETWEEN_CONSTRUCTIONS)
 		{
@@ -99,18 +99,18 @@ void TWorker::ProfessionUpdate(TVillager * pVillager)
 		}
 	}
 
-	else if (pVillager->m_eAction == TVillager::EAction_Walking && pVillager->m_tPos != m_tDestinationToConstruct)
+	else if (pVillager->m_eAction == EAction_Walking && pVillager->m_tPos != m_tDestinationToConstruct)
 	{
 		if ((m_tDestinationToConstruct - pVillager->m_tPos).x <= ((pVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS())))
 		{
 			pVillager->m_tPos = m_tDestinationToConstruct;
 
-			pVillager->m_eAction = TVillager::EAction_Action;
+			pVillager->m_eAction = EAction_Action;
 			m_iStartConstructionTime = GfxTimeGetMilliseconds();
 		}
 	}
 
-	else if (pVillager->m_eAction == TVillager::EAction_Action)
+	else if (pVillager->m_eAction == EAction_Action)
 	{
 		if (GfxTimeGetMilliseconds() - m_iStartConstructionTime >= CONSTRUCTION_TIME)
 		{
@@ -118,17 +118,17 @@ void TWorker::ProfessionUpdate(TVillager * pVillager)
 
 			m_iStartConstructionTime = 0;
 
-			pVillager->m_eAction = TVillager::EAction_Idle;
+			pVillager->m_eAction = EAction_Idle;
 		}
 	}
 
 
-	if (pVillager->m_eAction == TVillager::EAction_Walking)
+	if (pVillager->m_eAction == EAction_Walking)
 	{
 		pVillager->m_pSprite = m_pWalk->Play(pVillager->m_eDirection);
 	}
 
-	else if (pVillager->m_eAction == TVillager::EAction_Action)
+	else if (pVillager->m_eAction == EAction_Action)
 	{
 		pVillager->m_pSprite = m_pAction->Play(pVillager->m_eDirection);
 	}
