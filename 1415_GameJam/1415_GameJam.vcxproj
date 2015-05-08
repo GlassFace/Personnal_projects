@@ -128,7 +128,9 @@
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Profession.cpp" />
     <ClCompile Include="Villager.cpp" />
+    <ClCompile Include="Worker.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Anim.h" />
@@ -142,7 +144,9 @@
     <ClInclude Include="generics.h" />
     <ClInclude Include="House.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Profession.h" />
     <ClInclude Include="Villager.h" />
+    <ClInclude Include="Worker.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Control.h" />

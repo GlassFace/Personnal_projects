@@ -18,23 +18,36 @@ namespace
 {
 	const char * const NAMES_FILE = "Names.txt";
 
+	const char * const IDLE_TILESET_NAME = "Villager_Idle.tga";
+	const char * const WALK_TILESET_NAME = "Villager_Walk.tga";
+
 	const int NAME_MAX_SIZE = 250;
 
 	const TGfxVec2 VILLAGER_SIZE = TGfxVec2(32.0f, 64.0f);
-	const float VILLAGER_WALK_SPEED = 64.0f;					// Pixels per seconds
+
+	const float VILLAGER_WALK_SPEED = 64.0f;				// Pixels per seconds
+	const int IDLE_DURATION_MIN = 1 * SECONDS;
+	const int IDLE_DURATION_MAX = 5 * SECONDS;
+	const int MOVE_DURATION_MIN = 2 * SECONDS;
+	const int MOVE_DURATION_MAX = 6 * SECONDS;
+	const float DIRECTION_CHANGE_CHANCES = 5.0f;			// Percentage
 
 	const int CHANGE_DIRECTION_TIME_MIN = 2 * SECONDS;
 	const int CHANGE_DIRECTION_TIME_MAX = 10 * SECONDS;
 }
 
 
-TGfxTexture * TVillager::s_pTexture = nullptr;
+TGfxTexture * TVillager::s_pIdleTileSet = nullptr;
+TGfxTexture * TVillager::s_pWalkTileSet = nullptr;
 TGfxFile * TVillager::s_pNamesFile = nullptr;
 
 TVillager::TVillager() :
 TDynamic(),
 m_eState(EState_Alive),
 m_pName(nullptr),
+m_iStartMoveTime(0),
+m_iMoveDuration(0),
+m_iIdleDuration(0),
 m_pIdle(nullptr),
 m_pWalk(nullptr)
 {
@@ -45,11 +58,14 @@ TVillager::TVillager(const TGfxVec2 & tPos) :
 TDynamic(tPos, VILLAGER_SIZE, VILLAGER_WALK_SPEED),
 m_eState(EState_Alive),
 m_pName(nullptr),
+m_iStartMoveTime(0),
+m_iMoveDuration(0),
+m_iIdleDuration(0),
 m_pIdle(nullptr),
 m_pWalk(nullptr)
 {
-	m_pIdle = new TAnim("Villager_Idle.tga", 1, 32, 64);
-	m_pWalk = new TAnim("Villager_Walk.tga", 7, 32, 64);
+	m_pIdle = new TAnim(s_pIdleTileSet, 1, 32, 64);
+	m_pWalk = new TAnim(s_pWalkTileSet, 7, 32, 64);
 
 	GetRandomName();
 }
@@ -67,6 +83,9 @@ TVillager::~TVillager()
 void TVillager::S_Initialize()
 {
 	s_pNamesFile = GfxFileOpenRead(NAMES_FILE);
+
+	s_pIdleTileSet = GfxTextureLoad(IDLE_TILESET_NAME);
+	s_pWalkTileSet = GfxTextureLoad(WALK_TILESET_NAME);
 }
 
 void TVillager::GetRandomName()
@@ -119,27 +138,42 @@ void TVillager::SpecificUpdate()
 {
 	RandomMove();
 
-	m_pSprite = m_pWalk->Play(m_eDirection);
+	if (m_eAction == EAction_Walking)
+	{
+		m_pSprite = m_pWalk->Play(m_eDirection);
+	}
+	
+	else
+	{
+		m_pSprite = m_pIdle->Play(m_eDirection);
+	}
 }
 
 void TVillager::RandomMove()
 {
-	int iTimePassed = GfxTimeGetMilliseconds() - m_iLastMoveChoice;
-	if (iTimePassed >= m_iNextMoveChoice)
+	if (m_eAction == EAction_Walking && GfxTimeGetMilliseconds() - m_iStartMoveTime >= m_iMoveDuration)
 	{
-		m_iLastMoveChoice = GfxTimeGetMilliseconds();
-		m_iNextMoveChoice = GfxMathGetRandomInteger(CHANGE_DIRECTION_TIME_MIN, CHANGE_DIRECTION_TIME_MAX);
-		int iSide = GfxMathGetRandomInteger(0, 1);
-		if (iSide == 0)
-		{
-			m_tVelocity.x = m_fSpeed;
-			m_eDirection = EDirection_Right;
-		}
-		else
-		{
-			m_tVelocity.x = -m_fSpeed;
-			m_eDirection = EDirection_Left;
-		}
+		m_eAction = EAction_Idle;
+		m_tVelocity.x = 0.0f;
+
+		m_iIdleDuration = GfxMathGetRandomInteger(IDLE_DURATION_MIN, IDLE_DURATION_MAX);
+	}
+
+	else if (m_eAction == EAction_Idle && GfxTimeGetMilliseconds() - (m_iStartMoveTime + m_iMoveDuration) >= m_iIdleDuration)
+	{
+		m_eAction = EAction_Walking;
+		m_tVelocity.x = m_fSpeed * (m_eDirection == EDirection_Right ? 1.0f : -1.0f);
+
+		m_iMoveDuration = GfxMathGetRandomInteger(MOVE_DURATION_MIN, MOVE_DURATION_MAX);
+		m_iStartMoveTime = GfxTimeGetMilliseconds();
+	}
+	
+	if (GfxTimeGetMilliseconds() % SECONDS >= 950 &&
+		GfxTimeGetMilliseconds() % SECONDS <= 1050 &&
+		GfxMathGetRandomFloat(0.0f, 100.0f) <= DIRECTION_CHANGE_CHANCES)
+	{
+		m_eDirection = EDirection(!m_eDirection);
+		m_tVelocity.x *= -1.0f;
 	}
 }
 

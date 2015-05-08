@@ -17,7 +17,7 @@ namespace
 
 	const TGfxVec2 HOUSE_SIZE = TGfxVec2(96.0f, 96.0f);
 
-	const int VILLAGERS_SPAWN_RATE = 10 * SECONDS;
+	const int VILLAGERS_SPAWN_RATE = 30 * SECONDS;
 	const float VILLAGERS_SIZE_Y = 32.0f;
 }
 
@@ -56,7 +56,7 @@ void THouse::SpecificUpdate()
 {
 	if (GfxTimeGetMilliseconds() - m_iLastSpawnTime >= VILLAGERS_SPAWN_RATE)
 	{
-		TMap::S_CreateVillager(m_tPos - TGfxVec2(0.0f, VILLAGERS_SIZE_Y));
+		TMap::S_CreateVillager(m_tPos - TGfxVec2(0.0f, VILLAGERS_SIZE_Y / 2.0f));
 		m_iLastSpawnTime = GfxTimeGetMilliseconds();
 	}
 }

@@ -15,9 +15,9 @@ public:
 	static void S_UpdateLocal();
 	static void S_Render();
 
-	static TGfxVec2 & S_GetWorldPosition()
+	static TGfxVec2 S_GetWorldPosition()
 	{
-		return m_tWorldPosition - TGfxVec2((GfxGetDisplaySizeX()/2.f),0.f);
+		return (m_tWorldPosition - TGfxVec2((GfxGetDisplaySizeX() / 2.0f), 0.0f));
 	}
 	
 	static void S_Scroll(float fXVelocity);
