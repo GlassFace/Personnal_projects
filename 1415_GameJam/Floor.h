@@ -21,7 +21,7 @@ public:
 
 	static void S_Update();
 
-	static void S_AddExtension(bool bSide);
+	static void S_AddExtension(Generics::EDirection eSide);
 
 
 	/*		Getters		*/
@@ -30,10 +30,12 @@ public:
 	{
 		return s_pSprite;
 	}
-	static TGfxVec2 ** GetExtensionPosition()
+
+	static TGfxVec2 ** GetExtensionsPositions()
 	{
-		return s_pPosition;
+		return s_pExtensionsPositions;
 	}
+
 	static float GetLeftSize()
 	{
 		return s_fLeftSize;
@@ -43,6 +45,7 @@ public:
 	{
 		return s_fRightSize;
 	}
+
 	static TGfxSprite * GetPlatformSprite()
 	{
 		return s_pPlatformSprite;
@@ -62,7 +65,7 @@ public:
 private:
 
 	static TGfxSprite ** s_pSprite;
-	static TGfxVec2 ** s_pPosition;
+	static TGfxVec2 ** s_pExtensionsPositions;
 
 	static TGfxTexture * s_pFloorTexture;
 	static TGfxTexture * s_pExtensionTexture;
@@ -72,8 +75,6 @@ private:
 	static float s_fLeftSize;
 	static float s_fRightSize;
 	static TGfxVec2 s_tPosition;
-
-
 };
 
 #endif

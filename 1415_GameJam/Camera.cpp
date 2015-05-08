@@ -47,7 +47,7 @@ void TCamera::S_UpdateLocal()
 		TGfxSprite * pSprite = TFloor::GetExtensionSprite()[i];
 		if (pSprite != 0)
 		{
-			TGfxVec2 * tWorldPosition = TFloor::GetExtensionPosition()[i];
+			TGfxVec2 * tWorldPosition = TFloor::GetExtensionsPositions()[i];
 			TGfxVec2 tLocalPosition = *tWorldPosition - m_tWorldPosition;
 			tLocalPosition.x += GfxGetDisplaySizeX() / 2.f;
 			GfxSpriteSetPosition(pSprite, tLocalPosition.x, tLocalPosition.y);
@@ -57,17 +57,13 @@ void TCamera::S_UpdateLocal()
 	for (int i = 0; i < TMap::S_GetVillagerCount(); i++)
 	{
 		TVillager * pVillager = TMap::S_GetVillagers()[i];
-		TGfxVec2 tLocalPosition = pVillager->GetPosition() - m_tWorldPosition;
+		TGfxVec2 tLocalPosition = pVillager->GetPos() - m_tWorldPosition;
 		tLocalPosition.x += GfxGetDisplaySizeX() / 2.f;
 		GfxSpriteSetPosition(pVillager->GetSprite(), tLocalPosition.x, tLocalPosition.y);
 	}
 
 	for (int i = 0; i < TMap::S_GetBuildingsCount(); i++)
 	{
-		if (i == 1)
-		{
-			int yo = 0;
-		}
 		TBuilding * pBuilding = TMap::S_GetBuildings()[i];
 		TGfxVec2 tLocalPosition = pBuilding->GetPos() - m_tWorldPosition;
 		tLocalPosition.x += GfxGetDisplaySizeX() / 2.0f;
@@ -83,7 +79,7 @@ void TCamera::S_UpdateLocal()
 	for (int i = 0; i < TMap::S_GetVillagerCount(); i++)
 	{
 		TVillager * pVillager = TMap::S_GetVillagers()[i];
-		TGfxVec2 tLocalPosition = pVillager->GetPosition() - m_tWorldPosition;
+		TGfxVec2 tLocalPosition = pVillager->GetPos() - m_tWorldPosition;
 		tLocalPosition.x += GfxGetDisplaySizeX() / 2.f;
 		pVillager->SetLocalName(tLocalPosition);
 	}

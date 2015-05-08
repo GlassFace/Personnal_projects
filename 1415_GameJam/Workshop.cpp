@@ -74,7 +74,7 @@ bool TWorkshop::AssignVillager(TVillager * pVillager)
 		m_pAssignedVillagers[m_iAssignedVillagersCount] = pVillager;
 		m_iAssignedVillagersCount++;
 
-		TWorker * pProfession = new TWorker(EBuildingType_Workshop);
+		TWorker * pProfession = new TWorker(m_eBuildingToCreateType);
 		pVillager->SetProfession(pProfession, this);
 
 		return true;
@@ -85,7 +85,7 @@ bool TWorkshop::AssignVillager(TVillager * pVillager)
 
 void TWorkshop::UnassignVillager(TVillager * pVillager)
 {
-	for (int i = 0;; i++)
+	for (int i = 0; i < m_iAssignedVillagersCount; i++)
 	{
 		if (m_pAssignedVillagers[i] == pVillager)
 		{
@@ -93,6 +93,8 @@ void TWorkshop::UnassignVillager(TVillager * pVillager)
 			m_pAssignedVillagers[i] = m_pAssignedVillagers[m_iAssignedVillagersCount - 1];
 			m_pAssignedVillagers[m_iAssignedVillagersCount - 1] = nullptr;
 			m_iAssignedVillagersCount--;
+
+			return;
 		}
 	}
 }
@@ -107,10 +109,6 @@ void TWorkshop::GetInput()
 	if (bCollisionX && bCollisionY)
 	{
 		m_eBuildingToCreateType = EBuildingType((m_eBuildingToCreateType + 1) % BUILDINGS_TYPES_COUNT);
-		if (m_eBuildingToCreateType == EBuildingType_Tower)
-		{
-			m_eBuildingToCreateType = EBuildingType_House;
-		}
 
 		for (int i = 0; i < m_iAssignedVillagersCount; i++)
 		{

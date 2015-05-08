@@ -1,6 +1,11 @@
 #include "flib.h"
 #include "flib_vec2.h"
+#include "generics.h"
 #include "floor.h"
+
+
+
+using namespace Generics;
 
 
 namespace
@@ -19,7 +24,7 @@ namespace
 }
 
 TGfxSprite ** TFloor::s_pSprite = nullptr;
-TGfxVec2 ** TFloor::s_pPosition = nullptr;
+TGfxVec2 ** TFloor::s_pExtensionsPositions = nullptr;
 
 TGfxTexture * TFloor::s_pFloorTexture = nullptr;
 TGfxTexture * TFloor::s_pExtensionTexture = nullptr;
@@ -46,7 +51,7 @@ TFloor::~TFloor()
 void TFloor::S_Initialize()
 {
 	s_pSprite = new TGfxSprite *[MAX_EXTENSION]{ 0 };
-	s_pPosition = new TGfxVec2 *[MAX_EXTENSION]{ 0 };
+	s_pExtensionsPositions = new TGfxVec2 *[MAX_EXTENSION]{ 0 };
 
 	s_pFloorTexture = GfxTextureLoad(SPRITE_FLOOR_NAME);
 	s_pExtensionTexture = GfxTextureLoad(SPRITE_EXTENSION_NAME);
@@ -81,26 +86,26 @@ void TFloor::S_Render()
 
 }
 
-void TFloor::S_AddExtension(bool bSide) // left = true  / right = false
+void TFloor::S_AddExtension(EDirection eSide) // left = true  / right = false
 {
 	for (int i = 0; i < MAX_EXTENSION; i++)
 	{
 		if (s_pSprite[i] == 0)
 		{
-			if (bSide)
+			if (eSide == EDirection_Left)
 			{
 				float fPositionX = (s_tPosition.x - s_fLeftSize) - (EXTENSION_SIZE_X / 2.f) + FLOOR_PENETRATION;
-				s_pPosition[i] = new TGfxVec2(fPositionX, s_tPosition.y);
+				s_pExtensionsPositions[i] = new TGfxVec2(fPositionX, s_tPosition.y);
 				s_fLeftSize += EXTENSION_SIZE_X - FLOOR_PENETRATION;
 			}
 			else
 			{
 				float fPositionX = (s_tPosition.x + s_fRightSize) + (EXTENSION_SIZE_X / 2.f) - FLOOR_PENETRATION;
-				s_pPosition[i] = new TGfxVec2(fPositionX, s_tPosition.y);
+				s_pExtensionsPositions[i] = new TGfxVec2(fPositionX, s_tPosition.y);
 				s_fRightSize += EXTENSION_SIZE_X - FLOOR_PENETRATION;
 			}
 			s_pSprite[i] = GfxSpriteCreate(s_pExtensionTexture);
-			GfxSpriteSetPosition(s_pSprite[i], s_pPosition[i]->x, s_pPosition[i]->y);
+			GfxSpriteSetPosition(s_pSprite[i], s_pExtensionsPositions[i]->x, s_pExtensionsPositions[i]->y);
 			GfxSpriteSetPivot(s_pSprite[i], EXTENSION_SIZE_X / 2.f, 0.f);
 			return;
 		}
