@@ -21,6 +21,7 @@ struct TSuicideInfo
 	{
 
 	}
+
 	TGfxSprite * m_pSuicideGauge;
 	float m_fSuicideMalus;
 	int m_iTotalSuicide;
@@ -33,24 +34,33 @@ public:
 	THUD();
 	~THUD();
 
+
+	static void S_Initialize();
+
+
+	static void S_Update();
+
+	static void S_UpdateVillagerCounter();
+	static void S_UpdateVillagerSuicideGauge();
+	static void S_OneMoreSuicide(TVillager * pVillager);
+
 	const TGfxSprite * GetVillagerCounter() const
 	{
 		return m_pVillagerCounter;
 	}
+
 	const TSuicideInfo & GetSuicideGauge() const
 	{
 		return m_tSuicideInfo;
 	}
-	static void S_Initialize();
-	static void S_Update();
-	static void S_UpdateVillagerCounter();
-	static void S_UpdateVillagerSuicideGauge();
-	static void S_OneMoreSuicide();
+
+
 	static void S_Render();
+
 private:
+
 	static TGfxSprite * m_pVillagerCounter;
 	static TSuicideInfo m_tSuicideInfo;
-
 };
 
 #endif

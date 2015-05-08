@@ -10,7 +10,7 @@ public:
 	TAnim(const char * pTileSetName, int iFPS, int iSizeX, int iSizeY);
 	~TAnim();
 
-	void Play(const TGfxVec2 & tPos);
+	TGfxSprite * Play(const Generics::EDirection eDirectionFacing);
 
 private:
 
@@ -23,6 +23,7 @@ private:
 	int m_iFrames;
 	int m_iCurrentFrame;
 
+	int m_iLastFrameChange;
 	int m_iFPS;		// Frames per second
 };
 

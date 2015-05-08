@@ -11,6 +11,21 @@ public:
 	TFloor();
 	~TFloor();
 
+
+	/*		Initialize		*/
+
+	static void S_Initialize();
+
+
+	/*		Update		*/
+
+	static void S_Update();
+
+	static void S_AddExtension(bool bSide);
+
+
+	/*		Getters		*/
+
 	static TGfxSprite ** GetExtensionSprite()
 	{
 		return s_pSprite;
@@ -23,6 +38,7 @@ public:
 	{
 		return s_fLeftSize;
 	}
+
 	static float GetRightSize()
 	{
 		return s_fRightSize;
@@ -31,15 +47,19 @@ public:
 	{
 		return s_pPlatformSprite;
 	}
+
 	static TGfxVec2 & GetPosition()
 	{
 		return s_tPosition;
 	}
 	static void S_Initialize();
 	static void S_Update();
+
+
+	/*		Render		*/
+
 	static void S_Render();
 
-	static void S_AddExtension(bool bSide);
 
 private:
 

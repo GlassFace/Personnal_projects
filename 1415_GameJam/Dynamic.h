@@ -23,6 +23,8 @@ public:
 
 protected:
 
+	Generics::EDirection m_eDirection;
+
 	float m_fSpeed;
 	TGfxVec2 m_tVelocity;
 

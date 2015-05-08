@@ -1,8 +1,10 @@
 
 #include "flib.h"
 #include "flib_vec2.h"
+#include "generics.h"
 #include "Entity.h"
 #include "Dynamic.h"
+#include "Anim.h"
 #include "Villager.h"
 #include "HUD.h"
 #include "Floor.h"
@@ -10,18 +12,19 @@
 
 
 
+using namespace Generics;
+
 namespace
 {
-	const char * const SPRITE_NAME = "Villager.tga";
 	const char * const NAMES_FILE = "Names.txt";
 
 	const int NAME_MAX_SIZE = 250;
 
 	const TGfxVec2 VILLAGER_SIZE = TGfxVec2(32.0f, 64.0f);
-	const float VILLAGER_WALK_SPEED = 64.0f;				// Pixels per seconds
+	const float VILLAGER_WALK_SPEED = 64.0f;					// Pixels per seconds
 
-	const int CHANGE_DIRECTION_TIME_MIN = 2 * 1000;				// Milliseconds
-	const int CHANGE_DIRECTION_TIME_MAX = 10 * 1000;			// Milliseconds
+	const int CHANGE_DIRECTION_TIME_MIN = 2 * SECONDS;
+	const int CHANGE_DIRECTION_TIME_MAX = 10 * SECONDS;
 }
 
 
@@ -31,19 +34,21 @@ TGfxFile * TVillager::s_pNamesFile = nullptr;
 TVillager::TVillager() :
 TDynamic(),
 m_eState(EState_Alive),
-m_pName(nullptr)
+m_pName(nullptr),
+m_pWalk(nullptr)
 {
+
 }
 
 TVillager::TVillager(const TGfxVec2 & tPos) :
 TDynamic(tPos, VILLAGER_SIZE, VILLAGER_WALK_SPEED),
 m_eState(EState_Alive),
-m_pName(nullptr)
+m_pName(nullptr),
+m_pWalk(nullptr)
 {
-	m_pSprite = GfxSpriteCreate(s_pTexture);
-	GfxSpriteSetPivot(m_pSprite, (m_tSize.x / 2.0f), m_tSize.y);
+	m_pWalk = new TAnim("Villager_Walk.tga", 7, 32, 64);
 
-	//GetRandomName();
+	GetRandomName();
 }
 
 TVillager::~TVillager()
@@ -58,8 +63,6 @@ TVillager::~TVillager()
 
 void TVillager::S_Initialize()
 {
-	s_pTexture = GfxTextureLoad(SPRITE_NAME);
-
 	s_pNamesFile = GfxFileOpenRead(NAMES_FILE);
 }
 
@@ -67,17 +70,17 @@ void TVillager::GetRandomName()
 {
 	char * pCursor = static_cast<char *>(GfxMemAlloc(GfxFileSize(s_pNamesFile) + 1));
 	GfxFileRead(s_pNamesFile, pCursor, GfxFileSize(s_pNamesFile));
+	GfxFileSeek(s_pNamesFile, 0);
 
 	int iNamesCount = 0;
 	int i = 0;
 
 	for (i = 0; pCursor != nullptr && pCursor[i] != '\0'; i++)
 	{
-		if (pCursor[0] == '\r')
+		if (pCursor[i] == '\r')
 		{
 			iNamesCount++;
 		}
-
 	}
 
 	const int iRandomNameLine = GfxMathGetRandomInteger(0, iNamesCount);
@@ -92,12 +95,16 @@ void TVillager::GetRandomName()
 		}
 	}
 
+	if (pCursor[i] == '\n')
+	{
+		i++;
+	}
+
 	char pName[NAME_MAX_SIZE] = { 0 };
 
-	for (int iLetter = 0/*, i = i*/; pCursor[i] != '\r' && pCursor[i] != '\n'; iLetter++)
+	for (int iLetter = 0/*, i = i*/; pCursor[i] != '\r' && pCursor[i] != '\n' && pCursor[i] != '\0'; iLetter++, i++)
 	{
 		pName[iLetter] = pCursor[i];
-		i++;
 	}
 
 	m_pName = new char[NAME_MAX_SIZE]{ 0 };
@@ -108,6 +115,8 @@ void TVillager::GetRandomName()
 void TVillager::SpecificUpdate()
 {
 	RandomMove();
+
+	m_pSprite = m_pWalk->Play(m_eDirection);
 }
 
 void TVillager::RandomMove()
@@ -121,10 +130,12 @@ void TVillager::RandomMove()
 		if (iSide == 0)
 		{
 			m_tVelocity.x = m_fSpeed;
+			m_eDirection = EDirection_Right;
 		}
 		else
 		{
 			m_tVelocity.x = -m_fSpeed;
+			m_eDirection = EDirection_Left;
 		}
 	}
 }
@@ -133,7 +144,7 @@ void TVillager::Die()
 {
 	m_eState = EState_Dead;
 
-	THUD::S_OneMoreSuicide();
+	THUD::S_OneMoreSuicide(this);
 }
 
 bool TVillager::IsMouseOver(const TGfxVec2 & tMousePos) const
@@ -151,5 +162,8 @@ bool TVillager::IsMouseOver(const TGfxVec2 & tMousePos) const
 
 void TVillager::Render() const
 {
-	GfxSpriteRender(m_pSprite);
+	if (m_pSprite != nullptr)
+	{
+		GfxSpriteRender(m_pSprite);
+	}
 }

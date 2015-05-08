@@ -1,5 +1,6 @@
 #include "flib.h"
 #include "flib_vec2.h"
+#include "generics.h"
 #include "Control.h"
 #include "Camera.h"
 #include "Entity.h"
@@ -12,7 +13,7 @@
 
 namespace
 {
-	const float SCROLL_SPEED = 5.f;
+	const float SCROLL_SPEED = 5.0f;
 }
 
 TVillager * TControl::s_pDraggedVillager = nullptr;
@@ -66,7 +67,7 @@ void TControl::CheckInput()
 	{
 		if (s_bClicked == true)
 		{
-			const TGfxVec2 tMousePosition(GfxInputGetMousePositionX(), GfxInputGetMousePositionY());
+			const TGfxVec2 tMousePosition = TGfxVec2(float(GfxInputGetMousePositionX()), float(GfxInputGetMousePositionY()));
 			s_pDraggedVillager->SetPosition(tMousePosition);
 			s_pDraggedVillager->SetFallVelocity(0.0f);
 		}

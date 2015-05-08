@@ -1,6 +1,7 @@
 
 #include "flib.h"
 #include "flib_vec2.h"
+#include "generics.h"
 #include "Map.h"
 #include "Entity.h"
 #include "Dynamic.h"
@@ -16,11 +17,16 @@
 
 namespace
 {
+	const char * BACKGROUND_TEXTURE = "Background.tga";
+
 	const int VILLAGERS_MAX_COUNT = 2000;
 
 	const int HOUSES_MAX_COUNT = 60;
 }
 
+
+TGfxTexture * TMap::s_pBackGroundTexture = nullptr;
+TGfxSprite * TMap::s_pBackGroundSprite = nullptr;
 
 TVillager ** TMap::s_pVillagers = nullptr;
 int TMap::s_iVillagersCount = 0;
@@ -32,6 +38,11 @@ TFloor * TMap::s_pFloor = nullptr;
 void TMap::S_Initialize()
 {
 	THUD::S_Initialize();
+
+	s_pBackGroundTexture = GfxTextureLoad(BACKGROUND_TEXTURE);
+	s_pBackGroundSprite = GfxSpriteCreate(s_pBackGroundTexture);
+	GfxSpriteSetPosition(s_pBackGroundSprite, 0.0f, 0.0f);
+
 	TCamera::S_Initialize();
 	s_pVillagers = new TVillager *[VILLAGERS_MAX_COUNT]{ 0 };
 	s_pHouses = new THouse *[HOUSES_MAX_COUNT]{ 0 };
@@ -62,6 +73,40 @@ void TMap::S_CreateHouse(const TGfxVec2 & tPos)
 	s_iHousesCount++;
 }
 
+void TMap::S_DeleteVillager(TVillager * pVillager)
+{
+	for (int i = 0;; i++)
+	{
+		if (s_pVillagers[i] == pVillager)
+		{
+			delete s_pVillagers[i];
+			s_pVillagers[i] = s_pVillagers[s_iVillagersCount];
+			s_pVillagers[s_iVillagersCount] = nullptr;
+
+			s_iVillagersCount--;
+
+			return;
+		}
+	}
+}
+
+void TMap::S_DeleteHouse(THouse * pHouse)
+{
+	for (int i = 0;; i++)
+	{
+		if (s_pHouses[i] == pHouse)
+		{
+			delete s_pVillagers[i];
+			s_pHouses[i] = s_pHouses[s_iHousesCount];
+			s_pHouses[s_iHousesCount] = nullptr;
+
+			s_iHousesCount--;
+
+			return;
+		}
+	}
+}
+
 
 void TMap::S_Update()
 {
@@ -84,15 +129,22 @@ void TMap::S_Update()
 void TMap::S_Render()
 {
 	GfxClear(EGfxColor_Black);
+	
+	if (s_pBackGroundSprite != nullptr)
+	{
+		GfxSpriteRender(s_pBackGroundSprite);
+	}
+
 	THUD::S_Render();
 	TFloor::S_Render();
+
+	for (int i = 0; i < s_iHousesCount; i++)
+	{
+		s_pHouses[i]->Render();
+	}
 
 	for (int i = 0; i < s_iVillagersCount; i++)
 	{
 		s_pVillagers[i]->Render();
-	}
-	for (int i = 0; i < s_iHousesCount; i++)
-	{
-		s_pHouses[i]->Render();
 	}
 }
