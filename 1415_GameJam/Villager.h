@@ -8,6 +8,9 @@ class TBuilding;
 
 class TVillager : public TDynamic
 {
+	friend TProfession;
+	friend class TWorker;
+
 public:
 
 	TVillager();

@@ -6,14 +6,19 @@
 #include "Entity.h"
 #include "Dynamic.h"
 #include "Villager.h"
+#include "Profession.h"
 #include "Building.h"
 #include "House.h"
+#include "Workshop.h"
 #include "Floor.h"
 #include "HUD.h"
 #include "Control.h"
 #include "Camera.h"
 #include "Bird.h"
 
+
+
+using namespace Generics;
 
 
 namespace
@@ -65,14 +70,16 @@ void TMap::S_Initialize()
 	s_pFloor->S_Initialize();
 
 	TVillager::S_Initialize();
-	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0,500));
-	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0, 500));
-	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0, 500));
+	TProfession::S_InitializeProfessions();
+	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0.0f, 500.0f));
+	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0.0f, 500.0f));
+	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0.0f, 500.0f));
 
-	THouse::S_Initialize();
-	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(300,0));
-	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(0, 0));
-	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(-300, 0));
+	TBuilding::S_InitializeBuildings();
+	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(300.0f, 0.0f));
+	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(0.0f, 0.0f));
+	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(-300.0f, 0.0f));
+	S_CreateBuilding(EBuildingType_Workshop, TFloor::GetPosition() + TGfxVec2(100.0f, 0.0f));
 
 	TBird::S_Initialize();
 	//S_CreateBird(TFloor::GetPosition() + TGfxVec2(-500, -500));
@@ -106,15 +113,18 @@ void TMap::S_CreateBuilding(EBuildingType eBuildingToCreate, const TGfxVec2 & tP
 
 	case EBuildingType_Workshop:
 
+		s_pBuildings[s_iBuildingsCount] = new TWorkshop(tPos);
+
 		break;
 
 	case EBuildingType_Tower:
 
 		break;
-}
+	}
 	
 	s_iBuildingsCount++;
 }
+
 void TMap::S_CreateBird(const TGfxVec2 & tPos)
 {
 	s_pBirds[s_iBirdsCount] = new TBird(tPos);
@@ -206,6 +216,17 @@ void TMap::S_Update()
 	S_GenerateBird();
 }
 
+void TMap::S_AssignToBuilding(TVillager * pVillager)
+{
+	for (int i = 0; i < s_iBuildingsCount; i++)
+	{
+		if (s_pBuildings[i]->DropCivilian(pVillager))
+		{
+			return;
+		}
+	}
+}
+
 bool TMap::S_EnoughRoomToConstruct(const TGfxVec2 & tPos, const float tBuildingSizeX)
 {
 	const float fConstructionLeftBorder = tPos.x - (tBuildingSizeX / 2.0f) - SIZE_BETWEEN_BUILDINGS_MIN;
@@ -219,7 +240,7 @@ bool TMap::S_EnoughRoomToConstruct(const TGfxVec2 & tPos, const float tBuildingS
 		const bool bLeftBorderInTheAir = fConstructionLeftBorder < TFloor::GetPosition().x - TFloor::GetLeftSize();
 		const bool bRightBorderInTheAir = fConstructionRightBorder > TFloor::GetPosition().x + TFloor::GetRightSize();
 
-		if (fConstructionLeftBorder >= fBuildingRightBorder ||
+		if (fConstructionLeftBorder >= fBuildingRightBorder &&
 			fConstructionRightBorder <= fBuildingLeftBorder ||
 			bLeftBorderInTheAir || bRightBorderInTheAir)
 	{

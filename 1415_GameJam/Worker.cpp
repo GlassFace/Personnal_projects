@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "Building.h"
 #include "House.h"
+#include "Workshop.h"
 #include "Dynamic.h"
 #include "Anim.h"
 #include "Villager.h"
@@ -72,9 +73,9 @@ void TWorker::S_Initialize()
 }
 
 
-void TWorker::ProfessionUpdate()
+void TWorker::ProfessionUpdate(TVillager * pVillager)
 {
-	if (m_eAction != EAction_Action && m_tDestinationToConstruct == TGfxVec2(0.0f, 0.0f))
+	if (pVillager->m_eAction != TVillager::EAction_Action && m_tDestinationToConstruct == TGfxVec2(0.0f, 0.0f))
 	{
 		if (GfxTimeGetMilliseconds() - (m_iStartConstructionTime + CONSTRUCTION_TIME) >= TIME_BETWEEN_CONSTRUCTIONS)
 		{
@@ -89,27 +90,27 @@ void TWorker::ProfessionUpdate()
 
 			} while (m_tDestinationToConstruct == TGfxVec2(0.0f, 0.0f));
 
-			m_eDirection = (m_tDestinationToConstruct - m_tPos).x >= 0.0f ? EDirection_Right : EDirection_Left;
+			pVillager->m_eDirection = (m_tDestinationToConstruct - pVillager->m_tPos).x >= 0.0f ? EDirection_Right : EDirection_Left;
 		}
 		
 		else
 		{
-			RandomMove();
+			pVillager->RandomMove();
 		}
 	}
 
-	else if (m_eAction == EAction_Walking && m_tPos != m_tDestinationToConstruct)
+	else if (pVillager->m_eAction == TVillager::EAction_Walking && pVillager->m_tPos != m_tDestinationToConstruct)
 	{
-		if ((m_tDestinationToConstruct - m_tPos).x <= ((m_fSpeed / GfxTimeFrameGetCurrentFPS())))
+		if ((m_tDestinationToConstruct - pVillager->m_tPos).x <= ((pVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS())))
 		{
-			m_tPos = m_tDestinationToConstruct;
+			pVillager->m_tPos = m_tDestinationToConstruct;
 
-			m_eAction = EAction_Action;
+			pVillager->m_eAction = TVillager::EAction_Action;
 			m_iStartConstructionTime = GfxTimeGetMilliseconds();
 		}
 	}
 
-	else if (m_eAction == EAction_Action)
+	else if (pVillager->m_eAction == TVillager::EAction_Action)
 	{
 		if (GfxTimeGetMilliseconds() - m_iStartConstructionTime >= CONSTRUCTION_TIME)
 		{
@@ -117,8 +118,24 @@ void TWorker::ProfessionUpdate()
 
 			m_iStartConstructionTime = 0;
 
-			m_eAction = EAction_Idle;
+			pVillager->m_eAction = TVillager::EAction_Idle;
 		}
+	}
+
+
+	if (pVillager->m_eAction == TVillager::EAction_Walking)
+	{
+		pVillager->m_pSprite = m_pWalk->Play(pVillager->m_eDirection);
+	}
+
+	else if (pVillager->m_eAction == TVillager::EAction_Action)
+	{
+		pVillager->m_pSprite = m_pAction->Play(pVillager->m_eDirection);
+	}
+
+	else
+	{
+		pVillager->m_pSprite = m_pIdle->Play(pVillager->m_eDirection);
 	}
 }
 
@@ -145,6 +162,8 @@ float TWorker::GetBuildingSize()
 		break;
 
 	case EBuildingType_Workshop:
+
+		fSize = TWorkshop::S_GetSizeX();
 
 		break;
 

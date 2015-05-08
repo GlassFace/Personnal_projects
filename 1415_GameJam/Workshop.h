@@ -11,12 +11,21 @@ public:
 	~TWorkshop();
 
 
+	static void S_Initialize();
+
+
 	void SpecificUpdate();
 
 	bool AssignVillager(TVillager * pVillager);
 	void UnassignVillager(TVillager * pVillager);
 
 	void GetInput();
+
+	static float S_GetSizeX();
+
+private:
+
+	static TGfxTexture * s_pTexture;
 };
 
 #endif

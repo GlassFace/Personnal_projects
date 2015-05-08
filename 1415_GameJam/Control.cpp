@@ -77,6 +77,12 @@ void TControl::CheckInput()
 	if (GfxInputIsJustReleased(EGfxInputID_MouseLeft))
 	{
 		s_bClicked = false;
+
+		if (s_pDraggedVillager != nullptr)
+		{
+			TMap::S_AssignToBuilding(s_pDraggedVillager);
+		}
+
 		s_pDraggedVillager = nullptr;
 	}
 }

@@ -3,10 +3,12 @@
 #include "flib_vec2.h"
 #include "generics.h"
 #include "Entity.h"
+#include "Map.h"
 #include "Dynamic.h"
 #include "Anim.h"
 #include "Villager.h"
 #include "Profession.h"
+#include "Worker.h"
 #include "HUD.h"
 #include "Floor.h"
 #include <string.h>
@@ -66,7 +68,7 @@ TVillager::TVillager(const TGfxVec2 & tPos) :
 TDynamic(tPos, VILLAGER_SIZE, VILLAGER_WALK_SPEED),
 m_eState(EState_Alive),
 m_pName(nullptr),
-m_iAge(0),
+m_iAge(60),
 m_eAction(EAction_Idle),
 m_pProfession(nullptr),
 m_pAssignedBuilding(nullptr),
@@ -165,7 +167,7 @@ void TVillager::SpecificUpdate()
 	
 	else
 	{
-		m_pProfession->ProfessionUpdate();
+		m_pProfession->ProfessionUpdate(this);
 	}
 }
 

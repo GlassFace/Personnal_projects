@@ -10,6 +10,12 @@
 #include "Building.h"
 #include "Profession.h"
 #include "Worker.h"
+#include "House.h"
+#include "Workshop.h"
+
+
+
+using namespace Generics;
 
 
 TBuilding::TBuilding() :
@@ -44,15 +50,34 @@ TBuilding::~TBuilding()
 }
 
 
+void TBuilding::S_InitializeBuildings()
+{
+	THouse::S_Initialize();
+	TWorkshop::S_Initialize();
+}
+
+
 void TBuilding::Update()
 {
 	SpecificUpdate();
 }
 
-void TBuilding::DropCivilian(TVillager & tVillager)
+bool TBuilding::DropCivilian(TVillager * pVillager)
 {
-	if (tVillager.IsOldEnough(m_iRequiredAge))
+	const TGfxVec2 tCurrentMouse = GetCurrentMouse();
+
+	const bool bCollisionX = tCurrentMouse.x >= m_tPos.x - (m_tSize.x / 2.0f) && tCurrentMouse.x <= m_tPos.x + (m_tSize.x / 2.0f);
+	const bool bCollisionY = tCurrentMouse.y >= m_tPos.y - m_tSize.y && tCurrentMouse.y <= m_tPos.y;
+
+	if (bCollisionX && bCollisionY)
 	{
-		AssignVillager(&tVillager);
+		if (pVillager->IsOldEnough(m_iRequiredAge))
+		{
+			AssignVillager(pVillager);
+		}
+
+		return true;
 	}
+	
+	return false;
 }

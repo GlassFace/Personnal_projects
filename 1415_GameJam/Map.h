@@ -38,6 +38,8 @@ public:
 
 	static void S_Update();
 
+	static void S_AssignToBuilding(TVillager * pVillager);
+
 	static bool S_EnoughRoomToConstruct(const TGfxVec2 & tPos, const float tBuildingSizeX);
 
 	/*		Getters		*/
