@@ -97,7 +97,7 @@ void TMap::S_Initialize()
 
 void TMap::S_CreateVillager(const TGfxVec2 & tPos)
 {
-	s_pVillagers[s_iVillagersCount] = new TVillager(tPos, s_iVillagersCount);
+	s_pVillagers[s_iVillagersCount] = new TVillager(tPos);
 	s_iVillagersCount++;
 }
 
@@ -120,6 +120,14 @@ void TMap::S_CreateBuilding(EBuildingType eBuildingToCreate, const TGfxVec2 & tP
 		s_iBuildingsCount++;
 
 		break;
+
+	case EBuildingType_Barricade:
+	{
+		const EDirection eSide = tPos.x > TFloor::GetPosition().x ? EDirection_Right : EDirection_Left;
+		TFloor::S_AddExtension(eSide);
+
+		break;
+	}
 
 	/*case EBuildingType_Tower:
 

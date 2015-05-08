@@ -23,57 +23,15 @@ class TVillager : public TDynamic
 public:
 
 	TVillager();
-	TVillager(const TGfxVec2 & tPos, const int iNum);
+	TVillager(const TGfxVec2 & tPos);
 	~TVillager();
 
 
 	static void S_Initialize();
 
-	TGfxSprite * GetNameSprite() const
-	{
-		return m_pSpriteName;
-	}
-	const TGfxVec2 & GetNameLocal() const
-	{
-		return m_tLocalName;
-	}
-
-	TGfxSprite * GetSprite() const
-	{
-		return m_pSprite;
-	}
-
-	const TGfxVec2 & GetPosition() const
-	{
-		return m_tPos;
-	}
-
-	EAction GetAction() const
-	{
-		return m_eAction;
-	}
-
-	char * GetName() const
-	{
-		return m_pName;
-	}
-
-	TProfession * GetProfession()
-	{
-		return m_pProfession;
-	}
-
 	void GetRandomName();
 
-	void SetPosition(const TGfxVec2 & tPos)
-	{
-		 m_tPos = tPos + TGfxVec2(0.0f, m_tSize.y / 2.0f);
-		 GfxSpriteSetPosition(m_pSprite, m_tPos.x, m_tPos.y);
-	}
-	void SetLocalName(const TGfxVec2 & tPos)
-	{
-		m_tLocalName = tPos;
-	}
+
 	void SpecificUpdate();
 
 	void RandomMove();
@@ -84,10 +42,46 @@ public:
 	bool IsOldEnough(const int iAgeNeeded) const;
 	bool IsMouseOver(const TGfxVec2 & tMousePos) const;
 
-	void SetProfession(TProfession * pProfession, const TBuilding * pBuilding);
+	char * GetName() const
+	{
+		return m_pName;
+	}
+
+	TGfxSprite * GetNameSprite() const
+	{
+		return m_pSpriteName;
+	}
+
+	const TGfxVec2 & GetNameLocal() const
+	{
+		return m_tLocalName;
+	}
+
+	EAction GetAction() const
+	{
+		return m_eAction;
+	}
+
+	TProfession * GetProfession()
+	{
+		return m_pProfession;
+	}
+
+	void SetPosition(const TGfxVec2 & tPos)
+	{
+		m_tPos = tPos + TGfxVec2(0.0f, m_tSize.y / 2.0f);
+		GfxSpriteSetPosition(m_pSprite, m_tPos.x, m_tPos.y);
+	}
+
+	void SetLocalName(const TGfxVec2 & tPos)
+	{
+		m_tLocalName = tPos;
+	}
+
+	void SetProfession(TProfession * pProfession, TBuilding * pBuilding);
 	void Unassign();
+
 	void SetAction(EAction eAction);
-	void SetProfession(TProfession * pProfession);
 
 
 	void Render() const;
@@ -110,7 +104,7 @@ protected:
 	EAction m_eAction;
 
 	TProfession * m_pProfession;
-	const TBuilding * m_pAssignedBuilding;
+	TBuilding * m_pAssignedBuilding;
 
 	int m_iStartMoveTime;
 	int m_iMoveDuration;

@@ -71,6 +71,7 @@ m_iHitLeft(HIT_TO_KILL)
 
 TBird::~TBird()
 {
+
 }
 
 
@@ -113,13 +114,12 @@ void TBird::Die()
 
 void TBird::FindTarget()
 {
-
 	for (int i = 0; i < TMap::S_GetVillagerCount(); i++)
 	{
 		TVillager * pVillager = TMap::S_GetVillagers()[i];
-		pVillager->GetPosition();
-		if (TFloor::GetPosition().x - (TFloor::GetLeftSize() * TARGET_ZONE_RATIO) < pVillager->GetPosition().x
-			&& TFloor::GetPosition().x + (TFloor::GetRightSize() * TARGET_ZONE_RATIO) > pVillager->GetPosition().x)
+
+		if (TFloor::GetPosition().x - (TFloor::GetLeftSize() * TARGET_ZONE_RATIO) < pVillager->GetPos().x
+			&& TFloor::GetPosition().x + (TFloor::GetRightSize() * TARGET_ZONE_RATIO) > pVillager->GetPos().x)
 		{
 			if (pVillager->GetAction() != EAction_Grab)
 			{
@@ -129,10 +129,10 @@ void TBird::FindTarget()
 		}
 	}
 }
+
 void TBird::GoToTarget()
 {
-
-	TGfxVec2 tDirection = m_pTarget->GetPosition() - m_tPos;
+	TGfxVec2 tDirection = m_pTarget->GetPos() - m_tPos;
 	tDirection = tDirection.SquaredLength() >= 0.001f ? tDirection.Normalize() : TGfxVec2(0.0f, 0.0f);
 
 	m_eDirection = tDirection.x >= 0.0f ? EDirection_Right : EDirection_Left;
@@ -147,6 +147,7 @@ void TBird::GoToTarget()
 		m_eAction = EBirdAction_DelivringTarget;
 	}
 }
+
 void TBird::Escape()
 {
 	if ((LEFT_ESCAPE_POINT - m_tPos).Length() < (RIGHT_ESCAPE_POINT - m_tPos).Length())
@@ -159,6 +160,7 @@ void TBird::Escape()
 		m_tVelocity = tDirection * (m_fSpeed * ((GfxTimeGetMilliseconds() - float(m_iLastMove)) / SECONDS));
 		m_iLastMove = GfxTimeGetMilliseconds();
 	}
+
 	else
 	{
 		TGfxVec2 tDirection = RIGHT_ESCAPE_POINT - m_tPos;
@@ -169,15 +171,17 @@ void TBird::Escape()
 		m_tVelocity = tDirection * (m_fSpeed * ((GfxTimeGetMilliseconds() - float(m_iLastMove)) / SECONDS));
 		m_iLastMove = GfxTimeGetMilliseconds();
 	}
+
 	m_pTarget->SetPosition(m_tPos);
 
-	if (m_tPos.x < LEFT_ESCAPE_POINT.x + (EMPTY_SPACE_RANGE/2.f))
+	if (m_tPos.x < LEFT_ESCAPE_POINT.x + (EMPTY_SPACE_RANGE/2.0f))
 	{
 		m_pTarget->SetAction(EAction_Idle);
 		FindTarget();
 		m_eAction = EBirdAction_ToTarget;
 	}
-	if (m_tPos.x > RIGHT_ESCAPE_POINT.x - (EMPTY_SPACE_RANGE / 2.f))
+
+	if (m_tPos.x > RIGHT_ESCAPE_POINT.x - (EMPTY_SPACE_RANGE / 2.0f))
 	{
 		m_pTarget->SetAction(EAction_Idle);
 		FindTarget();
@@ -202,9 +206,11 @@ bool TBird::IsMouseOver(const TGfxVec2 & tMousePos) const
 
 	return false;
 }
+
 void TBird::TakeHit()
 {
 	m_iHitLeft--;
+
 	if (m_iHitLeft == 0 )
 	{
 		Die();
@@ -217,6 +223,7 @@ void TBird::TakeHit()
 		}
 	}
 }
+
 void TBird::Render() const
 {
 	if (m_pSprite != nullptr)

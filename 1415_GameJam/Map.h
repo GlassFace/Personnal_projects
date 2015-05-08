@@ -6,6 +6,7 @@ enum EBuildingType : int
 {
 	EBuildingType_House,
 	EBuildingType_Workshop,
+	EBuildingType_Barricade,
 	EBuildingType_Tower
 };
 

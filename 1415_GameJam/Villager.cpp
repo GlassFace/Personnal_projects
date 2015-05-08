@@ -9,6 +9,7 @@
 #include "Villager.h"
 #include "Profession.h"
 #include "Worker.h"
+#include "Building.h"
 #include "HUD.h"
 #include "Floor.h"
 #include <string.h>
@@ -66,7 +67,7 @@ m_pWalk(nullptr)
 
 }
 
-TVillager::TVillager(const TGfxVec2 & tPos, const int iNum) :
+TVillager::TVillager(const TGfxVec2 & tPos) :
 TDynamic(tPos, VILLAGER_SIZE, VILLAGER_WALK_SPEED),
 m_eState(EState_Alive),
 m_tLocalName(0, 0),
@@ -90,6 +91,11 @@ m_pWalk(nullptr)
 
 TVillager::~TVillager()
 {
+	if (m_pProfession != nullptr)
+	{
+		m_pAssignedBuilding->UnassignVillager(this);
+	}
+
 	if (m_pName != nullptr)
 	{
 		delete[] m_pName;
@@ -262,7 +268,7 @@ void TVillager::SetAction(EAction eAction)
 	m_eAction = eAction;
 }
 
-void TVillager::SetProfession(TProfession * pProfession, const TBuilding * pBuilding)
+void TVillager::SetProfession(TProfession * pProfession, TBuilding * pBuilding)
 {
 	m_pProfession = pProfession;
 	m_pAssignedBuilding = pBuilding;
