@@ -25,6 +25,8 @@ namespace
 	const int HOUSES_MAX_COUNT = 60;
 
 	const int BIRDS_MAX_COUNT = 60;
+
+	const float BIRDS_GENERATION_RATE = 15.f;
 }
 
 
@@ -40,6 +42,8 @@ int TMap::s_iBirdsCount = 0;
 
 TFloor * TMap::s_pFloor = nullptr;
 
+int TMap::s_iLastTimeBirdGeneration = 0;
+
 
 void TMap::S_Initialize()
 {
@@ -48,6 +52,8 @@ void TMap::S_Initialize()
 	s_pBackGroundTexture = GfxTextureLoad(BACKGROUND_TEXTURE);
 	s_pBackGroundSprite = GfxSpriteCreate(s_pBackGroundTexture);
 	GfxSpriteSetPosition(s_pBackGroundSprite, 0.0f, 0.0f);
+
+	s_iLastTimeBirdGeneration = GfxTimeGetMilliseconds();
 
 	TCamera::S_Initialize();
 	s_pVillagers = new TVillager *[VILLAGERS_MAX_COUNT]{ 0 };
@@ -67,7 +73,7 @@ void TMap::S_Initialize()
 	S_CreateHouse(TFloor::GetPosition() + TGfxVec2(-300, 0));
 
 	TBird::S_Initialize();
-	S_CreateBird(TFloor::GetPosition() + TGfxVec2(-500, -500));
+	//S_CreateBird(TFloor::GetPosition() + TGfxVec2(-500, -500));
 	
 
 
@@ -177,8 +183,18 @@ void TMap::S_Update()
 	{
 		s_pHouses[i]->Update();
 	}
+	S_GenerateBird();
+
 }
 
+void TMap::S_GenerateBird()
+{
+	if (BIRDS_GENERATION_RATE * 1000.f < (GfxTimeGetMilliseconds() - s_iLastTimeBirdGeneration))
+	{
+		S_CreateBird(TFloor::GetPosition() + TGfxVec2(-500, -500));
+		s_iLastTimeBirdGeneration = GfxTimeGetMilliseconds();
+	}
+}
 
 void TMap::S_Render()
 {

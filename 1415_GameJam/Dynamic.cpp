@@ -60,45 +60,6 @@ void TDynamic::Move()
 		m_tPos.y = TFloor::GetPosition().y;
 		m_tVelocity.y = 0.f;
 	}
-	//// Move on Y
-	//if (m_tPos.y + 10.f < TFloor::GetPosition().y
-	//	|| (m_tPos.x < TFloor::GetPosition().x - TFloor::GetLeftSize()
-	//	|| m_tPos.x > TFloor::GetPosition().x + TFloor::GetRightSize()))
-	//{
-	//	if (m_tVelocity.y < MAX_FALL_SPEED)
-	//	{
-	//		m_tVelocity.y += GRAVITY;
-
-	//		if (m_tVelocity.y > MAX_FALL_SPEED)
-	//		{
-	//			m_tVelocity.y = MAX_FALL_SPEED;
-	//		}
-	//	}
-
-	//	m_tPos.y += m_tVelocity.y;
-
-	//	if (m_tPos.y > 1080.0f)
-	//	{
-	//		Die();
-	//	}
-
-	//	GfxSpriteSetPosition(m_pSprite, m_tPos.x, m_tPos.y);
-	//	m_iLastMove = GfxTimeGetMilliseconds();
-	//}
-
-	//else
-	//{
-	//	m_tVelocity.y = 0.0f;
-	//	m_tPos.y = TFloor::GetPosition().y;
-
-	//	float fTimePassed = float((GfxTimeGetMilliseconds() - m_iLastMove)) / float(SECONDS);
-
-	//	m_tPos.x += m_tVelocity.x * fTimePassed;
-	//	GfxSpriteSetPosition(m_pSprite, m_tPos.x, m_tPos.y);
-	//	m_iLastMove = GfxTimeGetMilliseconds();
-	//}
-
-
 }
 
 void TDynamic::SetFallVelocity(const float fVelocity)

@@ -18,10 +18,16 @@ namespace
 	const char * const FLY_TILESET_NAME = "Bird_Fly.tga";
 
 	const TGfxVec2 BIRD_SIZE = TGfxVec2(32.0f, 64.0f);
-	const float BIRD_FLY_SPEED = 64.0f;					// Pixels per seconds
+	const float BIRD_FLY_SPEED = 128.0f;					// Pixels per seconds
 
 	const float TARGET_ZONE_RATIO = 75.f / PERCENTS;
 	const float ESCAPE_ANGLE = 60.f; // Degree;
+
+	enum EStateChase
+	{
+		EState_GoingOnTarget = 0,
+		EState_Escape,
+	};
 }
 
 
@@ -96,9 +102,14 @@ void TBird::FindTarget()
 void TBird::GoToTarget()
 {
 	TGfxVec2 tDirection = m_pTarget->GetPosition() - m_tPos;
-	tDirection = tDirection.SquaredLength() >= -0.0f && tDirection.SquaredLength() <= 0.01f ? tDirection.Normalize() : TGfxVec2(0.0f, 0.0f);
+	tDirection = tDirection.Normalize();
 	m_tVelocity = tDirection * (m_fSpeed * ((GfxTimeGetMilliseconds() - float(m_iLastMove)) / SECONDS));
 	m_iLastMove = GfxTimeGetMilliseconds();
+
+	if (m_pTarget->IsMouseOver(m_tPos))
+	{
+		
+	}
 }
 void TBird::Escape()
 {

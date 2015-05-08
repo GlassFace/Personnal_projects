@@ -55,7 +55,7 @@ protected:
 	};
 
 	EState m_eState;
-
+	//EStateChase m_eChaseState;
 	TVillager * m_pTarget;
 
 	TAnim * m_pFly;

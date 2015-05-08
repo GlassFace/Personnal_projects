@@ -34,6 +34,9 @@ namespace
 
 	const int CHANGE_DIRECTION_TIME_MIN = 2 * SECONDS;
 	const int CHANGE_DIRECTION_TIME_MAX = 10 * SECONDS;
+
+	const float GRAVITY = 0.2f;
+	const float MAX_FALL_SPEED = 20.0f;
 }
 
 
@@ -151,30 +154,49 @@ void TVillager::SpecificUpdate()
 
 void TVillager::RandomMove()
 {
-	GfxDbgPrintf("%f, %f\n", m_tVelocity.x, m_tVelocity.y);
-	if (m_eAction == EAction_Walking && GfxTimeGetMilliseconds() - m_iStartMoveTime >= m_iMoveDuration)
+	// Move on Y
+	if (m_tPos.y < TFloor::GetPosition().y
+		|| (m_tPos.x < TFloor::GetPosition().x - TFloor::GetLeftSize()
+		|| m_tPos.x > TFloor::GetPosition().x + TFloor::GetRightSize()))
 	{
-		m_eAction = EAction_Idle;
-		m_tVelocity.x = 0.0f;
+		if (m_tVelocity.y < MAX_FALL_SPEED)
+		{
+			m_tVelocity.y += GRAVITY;
 
-		m_iIdleDuration = GfxMathGetRandomInteger(IDLE_DURATION_MIN, IDLE_DURATION_MAX);
+			if (m_tVelocity.y > MAX_FALL_SPEED)
+			{
+				m_tVelocity.y = MAX_FALL_SPEED;
+			}
+		}
+
+		m_tPos.y += m_tVelocity.y;
 	}
-
-	else if (m_eAction == EAction_Idle && GfxTimeGetMilliseconds() - (m_iStartMoveTime + m_iMoveDuration) >= m_iIdleDuration)
+	else
 	{
-		m_eAction = EAction_Walking;
-		m_tVelocity.x = (m_fSpeed / (GfxTimeFrameGetCurrentFPS() != 0.0f ? GfxTimeFrameGetCurrentFPS() : 60.0f)) * (m_eDirection == EDirection_Right ? 1.0f : -1.0f);
+		if (m_eAction == EAction_Walking && GfxTimeGetMilliseconds() - m_iStartMoveTime >= m_iMoveDuration)
+		{
+			m_eAction = EAction_Idle;
+			m_tVelocity.x = 0.0f;
 
-		m_iMoveDuration = GfxMathGetRandomInteger(MOVE_DURATION_MIN, MOVE_DURATION_MAX);
-		m_iStartMoveTime = GfxTimeGetMilliseconds();
-	}
-	
-	if (GfxTimeGetMilliseconds() % SECONDS >= 950 &&
-		GfxTimeGetMilliseconds() % SECONDS <= 1050 &&
-		GfxMathGetRandomFloat(0.0f, 100.0f) <= DIRECTION_CHANGE_CHANCES)
-	{
-		m_eDirection = EDirection(!m_eDirection);
-		m_tVelocity.x *= -1.0f;
+			m_iIdleDuration = GfxMathGetRandomInteger(IDLE_DURATION_MIN, IDLE_DURATION_MAX);
+		}
+
+		else if (m_eAction == EAction_Idle && GfxTimeGetMilliseconds() - (m_iStartMoveTime + m_iMoveDuration) >= m_iIdleDuration)
+		{
+			m_eAction = EAction_Walking;
+			m_tVelocity.x = (m_fSpeed / (GfxTimeFrameGetCurrentFPS() != 0.0f ? GfxTimeFrameGetCurrentFPS() : 60.0f)) * (m_eDirection == EDirection_Right ? 1.0f : -1.0f);
+
+			m_iMoveDuration = GfxMathGetRandomInteger(MOVE_DURATION_MIN, MOVE_DURATION_MAX);
+			m_iStartMoveTime = GfxTimeGetMilliseconds();
+		}
+
+		if (GfxTimeGetMilliseconds() % SECONDS >= 950 &&
+			GfxTimeGetMilliseconds() % SECONDS <= 1050 &&
+			GfxMathGetRandomFloat(0.0f, 100.0f) <= DIRECTION_CHANGE_CHANCES)
+		{
+			m_eDirection = EDirection(!m_eDirection);
+			m_tVelocity.x *= -1.0f;
+		}
 	}
 }
 
