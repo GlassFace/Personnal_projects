@@ -30,16 +30,20 @@ TGfxTexture * TWorkshop::s_pTexture = nullptr;
 
 TWorkshop::TWorkshop() :
 TBuilding(),
+m_pTypeSprite(),
 m_eBuildingToCreateType(EBuildingType_Workshop)
 {
+
 	m_eBuildingType = EBuildingType_Workshop;
 }
 
 TWorkshop::TWorkshop(const TGfxVec2 & tPos) :
 TBuilding(tPos, WORKSHOP_SIZE),
+m_pTypeSprite(),
 m_eBuildingToCreateType(EBuildingType_Workshop)
 {
 	m_pAssignedVillagers = new TVillager*[ASSIGNED_VILLAGERS_MAX];
+
 
 	m_eBuildingType = EBuildingType_Workshop;
 
@@ -107,6 +111,7 @@ void TWorkshop::GetInput()
 	if (bCollisionX && bCollisionY)
 	{
 		m_eBuildingToCreateType = EBuildingType((m_eBuildingToCreateType + 1) % BUILDINGS_TYPES_COUNT);
+
 
 		for (int i = 0; i < m_iAssignedVillagersCount; i++)
 		{
