@@ -34,6 +34,7 @@ TGfxTexture * TWorker::s_pWalkTileSet = nullptr;
 TGfxTexture * TWorker::s_pActionTileSet = nullptr;
 
 TWorker::TWorker() :
+TProfession(),
 m_pIdle(nullptr),
 m_pWalk(nullptr),
 m_pAction(nullptr),
@@ -46,7 +47,8 @@ m_eConstructionToDo()
 	m_pAction = new TAnim(s_pActionTileSet, 7, 32, 64);
 }
 
-TWorker::TWorker(EBuildingType eBuildingToConstruct) :
+TWorker::TWorker(EBuildingType eBuildingToConstruct, TVillager * pLinkedVillager) :
+TProfession(pLinkedVillager),
 m_pIdle(nullptr),
 m_pWalk(nullptr),
 m_pAction(nullptr),
@@ -73,72 +75,117 @@ void TWorker::S_Initialize()
 }
 
 
-void TWorker::ProfessionUpdate(TVillager * pVillager)
+void TWorker::ProfessionUpdate()
 {
-	if (pVillager->m_eAction != EAction_Action && m_tDestinationToConstruct == TGfxVec2(0.0f, 0.0f))
+	if (m_pLinkedVillager->m_eAction != EAction_Action && m_tDestinationToConstruct == TGfxVec2(0.0f, 0.0f))
 	{
 		if (GfxTimeGetMilliseconds() - (m_iStartConstructionTime + CONSTRUCTION_TIME) >= TIME_BETWEEN_CONSTRUCTIONS)			// Find a spot to build after waiting
 		{
-			do
+			if (m_eConstructionToDo != EBuildingType_Barricade)
 			{
-				const TGfxVec2 tRandomPos = TGfxVec2(GfxMathGetRandomFloat(TFloor::GetPosition().x - TFloor::GetLeftSize(), TFloor::GetPosition().x + TFloor::GetRightSize()), TFloor::GetPosition().y);
+				int iAttempts = 0;
 
-				if (TMap::S_EnoughRoomToConstruct(tRandomPos, GetBuildingSize()))
+				do
 				{
-					m_tDestinationToConstruct = tRandomPos;
+					const TGfxVec2 tRandomPos = TGfxVec2(GfxMathGetRandomFloat(TFloor::GetPosition().x - TFloor::GetLeftSize(), TFloor::GetPosition().x + TFloor::GetRightSize()), TFloor::GetPosition().y);
+
+					if (TMap::S_EnoughRoomToConstruct(tRandomPos, GetBuildingSize()))
+					{
+						m_tDestinationToConstruct = tRandomPos;
+					}
+
+					iAttempts++;
+
+				} while (m_tDestinationToConstruct == TGfxVec2(0.0f, 0.0f) && iAttempts < 100);
+			}
+			
+			else
+			{
+				const EDirection eSide = GfxMathGetRandomInteger(0, 1) == 1 ? EDirection_Right : EDirection_Left;
+
+				switch (eSide)
+				{
+				case EDirection_Right:
+
+					m_tDestinationToConstruct = TFloor::GetPosition() + TGfxVec2(TFloor::GetRightSize(), 0.0f);
+
+					break;
+
+				case EDirection_Left:
+
+					m_tDestinationToConstruct = TFloor::GetPosition() - TGfxVec2(TFloor::GetRightSize(), 0.0f);
+
+					break;
 				}
+			}
 
-			} while (m_tDestinationToConstruct == TGfxVec2(0.0f, 0.0f));
 
-			pVillager->m_eAction = EAction_Walking;
-			pVillager->m_eDirection = (m_tDestinationToConstruct - pVillager->m_tPos).x >= 0.0f ? EDirection_Right : EDirection_Left;
+			if (m_tDestinationToConstruct != TGfxVec2(0.0f, 0.0f))
+			{
+				m_pLinkedVillager->m_eAction = EAction_Walking;
+				m_pLinkedVillager->m_eDirection = (m_tDestinationToConstruct - m_pLinkedVillager->m_tPos).x >= 0.0f ? EDirection_Right : EDirection_Left;
+			}
 		}
 
 		
 		else																													// Wait
 		{
-			pVillager->RandomMove();
+			m_pLinkedVillager->RandomMove();
 		}
 	}
 
-	else if (pVillager->m_eAction == EAction_Walking && pVillager->m_tPos != m_tDestinationToConstruct)							// Go to spot
+	else if (m_pLinkedVillager->m_eAction == EAction_Walking && m_pLinkedVillager->m_tPos != m_tDestinationToConstruct)							// Go to spot
 	{
-		if ((m_tDestinationToConstruct - pVillager->m_tPos).x <= (pVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS()) &&
-			(m_tDestinationToConstruct - pVillager->m_tPos).x >= -(pVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS()))
+		if (m_eConstructionToDo != EBuildingType_Barricade &&
+			!TMap::S_EnoughRoomToConstruct(m_tDestinationToConstruct, GetBuildingSize()))
 		{
-			pVillager->m_tPos = m_tDestinationToConstruct;
+			m_pLinkedVillager->m_eAction = EAction_Idle;
+			m_tDestinationToConstruct = TGfxVec2(0.0f, 0.0f);
+		}
 
-			pVillager->m_eAction = EAction_Action;
+		else if ((m_tDestinationToConstruct - m_pLinkedVillager->m_tPos).x <= (m_pLinkedVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS()) &&
+				 (m_tDestinationToConstruct - m_pLinkedVillager->m_tPos).x >= -(m_pLinkedVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS()))
+		{
+			m_pLinkedVillager->m_tPos = m_tDestinationToConstruct;
+
+			m_pLinkedVillager->m_eAction = EAction_Action;
 
 			m_iStartConstructionTime = GfxTimeGetMilliseconds();
 		}
 	}
 
-	else if (pVillager->m_eAction == EAction_Action)																			// Build
+	else if (m_pLinkedVillager->m_eAction == EAction_Action)																			// Build
 	{
+		if (m_eConstructionToDo != EBuildingType_Barricade &&
+			!TMap::S_EnoughRoomToConstruct(m_tDestinationToConstruct, GetBuildingSize()))
+		{
+			m_pLinkedVillager->m_eAction = EAction_Idle;
+			m_tDestinationToConstruct = TGfxVec2(0.0f, 0.0f);
+		}
+
 		if (GfxTimeGetMilliseconds() - m_iStartConstructionTime >= CONSTRUCTION_TIME)
 		{
 			TMap::S_CreateBuilding(m_eConstructionToDo, m_tDestinationToConstruct);
 
 			m_tDestinationToConstruct = TGfxVec2(0.0f, 0.0f);
-			pVillager->m_eAction = EAction_Idle;
+			m_pLinkedVillager->m_eAction = EAction_Idle;
 		}
 	}
 
 
-	if (pVillager->m_eAction == EAction_Walking)
+	if (m_pLinkedVillager->m_eAction == EAction_Walking)
 	{
-		pVillager->m_pSprite = m_pWalk->Play(pVillager->m_eDirection);
+		m_pLinkedVillager->m_pSprite = m_pWalk->Play(m_pLinkedVillager->m_eDirection);
 	}
 
-	else if (pVillager->m_eAction == EAction_Action)
+	else if (m_pLinkedVillager->m_eAction == EAction_Action)
 	{
-		pVillager->m_pSprite = m_pAction->Play(pVillager->m_eDirection);
+		m_pLinkedVillager->m_pSprite = m_pAction->Play(m_pLinkedVillager->m_eDirection);
 	}
 
 	else
 	{
-		pVillager->m_pSprite = m_pIdle->Play(pVillager->m_eDirection);
+		m_pLinkedVillager->m_pSprite = m_pIdle->Play(m_pLinkedVillager->m_eDirection);
 	}
 }
 
@@ -148,9 +195,14 @@ void TWorker::SetBuildingsToCreate(EBuildingType eBuildingToConstruct)
 
 	GfxDbgPrintf("%s\n", m_eConstructionToDo == EBuildingType_Barricade ? "Barricade" : m_eConstructionToDo == EBuildingType_House ? "House" : "Workshop");
 
-	if (m_iStartConstructionTime != 0)
+	if (m_tDestinationToConstruct != TGfxVec2(0.0f, 0.0f))
 	{
+		GfxDbgPrintf("Yo\n");
+
 		m_iStartConstructionTime = GfxTimeGetMilliseconds();
+
+		m_pLinkedVillager->m_eAction = EAction_Idle;
+		m_tDestinationToConstruct = TGfxVec2(0.0f, 0.0f);
 	}
 }
 
@@ -169,6 +221,12 @@ float TWorker::GetBuildingSize()
 	case EBuildingType_Workshop:
 
 		fSize = TWorkshop::S_GetSizeX();
+
+		break;
+
+	case EBuildingType_Barricade:
+
+		fSize = 0.0f;
 
 		break;
 

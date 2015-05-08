@@ -11,7 +11,14 @@
 #include "Worker.h"
 
 
-TProfession::TProfession()
+TProfession::TProfession() :
+m_pLinkedVillager(nullptr)
+{
+
+}
+
+TProfession::TProfession(TVillager * pLinkedVillager) :
+m_pLinkedVillager(pLinkedVillager)
 {
 
 }

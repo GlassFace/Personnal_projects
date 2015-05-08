@@ -7,13 +7,18 @@ class TProfession
 public:
 
 	TProfession();
+	TProfession(TVillager * pLinkedVillager);
 	virtual ~TProfession();
 
 
 	static void S_InitializeProfessions();
 
 	
-	virtual void ProfessionUpdate(TVillager * pVillager) = 0;
+	virtual void ProfessionUpdate() = 0;
+
+protected:
+
+	TVillager * m_pLinkedVillager;
 };
 
 #endif

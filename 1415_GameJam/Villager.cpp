@@ -183,7 +183,7 @@ void TVillager::SpecificUpdate()
 		
 		else
 		{
-			m_pProfession->ProfessionUpdate(this);
+			m_pProfession->ProfessionUpdate();
 		}
 
 

@@ -7,14 +7,14 @@ class TWorker : public TProfession
 public:
 
 	TWorker();
-	TWorker(EBuildingType eBuildingToConstruct);
+	TWorker(EBuildingType eBuildingToConstruct, TVillager * pLinkedVillager);
 	~TWorker();
 
 
 	static void S_Initialize();
 
 
-	void ProfessionUpdate(TVillager * pVillager);
+	void ProfessionUpdate();
 
 	void SetBuildingsToCreate(EBuildingType eBuildingToConstruct);
 
