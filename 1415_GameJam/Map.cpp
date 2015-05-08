@@ -240,8 +240,8 @@ bool TMap::S_EnoughRoomToConstruct(const TGfxVec2 & tPos, const float tBuildingS
 		const bool bLeftBorderInTheAir = fConstructionLeftBorder < TFloor::GetPosition().x - TFloor::GetLeftSize();
 		const bool bRightBorderInTheAir = fConstructionRightBorder > TFloor::GetPosition().x + TFloor::GetRightSize();
 
-		if (fConstructionLeftBorder >= fBuildingRightBorder &&
-			fConstructionRightBorder <= fBuildingLeftBorder ||
+		if (fConstructionLeftBorder <= fBuildingRightBorder &&
+			fConstructionRightBorder >= fBuildingLeftBorder ||
 			bLeftBorderInTheAir || bRightBorderInTheAir)
 	{
 			return false;
