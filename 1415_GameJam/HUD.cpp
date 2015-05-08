@@ -60,7 +60,7 @@ void THUD::S_UpdateVillagerSuicideGauge()
 		m_tSuicideInfo.m_fSuicideMalus = 0.f;
 	}
 
-	GfxSpriteSetScale(m_tSuicideInfo.m_pSuicideGauge, int(floorf(m_tSuicideInfo.m_fSuicideMalus)), SUICIDE_GAUGE_SIZE_Y);
+	GfxSpriteSetScale(m_tSuicideInfo.m_pSuicideGauge, (floorf(m_tSuicideInfo.m_fSuicideMalus)), SUICIDE_GAUGE_SIZE_Y);
 
 	m_tSuicideInfo.m_iLastFrameLost = GfxTimeGetMilliseconds();
 }
@@ -69,7 +69,7 @@ void THUD::S_OneMoreSuicide()
 {
 	m_tSuicideInfo.m_iTotalSuicide++;
 	m_tSuicideInfo.m_fSuicideMalus += SUICIDE_MALUS;
-	GfxSpriteSetScale(m_tSuicideInfo.m_pSuicideGauge, int(floorf(m_tSuicideInfo.m_fSuicideMalus)), SUICIDE_GAUGE_SIZE_Y);
+	GfxSpriteSetScale(m_tSuicideInfo.m_pSuicideGauge, (floorf(m_tSuicideInfo.m_fSuicideMalus)), SUICIDE_GAUGE_SIZE_Y);
 }
 void THUD::S_Render()
 {

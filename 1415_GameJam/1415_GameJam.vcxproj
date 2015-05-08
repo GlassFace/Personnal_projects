@@ -117,6 +117,7 @@
     <ClCompile Include="..\..\main\lib\flib\flib_vec2.cpp" />
     <ClCompile Include="Anim.cpp" />
     <ClCompile Include="Building.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Control.cpp" />
     <ClCompile Include="Dynamic.cpp" />
@@ -130,6 +131,7 @@
   <ItemGroup>
     <ClInclude Include="Anim.h" />
     <ClInclude Include="Building.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Dynamic.h" />
     <ClInclude Include="Entity.h" />
