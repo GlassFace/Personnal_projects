@@ -59,13 +59,15 @@ protected:
 		EBirdAction_ToTarget,
 		EBirdAction_DelivringTarget,
 	};
+
+	TGfxSprite * m_pBlood;
 	EState m_eState;
 	EBirdAction m_eAction;
-	//EStateChase m_eChaseState;
 	TVillager * m_pTarget;
 	
 
 	TAnim * m_pFly;
+	static TGfxTexture * s_pBirdBlood;
 	static TGfxTexture * s_pBirdTileSet;
 	static TGfxFile * s_pNamesFile;
 

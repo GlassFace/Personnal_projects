@@ -21,7 +21,7 @@ public:
 
 	static void S_Update();
 
-	static void S_AddExtension(bool bSide);
+	static void S_AddExtension(Generics::EDirection eDirection);
 
 
 	/*		Getters		*/

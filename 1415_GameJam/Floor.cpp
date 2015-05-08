@@ -1,7 +1,9 @@
 #include "flib.h"
 #include "flib_vec2.h"
+#include "generics.h"
 #include "floor.h"
 
+using namespace Generics;
 
 namespace
 {
@@ -81,13 +83,13 @@ void TFloor::S_Render()
 
 }
 
-void TFloor::S_AddExtension(bool bSide) // left = true  / right = false
+void TFloor::S_AddExtension(EDirection eDirection) // left = true  / right = false
 {
 	for (int i = 0; i < MAX_EXTENSION; i++)
 	{
 		if (s_pSprite[i] == 0)
 		{
-			if (bSide)
+			if (eDirection == EDirection_Left)
 			{
 				float fPositionX = (s_tPosition.x - s_fLeftSize) - (EXTENSION_SIZE_X / 2.f) + FLOOR_PENETRATION;
 				s_pPosition[i] = new TGfxVec2(fPositionX, s_tPosition.y);
