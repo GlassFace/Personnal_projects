@@ -29,6 +29,11 @@ public:
 
 	static void S_Initialize();
 
+	TGfxSprite * GetNameSprite() const
+	{
+		return m_pSpriteName;
+	}
+
 	TGfxSprite * GetSprite() const
 	{
 		return m_pSprite;
@@ -40,6 +45,10 @@ public:
 	EAction GetAction() const
 	{
 		return m_eAction;
+	}
+	char * GetName() const
+	{
+		return m_pName;
 	}
 	void GetRandomName();
 
@@ -90,6 +99,7 @@ protected:
 	int m_iIdleDuration;
 
 private:
+	TGfxSprite * m_pSpriteName;
 
 	TAnim * m_pIdle;
 	static TGfxTexture * s_pIdleTileSet;

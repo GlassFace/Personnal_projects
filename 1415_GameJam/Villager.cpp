@@ -58,6 +58,7 @@ m_pAssignedBuilding(nullptr),
 m_iStartMoveTime(0),
 m_iMoveDuration(0),
 m_iIdleDuration(0),
+m_pSpriteName(GfxTextSpriteCreate()),
 m_pIdle(nullptr),
 m_pWalk(nullptr)
 {
@@ -74,6 +75,7 @@ m_pProfession(nullptr),
 m_pAssignedBuilding(nullptr),
 m_iStartMoveTime(0),
 m_iMoveDuration(0),
+m_pSpriteName(GfxTextSpriteCreate()),
 m_iIdleDuration(0),
 m_pIdle(nullptr),
 m_pWalk(nullptr)
@@ -174,7 +176,9 @@ void TVillager::SpecificUpdate()
 
 		if (m_eAction == EAction_Walking)
 		{
+			GfxDbgPrintf("1 %f \n", m_tVelocity.x);
 			m_tVelocity.x = (m_fSpeed / (GfxTimeFrameGetCurrentFPS() != 0.0f ? GfxTimeFrameGetCurrentFPS() : 60.0f)) * (m_eDirection == EDirection_Right ? 1.0f : -1.0f);
+			GfxDbgPrintf("2 %f \n", m_tVelocity.x);
 		}
 
 		else if (m_eAction == EAction_Idle || m_eAction == EAction_Action)

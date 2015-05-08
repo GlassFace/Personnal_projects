@@ -34,7 +34,7 @@ public:
 	static void S_UpdateVillagerCounter();
 	static void S_UpdateVillagerSuicideGauge();
 	static void S_OneMoreSuicide();
-
+	static void S_DisplayName();
 	const TGfxSprite * GetVillagerCounter() const
 	{
 		return m_pVillagerCounter;

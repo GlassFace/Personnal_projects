@@ -64,6 +64,7 @@ void THUD::S_Update()
 {
 	S_UpdateVillagerCounter();
 	S_UpdateVillagerSuicideGauge();
+	S_DisplayName();
 }
 
 void THUD::S_UpdateVillagerCounter()
@@ -99,9 +100,24 @@ void THUD::S_OneMoreSuicide()
 	GfxSpriteSetScale(m_tSuicideInfo.m_pSuicideGauge, (floorf(m_tSuicideInfo.m_fSuicideMalus)), SUICIDE_GAUGE_SIZE_Y);
 }
 
+
+void THUD::S_DisplayName()
+{
+	for (int i = 0; i < TMap::S_GetVillagerCount(); i++)
+	{
+		TVillager * pVillager = TMap::S_GetVillagers()[i];
+		GfxTextSpritePrintf(pVillager->GetNameSprite(), "%s", pVillager->GetName());
+	}
+}
 void THUD::S_Render()
 {
 	GfxTextSpriteRender(m_pVillagerCounter, VILLAGER_COUNTER_POS_X, VILLAGER_COUNTER_POS_Y, EGfxColor_White, 2.f, false, false);
 	GfxSpriteRender(m_tSuicideInfo.m_pSuicideGauge);
+
+	for (int i = 0; i < TMap::S_GetVillagerCount(); i++)
+	{
+		TVillager * pVillager = TMap::S_GetVillagers()[i];
+		GfxTextSpriteRender(pVillager->GetNameSprite(), pVillager->GetPosition().x, pVillager->GetPosition().y - pVillager->GetSize().y + 10.f, EGfxColor_Black, 1.f, true, true);
+	}
 }
 
