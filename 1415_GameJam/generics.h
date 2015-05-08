@@ -4,10 +4,10 @@
 
 namespace Generics
 {
-	enum EDirection
+	enum EDirection : bool
 	{
-		EDirection_Right,
-		EDirection_Left
+		EDirection_Right = true,
+		EDirection_Left = false
 	};
 
 	const int SECONDS = 1000;

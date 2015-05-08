@@ -28,9 +28,6 @@ protected:
 	float m_fSpeed;
 	TGfxVec2 m_tVelocity;
 
-	int m_iLastMoveChoice;
-	int m_iNextMoveChoice;
-
 	int m_iLastMove;
 };
 

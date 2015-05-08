@@ -55,6 +55,20 @@ protected:
 
 	char * m_pName;
 
+	enum EAction
+	{
+		EAction_Idle,
+		EAction_Walking,
+		EAction_Running,
+		EAction_Action
+	};
+
+	EAction m_eAction;
+
+	int m_iStartMoveTime;
+	int m_iMoveDuration;
+	int m_iIdleDuration;
+
 	TAnim * m_pIdle;
 	static TGfxTexture * s_pIdleTileSet;
 	TAnim * m_pWalk;

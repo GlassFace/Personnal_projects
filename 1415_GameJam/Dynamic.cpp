@@ -19,11 +19,9 @@ namespace
 
 TDynamic::TDynamic() :
 TEntity(),
-m_eDirection(EDirection_Right),
+m_eDirection(),
 m_fSpeed(0.0f),
 m_tVelocity(0.0f, 0.0f),
-m_iNextMoveChoice(0),
-m_iLastMoveChoice(0),
 m_iLastMove(0)
 {
 	
@@ -31,14 +29,12 @@ m_iLastMove(0)
 
 TDynamic::TDynamic(const TGfxVec2 & tPos, const TGfxVec2 & tSize, const float fSpeed) :
 TEntity(tPos, tSize),
-m_eDirection(EDirection_Right),
+m_eDirection(),
 m_fSpeed(fSpeed),
 m_tVelocity(0.0f, 0.0f),
-m_iNextMoveChoice(0),
-m_iLastMoveChoice(0),
 m_iLastMove(0)
 {
-
+	m_eDirection = GfxMathGetRandomInteger(0, 1) == 1 ? EDirection_Right : EDirection_Left;
 }
 
 TDynamic::~TDynamic()
