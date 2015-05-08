@@ -18,6 +18,9 @@ namespace
 {
 	const char * const NAMES_FILE = "Names.txt";
 
+	const char * const IDLE_TILESET_NAME = "Villager_Idle.tga";
+	const char * const WALK_TILESET_NAME = "Villager_Walk.tga";
+
 	const int NAME_MAX_SIZE = 250;
 
 	const TGfxVec2 VILLAGER_SIZE = TGfxVec2(32.0f, 64.0f);
@@ -28,7 +31,8 @@ namespace
 }
 
 
-TGfxTexture * TVillager::s_pTexture = nullptr;
+TGfxTexture * TVillager::s_pIdleTileSet = nullptr;
+TGfxTexture * TVillager::s_pWalkTileSet = nullptr;
 TGfxFile * TVillager::s_pNamesFile = nullptr;
 
 TVillager::TVillager() :
@@ -48,8 +52,8 @@ m_pName(nullptr),
 m_pIdle(nullptr),
 m_pWalk(nullptr)
 {
-	m_pIdle = new TAnim("Villager_Idle.tga", 1, 32, 64);
-	m_pWalk = new TAnim("Villager_Walk.tga", 7, 32, 64);
+	m_pIdle = new TAnim(s_pIdleTileSet, 1, 32, 64);
+	m_pWalk = new TAnim(s_pWalkTileSet, 7, 32, 64);
 
 	GetRandomName();
 }
@@ -67,6 +71,9 @@ TVillager::~TVillager()
 void TVillager::S_Initialize()
 {
 	s_pNamesFile = GfxFileOpenRead(NAMES_FILE);
+
+	s_pIdleTileSet = GfxTextureLoad(IDLE_TILESET_NAME);
+	s_pWalkTileSet = GfxTextureLoad(WALK_TILESET_NAME);
 }
 
 void TVillager::GetRandomName()

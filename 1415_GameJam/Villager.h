@@ -28,7 +28,7 @@ public:
 
 	void SetPosition(const TGfxVec2 & tPos)
 	{
-		 m_tPos = tPos;
+		 m_tPos = tPos + TGfxVec2(0.0f, m_tSize.y / 2.0f);
 		 GfxSpriteSetPosition(m_pSprite, m_tPos.x, m_tPos.y);
 	}
 
@@ -56,9 +56,10 @@ protected:
 	char * m_pName;
 
 	TAnim * m_pIdle;
+	static TGfxTexture * s_pIdleTileSet;
 	TAnim * m_pWalk;
+	static TGfxTexture * s_pWalkTileSet;
 
-	static TGfxTexture * s_pTexture;
 	static TGfxFile * s_pNamesFile;
 };
 

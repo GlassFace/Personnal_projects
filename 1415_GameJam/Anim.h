@@ -7,14 +7,13 @@ class TAnim
 public:
 
 	TAnim();
-	TAnim(const char * pTileSetName, int iFPS, int iSizeX, int iSizeY);
+	TAnim(const TGfxTexture * pTileset, int iFPS, int iSizeX, int iSizeY);
 	~TAnim();
 
 	TGfxSprite * Play(const Generics::EDirection eDirectionFacing);
 
 private:
 
-	TGfxTexture * m_pTileSet;
 	TGfxSprite * m_pSprite;
 
 	int m_iSizeX;

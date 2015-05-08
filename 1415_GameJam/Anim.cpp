@@ -10,7 +10,6 @@ using namespace Generics;
 
 
 TAnim::TAnim() :
-m_pTileSet(nullptr),
 m_pSprite(nullptr),
 m_iSizeX(0),
 m_iSizeY(0),
@@ -22,8 +21,7 @@ m_iFPS(0)
 
 }
 
-TAnim::TAnim(const char * pTileSetName, int iFPS, int iSizeX, int iSizeY) :
-m_pTileSet(nullptr),
+TAnim::TAnim(const TGfxTexture * pTileset, int iFPS, int iSizeX, int iSizeY) :
 m_pSprite(nullptr),
 m_iSizeX(iSizeX),
 m_iSizeY(iSizeY),
@@ -32,8 +30,7 @@ m_iCurrentFrame(0),
 m_iLastFrameChange(0),
 m_iFPS(iFPS)
 {
-	m_pTileSet = GfxTextureLoad(pTileSetName);
-	m_pSprite = GfxSpriteCreate(m_pTileSet);
+	m_pSprite = GfxSpriteCreate(pTileset);
 	GfxSpriteSetPivot(m_pSprite, (iSizeX / 2.0f), float(iSizeY));
 
 	m_iFrames = GfxSpriteGetSizeX(m_pSprite) / iSizeX;
@@ -47,9 +44,6 @@ TAnim::~TAnim()
 	{
 		GfxSpriteDestroy(m_pSprite);
 		m_pSprite = nullptr;
-
-		GfxTextureDestroy(m_pTileSet);
-		m_pTileSet = nullptr;
 	}
 }
 
