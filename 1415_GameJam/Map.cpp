@@ -12,6 +12,7 @@
 #include "HUD.h"
 #include "Control.h"
 #include "Camera.h"
+#include "Bird.h"
 
 
 
@@ -22,6 +23,8 @@ namespace
 	const int VILLAGERS_MAX_COUNT = 2000;
 
 	const int HOUSES_MAX_COUNT = 60;
+
+	const int BIRDS_MAX_COUNT = 60;
 }
 
 
@@ -32,6 +35,9 @@ TVillager ** TMap::s_pVillagers = nullptr;
 int TMap::s_iVillagersCount = 0;
 THouse ** TMap::s_pHouses = nullptr;
 int TMap::s_iHousesCount = 0;
+TBird ** TMap::s_pBirds = nullptr;
+int TMap::s_iBirdsCount = 0;
+
 TFloor * TMap::s_pFloor = nullptr;
 
 
@@ -46,6 +52,7 @@ void TMap::S_Initialize()
 	TCamera::S_Initialize();
 	s_pVillagers = new TVillager *[VILLAGERS_MAX_COUNT]{ 0 };
 	s_pHouses = new THouse *[HOUSES_MAX_COUNT]{ 0 };
+	s_pBirds = new TBird *[BIRDS_MAX_COUNT]{ 0 };
 	
 	s_pFloor->S_Initialize();
 
@@ -56,7 +63,20 @@ void TMap::S_Initialize()
 
 	THouse::S_Initialize();
 	S_CreateHouse(TFloor::GetPosition() + TGfxVec2(300,0));
+	S_CreateHouse(TFloor::GetPosition() + TGfxVec2(0, 0));
+	S_CreateHouse(TFloor::GetPosition() + TGfxVec2(-300, 0));
 
+	
+	S_CreateBird(TFloor::GetPosition() + TGfxVec2(-1000, -3000));
+	
+
+
+	TFloor::S_AddExtension(false);
+	TFloor::S_AddExtension(false);
+	TFloor::S_AddExtension(true);
+	TFloor::S_AddExtension(true);
+	TFloor::S_AddExtension(true);
+	TFloor::S_AddExtension(true);
 	TFloor::S_AddExtension(true);
 }
 
@@ -70,6 +90,12 @@ void TMap::S_CreateHouse(const TGfxVec2 & tPos)
 {
 	s_pHouses[s_iHousesCount] = new THouse(tPos);
 	s_iHousesCount++;
+}
+void TMap::S_CreateBird(const TGfxVec2 & tPos)
+{
+	s_pBirds[s_iBirdsCount] = new TBird(tPos);
+	s_pBirds[s_iBirdsCount]->Initialize();
+	s_iBirdsCount++;
 }
 
 void TMap::S_DeleteVillager(TVillager * pVillager)
@@ -95,11 +121,27 @@ void TMap::S_DeleteHouse(THouse * pHouse)
 	{
 		if (s_pHouses[i] == pHouse)
 		{
-			delete s_pVillagers[i];
+			delete s_pHouses[i];
 			s_pHouses[i] = s_pHouses[s_iHousesCount];
 			s_pHouses[s_iHousesCount] = nullptr;
 
 			s_iHousesCount--;
+
+			return;
+		}
+	}
+}
+void TMap::S_DeleteBird(TBird * pBird)
+{
+	for (int i = 0;; i++)
+	{
+		if (s_pBirds[i] == pBird)
+		{
+			delete s_pBirds[i];
+			s_pBirds[i] = s_pBirds[s_iBirdsCount];
+			s_pBirds[s_iBirdsCount] = nullptr;
+
+			s_iBirdsCount--;
 
 			return;
 		}
@@ -130,6 +172,10 @@ void TMap::S_Update()
 	{
 		s_pHouses[i]->Update();
 	}
+	for (int i = 0; i < s_iBirdsCount; i++)
+	{
+		s_pBirds[i]->Update();
+	}
 }
 
 
@@ -153,5 +199,10 @@ void TMap::S_Render()
 	for (int i = 0; i < s_iVillagersCount; i++)
 	{
 		s_pVillagers[i]->Render();
+	}
+
+	for (int i = 0; i < s_iBirdsCount; i++)
+	{
+		s_pBirds[i]->Render();
 	}
 }

@@ -11,6 +11,7 @@ namespace Generics
 	};
 
 	const int SECONDS = 1000;
+	const int PERCENTS = 100;
 }
 
 #endif

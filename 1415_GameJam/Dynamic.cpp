@@ -57,7 +57,6 @@ void TDynamic::Update()
 void TDynamic::Move()
 {
 	// Move on Y
-	GfxDbgPrintf("%f : %f \n", m_tPos.x, TFloor::GetPosition().x);
 	if (m_tPos.y + 10.f < TFloor::GetPosition().y
 		|| (m_tPos.x < TFloor::GetPosition().x - TFloor::GetLeftSize()
 		|| m_tPos.x > TFloor::GetPosition().x + TFloor::GetRightSize()))
