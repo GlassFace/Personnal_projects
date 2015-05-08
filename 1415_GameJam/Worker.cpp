@@ -115,8 +115,20 @@ void TWorker::ProfessionUpdate()
 		{
 			TMap::S_CreateBuilding(m_eConstructionToDo, m_tDestinationToConstruct);
 
+			m_iStartConstructionTime = 0;
+
 			m_eAction = EAction_Idle;
 		}
+	}
+}
+
+void TWorker::SetBuildingsToCreate(EBuildingType eBuildingToConstruct)
+{
+	m_eConstructionToDo = eBuildingToConstruct;
+
+	if (m_iStartConstructionTime != 0)
+	{
+		m_iStartConstructionTime = GfxTimeGetMilliseconds();
 	}
 }
 

@@ -10,6 +10,7 @@
 
 
 
+using namespace Generics;
 
 namespace
 {
@@ -48,7 +49,7 @@ void TControl::CheckInput()
 
 	if (GfxInputIsJustPressed(EGfxInputID_MouseLeft))				// Click on villager
 	{
-		const TGfxVec2 tMousePosition = TGfxVec2(float(GfxInputGetMousePositionX()), float(GfxInputGetMousePositionY())) + (TCamera::S_GetWorldPosition());
+		const TGfxVec2 tMousePosition = GetCurrentMouse();
 
 		for (int i = 0; i < TMap::S_GetVillagerCount(); i++)
 		{

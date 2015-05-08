@@ -11,6 +11,8 @@
 #include "House.h"
 #include "Bird.h"
 
+
+
 TGfxVec2 TCamera::m_tWorldPosition;
 
 TCamera::TCamera()

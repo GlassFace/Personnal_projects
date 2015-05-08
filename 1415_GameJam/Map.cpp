@@ -130,7 +130,7 @@ void TMap::S_DeleteVillager(TVillager * pVillager)
 		{
 			delete s_pVillagers[i];
 			s_pVillagers[i] = s_pVillagers[s_iVillagersCount - 1];
-			s_pVillagers[s_iVillagersCount] = nullptr;
+			s_pVillagers[s_iVillagersCount - 1] = nullptr;
 
 			s_iVillagersCount--;
 
@@ -146,8 +146,8 @@ void TMap::S_DeleteHouse(THouse * pHouse)
 		if (s_pBuildings[i] == pHouse)
 		{
 			delete s_pBuildings[i];
-			s_pBuildings[i] = s_pBuildings[s_iBuildingsCount];
-			s_pBuildings[s_iBuildingsCount] = nullptr;
+			s_pBuildings[i] = s_pBuildings[s_iBuildingsCount - 1];
+			s_pBuildings[s_iBuildingsCount - 1] = nullptr;
 
 			s_iBuildingsCount--;
 
@@ -163,8 +163,8 @@ void TMap::S_DeleteBird(TBird * pBird)
 		if (s_pBirds[i] == pBird)
 		{
 			delete s_pBirds[i];
-			s_pBirds[i] = s_pBirds[s_iBirdsCount];
-			s_pBirds[s_iBirdsCount] = nullptr;
+			s_pBirds[i] = s_pBirds[s_iBirdsCount - 1];
+			s_pBirds[s_iBirdsCount - 1] = nullptr;
 
 			s_iBirdsCount--;
 
@@ -202,6 +202,8 @@ void TMap::S_Update()
 	{
 		s_pBuildings[i]->Update();
 	}
+
+	S_GenerateBird();
 }
 
 bool TMap::S_EnoughRoomToConstruct(const TGfxVec2 & tPos, const float tBuildingSizeX)
@@ -226,8 +228,6 @@ bool TMap::S_EnoughRoomToConstruct(const TGfxVec2 & tPos, const float tBuildingS
 	}
 
 	return true;
-	S_GenerateBird();
-
 }
 
 void TMap::S_GenerateBird()

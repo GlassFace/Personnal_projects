@@ -4,6 +4,7 @@
 
 class TAnim;
 class TProfession;
+class TBuilding;
 
 class TVillager : public TDynamic
 {
@@ -43,7 +44,8 @@ public:
 	bool IsOldEnough(const int iAgeNeeded) const;
 	bool IsMouseOver(const TGfxVec2 & tMousePos) const;
 
-	void SetProfession(TProfession * pProfession);
+	void SetProfession(TProfession * pProfession, const TBuilding * pBuilding);
+	void Unassign();
 
 
 	void Render() const;
@@ -72,6 +74,7 @@ protected:
 	EAction m_eAction;
 
 	TProfession * m_pProfession;
+	const TBuilding * m_pAssignedBuilding;
 
 	int m_iStartMoveTime;
 	int m_iMoveDuration;

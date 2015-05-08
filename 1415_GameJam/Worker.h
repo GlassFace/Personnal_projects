@@ -16,6 +16,8 @@ public:
 
 	void ProfessionUpdate();
 
+	void SetBuildingsToCreate(EBuildingType eBuildingToConstruct);
+
 
 private:
 

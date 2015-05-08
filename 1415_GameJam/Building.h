@@ -16,7 +16,10 @@ public:
 	void Update();
 	virtual void SpecificUpdate() = 0;
 
-	void DropCivilian(TVillager & tVillager) const;
+	void DropCivilian(TVillager & tVillager);
+
+	virtual bool AssignVillager(TVillager * pVillager) = 0;
+	virtual void UnassignVillager(TVillager * pVillager) = 0;
 
 
 protected:
@@ -24,6 +27,9 @@ protected:
 	EBuildingType m_eBuildingType;
 
 	int m_iRequiredAge;
+
+	TVillager ** m_pAssignedVillagers;
+	int m_iAssignedVillagersCount;
 };
 
 #endif

@@ -52,6 +52,7 @@ m_pName(nullptr),
 m_iAge(0),
 m_eAction(EAction_Idle),
 m_pProfession(nullptr),
+m_pAssignedBuilding(nullptr),
 m_iStartMoveTime(0),
 m_iMoveDuration(0),
 m_iIdleDuration(0),
@@ -68,6 +69,7 @@ m_pName(nullptr),
 m_iAge(0),
 m_eAction(EAction_Idle),
 m_pProfession(nullptr),
+m_pAssignedBuilding(nullptr),
 m_iStartMoveTime(0),
 m_iMoveDuration(0),
 m_iIdleDuration(0),
@@ -245,9 +247,18 @@ bool TVillager::IsMouseOver(const TGfxVec2 & tMousePos) const
 	return false;
 }
 
-void TVillager::SetProfession(TProfession * pProfession)
+void TVillager::SetProfession(TProfession * pProfession, const TBuilding * pBuilding)
 {
 	m_pProfession = pProfession;
+	m_pAssignedBuilding = pBuilding;
+}
+
+void TVillager::Unassign()
+{
+	delete m_pProfession;
+	m_pProfession = nullptr;
+	
+	m_pAssignedBuilding = nullptr;
 }
 
 void TVillager::Render() const
