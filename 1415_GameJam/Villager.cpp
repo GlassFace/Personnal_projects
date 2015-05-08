@@ -33,6 +33,7 @@ TDynamic(),
 m_eState(EState_Alive),
 m_pName(nullptr)
 {
+
 }
 
 TVillager::TVillager(const TGfxVec2 & tPos) :
@@ -43,7 +44,9 @@ m_pName(nullptr)
 	m_pSprite = GfxSpriteCreate(s_pTexture);
 	GfxSpriteSetPivot(m_pSprite, (m_tSize.x / 2.0f), m_tSize.y);
 
-	//GetRandomName();
+	GetRandomName();
+
+	//GfxDbgPrintf("Velocity X = %f, velocity Y = %f\nPos X = %f, pos Y = %f\n\n", m_tVelocity.x, m_tVelocity.y, m_tPos.x, m_tPos.y);
 }
 
 TVillager::~TVillager()
@@ -67,17 +70,17 @@ void TVillager::GetRandomName()
 {
 	char * pCursor = static_cast<char *>(GfxMemAlloc(GfxFileSize(s_pNamesFile) + 1));
 	GfxFileRead(s_pNamesFile, pCursor, GfxFileSize(s_pNamesFile));
+	GfxFileSeek(s_pNamesFile, 0);
 
 	int iNamesCount = 0;
 	int i = 0;
 
 	for (i = 0; pCursor != nullptr && pCursor[i] != '\0'; i++)
 	{
-		if (pCursor[0] == '\r')
+		if (pCursor[i] == '\r')
 		{
 			iNamesCount++;
 		}
-
 	}
 
 	const int iRandomNameLine = GfxMathGetRandomInteger(0, iNamesCount);
@@ -92,12 +95,16 @@ void TVillager::GetRandomName()
 		}
 	}
 
+	if (pCursor[i] == '\n')
+	{
+		i++;
+	}
+
 	char pName[NAME_MAX_SIZE] = { 0 };
 
-	for (int iLetter = 0/*, i = i*/; pCursor[i] != '\r' && pCursor[i] != '\n'; iLetter++)
+	for (int iLetter = 0/*, i = i*/; pCursor[i] != '\r' && pCursor[i] != '\n' && pCursor[i] != '\0'; iLetter++, i++)
 	{
 		pName[iLetter] = pCursor[i];
-		i++;
 	}
 
 	m_pName = new char[NAME_MAX_SIZE]{ 0 };
@@ -108,6 +115,11 @@ void TVillager::GetRandomName()
 void TVillager::SpecificUpdate()
 {
 	RandomMove();
+
+	if (m_tPos.x > 8000.0f)
+	{
+		int yo = 0;
+	}
 }
 
 void TVillager::RandomMove()

@@ -53,6 +53,11 @@ void TMap::S_CreateVillager(const TGfxVec2 & tPos)
 {
 	s_pVillagers[s_iVillagersCount] = new TVillager(tPos);
 	s_iVillagersCount++;
+
+	if (s_iVillagersCount == 4)
+	{
+		int yo = 0;
+	}
 }
 
 void TMap::S_CreateHouse(const TGfxVec2 & tPos)
@@ -70,6 +75,11 @@ void TMap::S_Update()
 	for (int i = 0; i < s_iVillagersCount; i++)
 	{
 		s_pVillagers[i]->Update();
+
+		if (i == 3)
+		{
+			int yo = 0;
+		}
 	}
 
 	for (int i = 0; i < s_iHousesCount; i++)
