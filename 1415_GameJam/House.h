@@ -18,6 +18,9 @@ public:
 
 	void SpecificUpdate();
 
+	bool AssignVillager(TVillager *) { return false; };
+	void UnassignVillager(TVillager *) {};
+
 	static float S_GetSizeX();
 
 

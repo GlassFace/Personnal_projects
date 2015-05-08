@@ -2,12 +2,14 @@
 #ifndef MAP_H_INCLUDED
 #define MAP_H_INCLUDED
 
-enum EBuildingType
+enum EBuildingType : int
 {
 	EBuildingType_House,
 	EBuildingType_Workshop,
 	EBuildingType_Tower
 };
+
+const int BUILDINGS_TYPES_COUNT = 3;
 
 class TBuilding;
 class THouse;

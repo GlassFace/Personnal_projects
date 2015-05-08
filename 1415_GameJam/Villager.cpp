@@ -52,6 +52,7 @@ m_pName(nullptr),
 m_iAge(0),
 m_eAction(EAction_Idle),
 m_pProfession(nullptr),
+m_pAssignedBuilding(nullptr),
 m_iStartMoveTime(0),
 m_iMoveDuration(0),
 m_iIdleDuration(0),
@@ -68,6 +69,7 @@ m_pName(nullptr),
 m_iAge(0),
 m_eAction(EAction_Idle),
 m_pProfession(nullptr),
+m_pAssignedBuilding(nullptr),
 m_iStartMoveTime(0),
 m_iMoveDuration(0),
 m_iIdleDuration(0),
@@ -148,26 +150,26 @@ void TVillager::SpecificUpdate()
 {
 	if (m_eAction != EAction_Grab)
 	{
-		if (m_pProfession == nullptr)
+	if (m_pProfession == nullptr)
+	{
+		RandomMove();
+
+		if (m_eAction == EAction_Walking)
 		{
-			RandomMove();
-
-			if (m_eAction == EAction_Walking)
-			{
-				m_pSprite = m_pWalk->Play(m_eDirection);
-			}
-
-			else
-			{
-				m_pSprite = m_pIdle->Play(m_eDirection);
-			}
+			m_pSprite = m_pWalk->Play(m_eDirection);
 		}
 
 		else
 		{
-			m_pProfession->ProfessionUpdate();
+			m_pSprite = m_pIdle->Play(m_eDirection);
 		}
 	}
+	
+	else
+	{
+		m_pProfession->ProfessionUpdate();
+	}
+}
 }
 
 void TVillager::RandomMove()
@@ -253,6 +255,7 @@ bool TVillager::IsMouseOver(const TGfxVec2 & tMousePos) const
 	return false;
 }
 
+void TVillager::SetProfession(TProfession * pProfession, const TBuilding * pBuilding)
 void TVillager::SetAction(EAction eAction)
 {
 	m_eAction = eAction;
@@ -261,6 +264,15 @@ void TVillager::SetAction(EAction eAction)
 void TVillager::SetProfession(TProfession * pProfession)
 {
 	m_pProfession = pProfession;
+	m_pAssignedBuilding = pBuilding;
+}
+
+void TVillager::Unassign()
+{
+	delete m_pProfession;
+	m_pProfession = nullptr;
+	
+	m_pAssignedBuilding = nullptr;
 }
 
 void TVillager::Render() const

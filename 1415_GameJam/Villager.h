@@ -13,7 +13,8 @@ enum EAction
 
 class TAnim;
 class TProfession;
-//enum EAction;
+class TBuilding;
+
 class TVillager : public TDynamic
 {
 public:
@@ -54,6 +55,9 @@ public:
 	bool IsAlive() const;
 	bool IsOldEnough(const int iAgeNeeded) const;
 	bool IsMouseOver(const TGfxVec2 & tMousePos) const;
+
+	void SetProfession(TProfession * pProfession, const TBuilding * pBuilding);
+	void Unassign();
 	void SetAction(EAction eAction);
 	void SetProfession(TProfession * pProfession);
 
@@ -76,6 +80,7 @@ protected:
 	EAction m_eAction;
 
 	TProfession * m_pProfession;
+	const TBuilding * m_pAssignedBuilding;
 
 	int m_iStartMoveTime;
 	int m_iMoveDuration;
