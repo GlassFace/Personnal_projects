@@ -150,6 +150,8 @@ void TVillager::GetRandomName()
 
 void TVillager::SpecificUpdate()
 {
+	if (m_eAction != EAction_Grab)
+	{
 	if (m_pProfession == nullptr)
 	{
 		RandomMove();
@@ -170,6 +172,7 @@ void TVillager::SpecificUpdate()
 		m_pProfession->ProfessionUpdate(this);
 	}
 }
+}
 
 void TVillager::RandomMove()
 {
@@ -188,7 +191,12 @@ void TVillager::RandomMove()
 			}
 		}
 
+
 		m_tPos.y += m_tVelocity.y;
+		if (m_tPos.y > GfxGetDisplaySizeY())
+		{
+			Die();
+		}
 	}
 	else
 	{
@@ -247,6 +255,11 @@ bool TVillager::IsMouseOver(const TGfxVec2 & tMousePos) const
 	}
 
 	return false;
+}
+
+void TVillager::SetAction(EAction eAction)
+{
+	m_eAction = eAction;
 }
 
 void TVillager::SetProfession(TProfession * pProfession, const TBuilding * pBuilding)

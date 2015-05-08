@@ -33,7 +33,7 @@ namespace
 
 	const int BIRDS_MAX_COUNT = 60;
 
-	const float BIRDS_GENERATION_RATE = 15.f;
+	const float BIRDS_GENERATION_RATE = 5.f;
 }
 
 
@@ -120,7 +120,7 @@ void TMap::S_CreateBuilding(EBuildingType eBuildingToCreate, const TGfxVec2 & tP
 	case EBuildingType_Tower:
 
 		break;
-	}
+}
 	
 	s_iBuildingsCount++;
 }
@@ -255,7 +255,7 @@ void TMap::S_GenerateBird()
 {
 	if (BIRDS_GENERATION_RATE * 1000.f < (GfxTimeGetMilliseconds() - s_iLastTimeBirdGeneration))
 	{
-		S_CreateBird(TFloor::GetPosition() + TGfxVec2(-500, -500));
+		S_CreateBird(TFloor::GetPosition() + TGfxVec2(-500, 500));
 		s_iLastTimeBirdGeneration = GfxTimeGetMilliseconds();
 	}
 }

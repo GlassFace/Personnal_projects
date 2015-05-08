@@ -18,10 +18,17 @@ namespace
 	const char * const FLY_TILESET_NAME = "Bird_Fly.tga";
 
 	const TGfxVec2 BIRD_SIZE = TGfxVec2(32.0f, 64.0f);
-	const float BIRD_FLY_SPEED = 128.0f;					// Pixels per seconds
+	const float BIRD_FLY_SPEED = 180.0f;					// Pixels per seconds
 
 	const float TARGET_ZONE_RATIO = 75.f / PERCENTS;
 	const float ESCAPE_ANGLE = 60.f; // Degree;
+
+	const float EMPTY_SPACE_RANGE = 300.f;
+
+
+	TGfxVec2 LEFT_ESCAPE_POINT ;
+	TGfxVec2 RIGHT_ESCAPE_POINT;
+
 
 	enum EStateChase
 	{
@@ -36,6 +43,7 @@ TGfxTexture * TBird::s_pBirdTileSet = nullptr;
 TBird::TBird() :
 TDynamic(),
 m_eState(EState_Alive),
+m_eAction(EBirdAction_ToTarget),
 m_pTarget(nullptr),
 m_pFly(nullptr),
 m_iLastMove(0)
@@ -47,6 +55,7 @@ m_iLastMove(0)
 TBird::TBird(const TGfxVec2 & tPos) :
 TDynamic(tPos, BIRD_SIZE, BIRD_FLY_SPEED),
 m_eState(EState_Alive),
+m_eAction(EBirdAction_ToTarget),
 m_pTarget(nullptr),
 m_pFly(nullptr),
 m_iLastMove(0)
@@ -63,6 +72,8 @@ TBird::~TBird()
 void TBird::S_Initialize()
 {
 	s_pBirdTileSet = GfxTextureLoad(FLY_TILESET_NAME);
+	LEFT_ESCAPE_POINT = TGfxVec2(TFloor::GetPosition().x - TFloor::GetLeftSize() - EMPTY_SPACE_RANGE, 500.f);
+	RIGHT_ESCAPE_POINT = TGfxVec2(TFloor::GetPosition().x + TFloor::GetRightSize() + EMPTY_SPACE_RANGE, 500.f);
 }
 
 void TBird::Initialize()
@@ -72,7 +83,16 @@ void TBird::Initialize()
 
 void TBird::SpecificUpdate()
 {
-	GoToTarget();
+	LEFT_ESCAPE_POINT = TGfxVec2(TFloor::GetPosition().x - TFloor::GetLeftSize() - EMPTY_SPACE_RANGE, 500.f);
+	RIGHT_ESCAPE_POINT = TGfxVec2(TFloor::GetPosition().x + TFloor::GetRightSize() + EMPTY_SPACE_RANGE, 500.f);
+	if (m_eAction == EBirdAction_ToTarget)
+	{
+		GoToTarget();
+	}
+	else
+	{
+		Escape();
+	}
 	m_pSprite = m_pFly->Play(m_eDirection);
 }
 
@@ -94,26 +114,68 @@ void TBird::FindTarget()
 		if (TFloor::GetPosition().x - (TFloor::GetLeftSize() * TARGET_ZONE_RATIO) < pVillager->GetPosition().x
 			&& TFloor::GetPosition().x + (TFloor::GetRightSize() * TARGET_ZONE_RATIO) > pVillager->GetPosition().x)
 		{
-			m_pTarget = pVillager;
-			break;
+			if (pVillager->GetAction() != EAction_Grab)
+			{
+				m_pTarget = pVillager;
+				break;
+			}
 		}
 	}
 }
 void TBird::GoToTarget()
 {
+
 	TGfxVec2 tDirection = m_pTarget->GetPosition() - m_tPos;
-	tDirection = tDirection.Normalize();
+	tDirection = tDirection.SquaredLength() >= 0.001f ? tDirection.Normalize() : TGfxVec2(0.0f, 0.0f);
+
+	m_eDirection = tDirection.x >= 0.0f ? EDirection_Right : EDirection_Left;
+	
 	m_tVelocity = tDirection * (m_fSpeed * ((GfxTimeGetMilliseconds() - float(m_iLastMove)) / SECONDS));
 	m_iLastMove = GfxTimeGetMilliseconds();
 
 	if (m_pTarget->IsMouseOver(m_tPos))
 	{
-		
+		m_pTarget->SetAction(EAction_Grab);
+		m_pTarget->SetPosition(m_tPos);
+		m_eAction = EBirdAction_DelivringTarget;
 	}
 }
 void TBird::Escape()
 {
+	if ((LEFT_ESCAPE_POINT - m_tPos).Length() < (RIGHT_ESCAPE_POINT - m_tPos).Length())
+	{
+		TGfxVec2 tDirection = LEFT_ESCAPE_POINT - m_tPos;
+		tDirection = tDirection.SquaredLength() >= 0.001f ? tDirection.Normalize() : TGfxVec2(0.0f, 0.0f);
 
+		m_eDirection = tDirection.x >= 0.0f ? EDirection_Right : EDirection_Left;
+
+		m_tVelocity = tDirection * (m_fSpeed * ((GfxTimeGetMilliseconds() - float(m_iLastMove)) / SECONDS));
+		m_iLastMove = GfxTimeGetMilliseconds();
+	}
+	else
+	{
+		TGfxVec2 tDirection = RIGHT_ESCAPE_POINT - m_tPos;
+		tDirection = tDirection.SquaredLength() >= 0.001f ? tDirection.Normalize() : TGfxVec2(0.0f, 0.0f);
+
+		m_eDirection = tDirection.x >= 0.0f ? EDirection_Right : EDirection_Left;
+
+		m_tVelocity = tDirection * (m_fSpeed * ((GfxTimeGetMilliseconds() - float(m_iLastMove)) / SECONDS));
+		m_iLastMove = GfxTimeGetMilliseconds();
+	}
+	m_pTarget->SetPosition(m_tPos);
+
+	if (m_tPos.x < LEFT_ESCAPE_POINT.x + (EMPTY_SPACE_RANGE/2.f))
+	{
+		m_pTarget->SetAction(EAction_Idle);
+		FindTarget();
+		m_eAction = EBirdAction_ToTarget;
+	}
+	if (m_tPos.x > RIGHT_ESCAPE_POINT.x - (EMPTY_SPACE_RANGE / 2.f))
+	{
+		m_pTarget->SetAction(EAction_Idle);
+		FindTarget();
+		m_eAction = EBirdAction_ToTarget;
+	}
 }
 
 bool TBird::IsAlive() const

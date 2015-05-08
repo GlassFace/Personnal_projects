@@ -14,7 +14,7 @@ using namespace Generics;
 
 namespace
 {
-	const float SCROLL_SPEED = 5.0f;
+	const float SCROLL_SPEED = 9.0f;
 }
 
 TVillager * TControl::s_pDraggedVillager = nullptr;

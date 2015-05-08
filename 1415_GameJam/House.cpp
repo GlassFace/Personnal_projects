@@ -14,7 +14,6 @@ using namespace Generics;
 
 namespace
 {
-
 	const char * const SPRITE_NAME = "House.tga";
 
 	const TGfxVec2 HOUSE_SIZE = TGfxVec2(112.0f, 112.0f);
