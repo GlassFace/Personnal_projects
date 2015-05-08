@@ -16,6 +16,9 @@ public:
 	static void S_CreateVillager(const TGfxVec2 & tPos);
 	static void S_CreateHouse(const TGfxVec2 & tPos);
 
+	static void S_DeleteVillager(TVillager * pVillager);
+	static void S_DeleteHouse(THouse * pHouse);
+
 
 	static void S_Update();
 
@@ -44,6 +47,9 @@ public:
 
 
 private:
+
+	static TGfxTexture * s_pBackGroundTexture;
+	static TGfxSprite * s_pBackGroundSprite;
 
 	static TVillager ** s_pVillagers;
 	static int s_iVillagersCount;

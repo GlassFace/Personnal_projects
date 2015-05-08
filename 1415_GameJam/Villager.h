@@ -2,6 +2,8 @@
 #ifndef VILLAGER_H_INCLUDED
 #define VILLAGER_H_INCLUDED
 
+class TAnim;
+
 class TVillager : public TDynamic
 {
 public:
@@ -42,6 +44,8 @@ protected:
 	EState m_eState;
 
 	char * m_pName;
+
+	TAnim * m_pWalk;
 
 	static TGfxTexture * s_pTexture;
 	static TGfxFile * s_pNamesFile;

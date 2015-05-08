@@ -137,6 +137,7 @@
     <ClInclude Include="Dynamic.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Floor.h" />
+    <ClInclude Include="generics.h" />
     <ClInclude Include="House.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Villager.h" />

@@ -11,24 +11,41 @@ public:
 	TFloor();
 	~TFloor();
 
+
+	/*		Initialize		*/
+
+	static void S_Initialize();
+
+
+	/*		Update		*/
+
+	static void S_Update();
+
+	static void S_AddExtension(bool bSide);
+
+
+	/*		Getters		*/
+
 	static float GetLeftSize()
 	{
 		return s_fLeftSize;
 	}
+
 	static float GetRightSize()
 	{
 		return s_fRightSize;
 	}
+
 	static TGfxVec2 & GetPosition()
 	{
 		return s_tPosition;
 	}
 
-	static void S_Initialize();
-	static void S_Update();
+
+	/*		Render		*/
+
 	static void S_Render();
 
-	static void S_AddExtension(bool bSide);
 
 private:
 

@@ -1,5 +1,6 @@
 #include "flib.h"
 #include "flib_vec2.h"
+#include "generics.h"
 #include <math.h>
 #include "HUD.h"
 #include "Entity.h"
@@ -30,8 +31,8 @@ void THUD::S_Initialize()
 
 	// Initialize suicid gauge sprite
 	TGfxImage * pImage = GfxImageCreate(1, 1);
-	unsigned int * pData = GfxImageGetData(pImage);
-	pData[0] = EGfxColor_White;
+	GfxImageGetData(pImage)[0] = EGfxColor_White;
+
 	TGfxTexture * pTexture = GfxTextureCreate(pImage);
 	m_tSuicideInfo.m_pSuicideGauge = GfxSpriteCreate(pTexture);
 	GfxSpriteSetScale(m_tSuicideInfo.m_pSuicideGauge, 0, SUICIDE_GAUGE_SIZE_Y);
@@ -71,12 +72,16 @@ void THUD::S_UpdateVillagerSuicideGauge()
 	m_tSuicideInfo.m_iLastFrameLost = GfxTimeGetMilliseconds();
 }
 
-void THUD::S_OneMoreSuicide()
+void THUD::S_OneMoreSuicide(TVillager * pVillager)
 {
 	m_tSuicideInfo.m_iTotalSuicide++;
 	m_tSuicideInfo.m_fSuicideMalus += SUICIDE_MALUS;
+
 	GfxSpriteSetScale(m_tSuicideInfo.m_pSuicideGauge, (floorf(m_tSuicideInfo.m_fSuicideMalus)), SUICIDE_GAUGE_SIZE_Y);
+
+	TMap::S_DeleteVillager(pVillager);
 }
+
 void THUD::S_Render()
 {
 	GfxTextSpriteRender(m_pVillagerCounter, VILLAGER_COUNTER_POS_X, VILLAGER_COUNTER_POS_Y, EGfxColor_White, 2.f, false, false);
