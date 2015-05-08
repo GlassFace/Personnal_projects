@@ -30,6 +30,17 @@ TEntity::~TEntity()
 }
 
 
+const TGfxVec2 & TEntity::GetPos() const
+{
+	return m_tPos;
+}
+
+const TGfxVec2 & TEntity::GetSize() const
+{
+	return m_tSize;
+}
+
+
 void TEntity::Render()
 {
 	if (m_pSprite != nullptr)

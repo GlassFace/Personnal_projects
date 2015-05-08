@@ -116,7 +116,6 @@ void TBird::Escape()
 
 }
 
-
 bool TBird::IsAlive() const
 {
 	return m_eState == EState_Alive;

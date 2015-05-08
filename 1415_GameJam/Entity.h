@@ -13,6 +13,9 @@ public:
 
 	virtual void Update() = 0;
 
+	const TGfxVec2 & GetPos() const;
+	const TGfxVec2 & GetSize() const;
+
 
 	void Render();
 

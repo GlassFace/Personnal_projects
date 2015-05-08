@@ -1,6 +1,7 @@
 
 #include "flib.h"
 #include "flib_vec2.h"
+#include "Entity.h"
 #include "Building.h"
 
 

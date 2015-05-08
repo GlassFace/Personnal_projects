@@ -7,6 +7,7 @@ class TWorker : public TProfession
 public:
 
 	TWorker();
+	TWorker(EBuildingType eBuildingToConstruct);
 	~TWorker();
 
 
@@ -18,6 +19,9 @@ public:
 
 private:
 
+	float GetBuildingSize();
+
+
 	TAnim * m_pIdle;
 	static TGfxTexture * s_pIdleTileSet;
 
@@ -26,6 +30,12 @@ private:
 
 	TAnim * m_pAction;
 	static TGfxTexture * s_pActionTileSet;
+
+
+	TGfxVec2 m_tDestinationToConstruct;
+	int m_iStartConstructionTime;
+
+	EBuildingType m_eConstructionToDo;
 };
 
 #endif
