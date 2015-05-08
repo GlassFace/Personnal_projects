@@ -25,7 +25,7 @@ namespace
 
 	const float EMPTY_SPACE_RANGE = 300.f;
 
-
+	const int HIT_TO_KILL = 3;
 	TGfxVec2 LEFT_ESCAPE_POINT ;
 	TGfxVec2 RIGHT_ESCAPE_POINT;
 
@@ -46,7 +46,8 @@ m_eState(EState_Alive),
 m_eAction(EBirdAction_ToTarget),
 m_pTarget(nullptr),
 m_pFly(nullptr),
-m_iLastMove(0)
+m_iLastMove(0),
+m_iHitLeft(HIT_TO_KILL)
 {
 
 
@@ -58,7 +59,8 @@ m_eState(EState_Alive),
 m_eAction(EBirdAction_ToTarget),
 m_pTarget(nullptr),
 m_pFly(nullptr),
-m_iLastMove(0)
+m_iLastMove(0),
+m_iHitLeft(HIT_TO_KILL)
 {
 	m_pFly = new TAnim(s_pBirdTileSet, 7, 48, 48);
 
@@ -195,7 +197,14 @@ bool TBird::IsMouseOver(const TGfxVec2 & tMousePos) const
 
 	return false;
 }
-
+void TBird::TakeHit()
+{
+	m_iHitLeft--;
+	if (m_iHitLeft == 0 )
+	{
+		Die();
+	}
+}
 void TBird::Render() const
 {
 	if (m_pSprite != nullptr)

@@ -43,7 +43,7 @@ public:
 
 	bool IsAlive() const;
 	bool IsMouseOver(const TGfxVec2 & tMousePos) const;
-
+	void TakeHit();
 	void Render() const;
 
 protected:
@@ -63,12 +63,14 @@ protected:
 	EBirdAction m_eAction;
 	//EStateChase m_eChaseState;
 	TVillager * m_pTarget;
+	
 
 	TAnim * m_pFly;
 	static TGfxTexture * s_pBirdTileSet;
 	static TGfxFile * s_pNamesFile;
 
 	int m_iLastMove;
+	int m_iHitLeft;
 };
 
 #endif

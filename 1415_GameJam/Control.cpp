@@ -7,6 +7,7 @@
 #include "Dynamic.h"
 #include "Villager.h"
 #include "Map.h"
+#include "Bird.h"
 
 
 
@@ -50,6 +51,16 @@ void TControl::CheckInput()
 
 	if (GfxInputIsJustPressed(EGfxInputID_MouseLeft))				// Click on villager
 	{
+		for (int i = 0; i < TMap::S_GetBirdsCount(); i++)
+		{
+			TBird * pBird = TMap::S_GetBirds()[i];
+
+			if (pBird->IsMouseOver(tMousePosition))
+			{
+				pBird->TakeHit();
+				break;
+			}
+		}
 		for (int i = 0; i < TMap::S_GetVillagerCount(); i++)
 		{
 			TVillager * pVillager = TMap::S_GetVillagers()[i];
