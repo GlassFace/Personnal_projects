@@ -1,6 +1,7 @@
 
 #include "flib.h"
 #include "flib_vec2.h"
+#include <math.h>
 #include "generics.h"
 #include "Map.h"
 #include "Entity.h"
@@ -34,6 +35,12 @@ namespace
 	const int BIRDS_MAX_COUNT = 60;
 
 	const float BIRDS_GENERATION_RATE = 7.f;
+
+	const int MIN_BIRD_RATIO = 1;
+	const int MAX_BIRD_RATIO = 3;
+	const float MIN_PERCENT = 30.f / PERCENTS;
+	const float MAX_PERCENT = 50.f / PERCENTS;
+	TGfxVec2 tSpawnLimite;
 }
 
 
@@ -55,6 +62,9 @@ int TMap::s_iLastTimeBirdGeneration = 0;
 void TMap::S_Initialize()
 {
 	THUD::S_Initialize();
+
+	tSpawnLimite = TGfxVec2(TFloor::GetPosition().x - TFloor::GetLeftSize(), TFloor::GetPosition().x + TFloor::GetRightSize());
+
 
 	s_pBackGroundTexture = GfxTextureLoad(BACKGROUND_TEXTURE);
 	s_pBackGroundSprite = GfxSpriteCreate(s_pBackGroundTexture);
@@ -199,6 +209,8 @@ void TMap::S_Update()
 	THUD::S_Update();
 	TControl::CheckInput();
 
+	tSpawnLimite = TGfxVec2(TFloor::GetPosition().x - TFloor::GetLeftSize(), TFloor::GetPosition().x + TFloor::GetRightSize());
+
 	for (int i = 0; i < s_iVillagersCount; i++)
 	{
 		s_pVillagers[i]->Update();
@@ -272,7 +284,14 @@ void TMap::S_GenerateBird()
 {
 	if (BIRDS_GENERATION_RATE * 1000.f < (GfxTimeGetMilliseconds() - s_iLastTimeBirdGeneration))
 	{
-		S_CreateBird(TFloor::GetPosition() + TGfxVec2(-500, 500));
+		float fRandomBird = GfxMathGetRandomFloat(MIN_BIRD_RATIO * (s_iVillagersCount * MIN_PERCENT), MAX_BIRD_RATIO * (s_iVillagersCount * MAX_PERCENT));
+		int iRandomBirdNbr = int(fRandomBird);
+		for (int i = 0; i < iRandomBirdNbr; i++)
+		{
+			float fRandomSpawnX = GfxMathGetRandomFloat(tSpawnLimite.x, tSpawnLimite.y);
+			GfxDbgPrintf("%d \n", iRandomBirdNbr);
+			S_CreateBird(TGfxVec2(fRandomSpawnX, -GfxGetDisplaySizeY()));
+		}
 		s_iLastTimeBirdGeneration = GfxTimeGetMilliseconds();
 	}
 }
