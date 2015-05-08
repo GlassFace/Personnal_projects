@@ -19,13 +19,11 @@ public:
 
 	static void S_Update();
 
-
-	static void S_Render();
-
 	static TVillager ** S_GetVillagers()
 	{
 		return s_pVillagers;
 	}
+
 	static THouse ** S_GetHouses()
 	{
 		return s_pHouses;
@@ -35,10 +33,16 @@ public:
 	{
 		return s_iVillagersCount;
 	}
+
 	static int S_GetHouseCount()
 	{
 		return s_iHousesCount;
 	}
+
+
+	static void S_Render();
+
+
 private:
 
 	static TVillager ** s_pVillagers;

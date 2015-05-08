@@ -68,6 +68,7 @@ void TMap::S_Update()
 {
 	THUD::S_Update();
 	TControl::CheckInput();
+
 	for (int i = 0; i < s_iVillagersCount; i++)
 	{
 		s_pVillagers[i]->Update();
@@ -82,5 +83,8 @@ void TMap::S_Update()
 
 void TMap::S_Render()
 {
+	GfxClear(EGfxColor_Black);
 	THUD::S_Render();
+
+	s_pFloor->S_Render();
 }

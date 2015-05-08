@@ -14,7 +14,7 @@ namespace
 
 	const TGfxVec2 HOUSE_SIZE = TGfxVec2(96.0f, 96.0f);
 
-	const int VILLAGERS_SPAWN_RATE = 1* 1000;		// Milliseconds
+	const int VILLAGERS_SPAWN_RATE = 60 * 1000;		// Milliseconds
 }
 
 
