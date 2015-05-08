@@ -115,7 +115,7 @@ void TVillager::GetRandomName()
 
 	for (i = 0; pCursor != nullptr && pCursor[i] != '\0'; i++)
 	{
-		if (pCursor[i] == '\r')
+		if (pCursor[i] == '\n')
 		{
 			iNamesCount++;
 		}
@@ -127,7 +127,7 @@ void TVillager::GetRandomName()
 
 	for (int iLine = 0; iLine != iRandomNameLine; i++)
 	{
-		if (pCursor[i] == '\r')
+		if (pCursor[i] == '\n')
 		{
 			iLine++;
 		}
