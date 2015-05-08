@@ -2,7 +2,13 @@
 #ifndef BUILDING_H_INCLUDED
 #define BUILDING_H_INCLUDED
 
-#include "Entity.h"
+enum EBuildingType
+{
+	EBuildingType_House,
+	EBuildingType_Workshop,
+	EBuildingType_Tower
+};
+
 class TVillager;
 
 class TBuilding : public TEntity

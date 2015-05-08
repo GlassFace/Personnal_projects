@@ -41,7 +41,6 @@ m_pFly(nullptr),
 m_iLastMove(0)
 {
 	m_pFly = new TAnim("Bird_Fly.tga", 7, 48, 48);
-
 }
 
 TBird::~TBird()

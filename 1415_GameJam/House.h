@@ -15,6 +15,11 @@ public:
 
 	static void S_Initialize();
 
+
+	void SpecificUpdate();
+
+	static float S_GetSizeX();
+
 	TGfxSprite * GetSprite() const
 	{
 		return m_pSprite;
@@ -24,8 +29,6 @@ public:
 	{
 		return m_tPos;
 	}
-
-	void SpecificUpdate();
 
 
 private:

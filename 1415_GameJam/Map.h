@@ -11,11 +11,12 @@ class TMap
 {
 public:
 	
+	/*		Update		*/
 
 	static void S_Initialize();
 
 	static void S_CreateVillager(const TGfxVec2 & tPos);
-	static void S_CreateHouse(const TGfxVec2 & tPos);
+	static void S_CreateBuilding(EBuildingType eBuildingToCreate, const TGfxVec2 & tPos);
 	static void S_CreateBird(const TGfxVec2 & tPos);
 
 	static void S_DeleteVillager(TVillager * pVillager);
@@ -23,7 +24,13 @@ public:
 	static void S_DeleteBird(TBird * pBird);
 
 
+	/*		Update		*/
+
 	static void S_Update();
+
+	static bool S_EnoughRoomToConstruct(const TGfxVec2 & tPos, const float tBuildingSizeX);
+
+	/*		Getters		*/
 
 	static TVillager ** S_GetVillagers()
 	{
@@ -46,6 +53,8 @@ public:
 	}
 
 
+	/*		Render		*/
+
 	static void S_Render();
 
 
@@ -60,8 +69,8 @@ private:
 	static TBird ** s_pBirds;
 	static int s_iBirdsCount;
 
-	static THouse ** s_pHouses;
-	static int s_iHousesCount;
+	static TBuilding ** s_pBuildings;
+	static int s_iBuildingsCount;
 
 	static TFloor * s_pFloor;
 };

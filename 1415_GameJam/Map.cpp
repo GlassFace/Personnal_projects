@@ -24,6 +24,8 @@ namespace
 
 	const int HOUSES_MAX_COUNT = 60;
 
+	const float SIZE_BETWEEN_BUILDINGS_MIN = 64.0f;
+
 	const int BIRDS_MAX_COUNT = 60;
 }
 
@@ -33,8 +35,8 @@ TGfxSprite * TMap::s_pBackGroundSprite = nullptr;
 
 TVillager ** TMap::s_pVillagers = nullptr;
 int TMap::s_iVillagersCount = 0;
-THouse ** TMap::s_pHouses = nullptr;
-int TMap::s_iHousesCount = 0;
+TBuilding ** TMap::s_pBuildings = nullptr;
+int TMap::s_iBuildingsCount = 0;
 TBird ** TMap::s_pBirds = nullptr;
 int TMap::s_iBirdsCount = 0;
 
@@ -51,7 +53,7 @@ void TMap::S_Initialize()
 
 	TCamera::S_Initialize();
 	s_pVillagers = new TVillager *[VILLAGERS_MAX_COUNT]{ 0 };
-	s_pHouses = new THouse *[HOUSES_MAX_COUNT]{ 0 };
+	s_pBuildings = new TBuilding *[HOUSES_MAX_COUNT]{ 0 };
 	s_pBirds = new TBird *[BIRDS_MAX_COUNT]{ 0 };
 	
 	s_pFloor->S_Initialize();
@@ -62,9 +64,9 @@ void TMap::S_Initialize()
 	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0, 500));
 
 	THouse::S_Initialize();
-	S_CreateHouse(TFloor::GetPosition() + TGfxVec2(300,0));
-	S_CreateHouse(TFloor::GetPosition() + TGfxVec2(0, 0));
-	S_CreateHouse(TFloor::GetPosition() + TGfxVec2(-300, 0));
+	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(300,0));
+	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(0, 0));
+	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(-300, 0));
 
 	
 	S_CreateBird(TFloor::GetPosition() + TGfxVec2(-1000, -3000));
@@ -86,10 +88,26 @@ void TMap::S_CreateVillager(const TGfxVec2 & tPos)
 	s_iVillagersCount++;
 }
 
-void TMap::S_CreateHouse(const TGfxVec2 & tPos)
+void TMap::S_CreateBuilding(EBuildingType eBuildingToCreate, const TGfxVec2 & tPos)
 {
-	s_pHouses[s_iHousesCount] = new THouse(tPos);
-	s_iHousesCount++;
+	switch (eBuildingToCreate)
+	{
+	case EBuildingType_House:
+
+		s_pBuildings[s_iBuildingsCount] = new THouse(tPos);
+
+		break;
+
+	case EBuildingType_Workshop:
+
+		break;
+
+	case EBuildingType_Tower:
+
+		break;
+	}
+	
+	s_iBuildingsCount++;
 }
 void TMap::S_CreateBird(const TGfxVec2 & tPos)
 {
@@ -119,18 +137,19 @@ void TMap::S_DeleteHouse(THouse * pHouse)
 {
 	for (int i = 0;; i++)
 	{
-		if (s_pHouses[i] == pHouse)
+		if (s_pBuildings[i] == pHouse)
 		{
-			delete s_pHouses[i];
-			s_pHouses[i] = s_pHouses[s_iHousesCount];
-			s_pHouses[s_iHousesCount] = nullptr;
+			delete s_pBuildings[i];
+			s_pBuildings[i] = s_pBuildings[s_iBuildingsCount];
+			s_pBuildings[s_iBuildingsCount] = nullptr;
 
-			s_iHousesCount--;
+			s_iBuildingsCount--;
 
 			return;
 		}
 	}
 }
+
 void TMap::S_DeleteBird(TBird * pBird)
 {
 	for (int i = 0;; i++)
@@ -168,14 +187,38 @@ void TMap::S_Update()
 
 	TCamera::S_Update();
 
-	for (int i = 0; i < s_iHousesCount; i++)
+	for (int i = 0; i < s_iBuildingsCount; i++)
 	{
-		s_pHouses[i]->Update();
+		s_pBuildings[i]->Update();
 	}
 	for (int i = 0; i < s_iBirdsCount; i++)
 	{
 		s_pBirds[i]->Update();
 	}
+}
+
+bool TMap::S_EnoughRoomToConstruct(const TGfxVec2 & tPos, const float tBuildingSizeX)
+{
+	const float fConstructionLeftBorder = tPos.x - (tBuildingSizeX / 2.0f) - SIZE_BETWEEN_BUILDINGS_MIN;
+	const float fConstructionRightBorder = tPos.x + (tBuildingSizeX / 2.0f) + SIZE_BETWEEN_BUILDINGS_MIN;
+
+	for (int i = 0; i < s_iBuildingsCount; i++)
+	{
+		const float fBuildingLeftBorder = s_pBuildings[i]->GetPos().x - (s_pBuildings[i]->GetSize().x / 2.0f);
+		const float fBuildingRightBorder = s_pBuildings[i]->GetPos().x + (s_pBuildings[i]->GetSize().x / 2.0f);
+
+		const bool bLeftBorderInTheAir = fConstructionLeftBorder < TFloor::GetPosition().x - TFloor::GetLeftSize();
+		const bool bRightBorderInTheAir = fConstructionRightBorder > TFloor::GetPosition().x + TFloor::GetRightSize();
+
+		if (fConstructionLeftBorder >= fBuildingRightBorder ||
+			fConstructionRightBorder <= fBuildingLeftBorder ||
+			bLeftBorderInTheAir || bRightBorderInTheAir)
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 
@@ -191,9 +234,9 @@ void TMap::S_Render()
 	THUD::S_Render();
 	TFloor::S_Render();
 
-	for (int i = 0; i < s_iHousesCount; i++)
+	for (int i = 0; i < s_iBuildingsCount; i++)
 	{
-		s_pHouses[i]->Render();
+		s_pBuildings[i]->Render();
 	}
 
 	for (int i = 0; i < s_iVillagersCount; i++)

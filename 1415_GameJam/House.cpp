@@ -2,6 +2,7 @@
 #include "flib.h"
 #include "flib_vec2.h"
 #include "generics.h"
+#include "Entity.h"
 #include "House.h"
 #include "Entity.h"
 #include "Building.h"
@@ -59,4 +60,9 @@ void THouse::SpecificUpdate()
 		TMap::S_CreateVillager(m_tPos - TGfxVec2(0.0f, VILLAGERS_SIZE_Y / 2.0f));
 		m_iLastSpawnTime = GfxTimeGetMilliseconds();
 	}
+}
+
+float THouse::S_GetSizeX()
+{
+	return HOUSE_SIZE.x;
 }
