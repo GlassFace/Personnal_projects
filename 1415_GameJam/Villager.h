@@ -2,6 +2,9 @@
 #ifndef VILLAGER_H_INCLUDED
 #define VILLAGER_H_INCLUDED
 
+#include "Dynamic.h"
+
+
 class TVillager : public TDynamic
 {
 public:
@@ -12,6 +15,15 @@ public:
 
 
 	static void S_Initialize();
+
+	TGfxSprite * GetSprite() const
+	{
+		return m_pSprite;
+	}
+	const TGfxVec2 & GetPosition() const
+	{
+		return m_tPos;
+	}
 
 	void GetRandomName();
 

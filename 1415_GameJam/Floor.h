@@ -11,6 +11,14 @@ public:
 	TFloor();
 	~TFloor();
 
+	static TGfxSprite ** GetExtensionSprite()
+	{
+		return s_pSprite;
+	}
+	static TGfxVec2 ** GetExtensionPosition()
+	{
+		return s_pPosition;
+	}
 	static float GetLeftSize()
 	{
 		return s_fLeftSize;
@@ -19,11 +27,14 @@ public:
 	{
 		return s_fRightSize;
 	}
+	static TGfxSprite * GetPlatformSprite()
+	{
+		return s_pPlatformSprite;
+	}
 	static TGfxVec2 & GetPosition()
 	{
 		return s_tPosition;
 	}
-
 	static void S_Initialize();
 	static void S_Update();
 	static void S_Render();

@@ -10,6 +10,11 @@
 #include "Map.h"
 
 
+namespace
+{
+	const float SUICID_CAP = 300.f;
+}
+
 TGfxSprite * THUD::m_pVillagerCounter = nullptr;
 TSuicideInfo THUD::m_tSuicideInfo;
 
@@ -75,6 +80,10 @@ void THUD::S_OneMoreSuicide()
 {
 	m_tSuicideInfo.m_iTotalSuicide++;
 	m_tSuicideInfo.m_fSuicideMalus += SUICIDE_MALUS;
+	if (m_tSuicideInfo.m_fSuicideMalus > SUICID_CAP)
+	{
+		m_tSuicideInfo.m_fSuicideMalus = SUICID_CAP;
+	}
 	GfxSpriteSetScale(m_tSuicideInfo.m_pSuicideGauge, (floorf(m_tSuicideInfo.m_fSuicideMalus)), SUICIDE_GAUGE_SIZE_Y);
 }
 void THUD::S_Render()

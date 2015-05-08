@@ -15,6 +15,15 @@ public:
 
 	static void S_Initialize();
 
+	TGfxSprite * GetSprite() const
+	{
+		return m_pSprite;
+	}
+
+	const TGfxVec2 & GetPosition() const
+	{
+		return m_tPos;
+	}
 
 	void SpecificUpdate();
 

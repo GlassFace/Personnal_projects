@@ -14,6 +14,7 @@ namespace
 
 	const int MAX_EXTENSION = 30;
 	const float EXTENSION_SIZE_X = 250.f;
+	const float EMPTY_SPACE_MARGIN = 200.f;
 }
 
 TGfxSprite ** TFloor::s_pSprite = nullptr;

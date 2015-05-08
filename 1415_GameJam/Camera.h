@@ -12,6 +12,7 @@ public:
 
 	static void S_Initialize();
 	static void S_Update();
+	static void S_UpdateLocal();
 	static void S_Render();
 
 	static TGfxVec2 & S_GetWorldPosition()

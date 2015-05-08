@@ -34,7 +34,6 @@ m_iLastSpawnTime(0)
 	m_pSprite = GfxSpriteCreate(s_pTexture);
 	GfxSpriteSetPivot(m_pSprite, (m_tSize.x / 2.0f), m_tSize.y);
 	GfxSpriteSetPosition(m_pSprite, m_tPos.x, m_tPos.y);
-	GfxDbgPrintf("%f, %f", m_tPos.x, m_tPos.y);
 }
 
 THouse::~THouse()
