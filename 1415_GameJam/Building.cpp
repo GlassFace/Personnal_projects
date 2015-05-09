@@ -78,11 +78,11 @@ TBuilding::~TBuilding()
 
 void TBuilding::S_InitializeBuildings()
 {
+	s_pAssignedVillagersTileSet = GfxTextureLoad(ASSIGNED_VILLAGERS_TILESET_NAME);
+
 	THouse::S_Initialize();
 	TWorkshop::S_Initialize();
 	TEnclosure::S_Initialize();
-
-	s_pAssignedVillagersTileSet = GfxTextureLoad(ASSIGNED_VILLAGERS_TILESET_NAME);
 }
 
 
