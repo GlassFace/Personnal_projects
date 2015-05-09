@@ -24,6 +24,7 @@ namespace
 {
 	const char * const IDLE_TILESET_NAME = "Priest\\Priest_Idle.tga";
 	const char * const WALK_TILESET_NAME = "Priest\\Priest_Walk.tga";
+	const char * const ACTION_TILESET_NAME = "Priest\\Priest_Action.tga";
 
 	const int TIME_BETWEEN_SHOTS = 3 * (SECONDS / 2);
 	const int ATTACK_ANIMATION_DURATION = int((SECONDS / 7.0f) * 8.0f);
@@ -35,6 +36,7 @@ namespace
 
 TGfxTexture * TPriest::s_pIdleTileSet = nullptr;
 TGfxTexture * TPriest::s_pWalkTileSet = nullptr;
+TGfxTexture * TPriest::s_pActionTileSet = nullptr;
 
 TPriest::TPriest() :
 TProfession()
@@ -96,13 +98,13 @@ void TPriest::ProfessionUpdate()
 			for (int i = 0; i < TMap::S_GetVillagerCount(); i++)
 			{
 				if (pVillagers[i] != m_pLinkedVillager &&
-					pVillagers[i]->m_pAssignedBuilding != nullptr &&
+					pVillagers[i]->m_pAssignedBuilding == nullptr &&
 					pVillagers[i]->m_eAction != EAction_Grab &&
 					pNearestVillager != nullptr &&
 					(pVillagers[i]->m_tPos.x - m_pLinkedVillager->m_tPos.x) < (pNearestVillager->m_tPos.x - m_pLinkedVillager->m_tPos.x)
 					||
 					pVillagers[i] != m_pLinkedVillager &&
-					pVillagers[i]->m_pAssignedBuilding != nullptr &&
+					pVillagers[i]->m_pAssignedBuilding == nullptr &&
 					pVillagers[i]->m_eAction != EAction_Grab)
 				{
 					pNearestVillager = pVillagers[i];
@@ -113,14 +115,71 @@ void TPriest::ProfessionUpdate()
 
 			if (m_pRescuedVillager != nullptr)
 			{
-				m_pLinkedVillager->m_eAction = EAction_Action;
+				m_pLinkedVillager->m_eAction = EAction_Running;
 			}
 		}
 	}
 
 	else
 	{
-		if (m_pLinkedVillager->m_eAction == EAction_Action)
+		switch (m_pLinkedVillager->m_eAction)
+		{
+		case EAction_Running:
+		{
+				if (m_pRescuedVillager->m_tPos.x - m_pLinkedVillager->m_tPos.x >= -0.1f &&
+					m_pRescuedVillager->m_tPos.x - m_pLinkedVillager->m_tPos.x <= 0.1f)
+				{
+					m_pLinkedVillager->m_eAction = EAction_Action;
+					m_pRescuedVillager->m_eAction = EAction_Grab;
+					m_pRescuedVillager->SetPosition(m_pLinkedVillager->m_tPos - TGfxVec2(0.0f, m_pLinkedVillager->m_tSize.y));
+				}
+
+				else
+				{
+					const float fDirectionSign = m_pRescuedVillager->m_tPos.x >= m_pLinkedVillager->m_tPos.x ? 1.0f : -1.0f;
+
+					m_pLinkedVillager->m_tVelocity.x = ((m_pLinkedVillager->m_fSpeed * 2.0f) / GfxTimeFrameGetCurrentFPS()) * fDirectionSign;
+					m_pLinkedVillager->m_eDirection = fDirectionSign == 1.0f ? EDirection_Right : EDirection_Left;
+				}
+
+				break;
+		}
+		case EAction_Action:
+		{
+			if (m_pEnclosureTarget->GetPos().x - m_pLinkedVillager->m_tPos.x >= -0.1f &&
+				m_pEnclosureTarget->GetPos().x - m_pLinkedVillager->m_tPos.x <= 0.1f)
+			{
+				m_pRescuedVillager->m_eAction = EAction_Idle;
+				m_pEnclosureTarget->AssignVillager(m_pRescuedVillager);
+				m_pEnclosureTarget = nullptr;
+				m_pRescuedVillager = nullptr;
+
+				m_pLinkedVillager->m_eAction = EAction_Idle;
+			}
+
+			else
+			{
+				const float fDirectionSign = m_pEnclosureTarget->GetPos().x >= m_pLinkedVillager->m_tPos.x ? 1.0f : -1.0f;
+
+				m_pLinkedVillager->m_tVelocity.x = (m_pLinkedVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS()) * fDirectionSign;
+				m_pLinkedVillager->m_eDirection = fDirectionSign == 1.0f ? EDirection_Right : EDirection_Left;
+			}
+
+			break;
+		}
+
+		/*case EAction_Walking:
+		case EAction_Idle:
+
+
+
+			break;*/
+		}
+
+
+
+
+		/*if (m_pLinkedVillager->m_eAction == EAction_Action)
 		{
 			if ((m_pRescuedVillager->m_tPos.x - m_pLinkedVillager->m_tPos.x) > (m_pLinkedVillager->m_tSize.x / 2.0f))
 			{
@@ -145,21 +204,22 @@ void TPriest::ProfessionUpdate()
 
 				m_pLinkedVillager->m_tVelocity.x = (m_pLinkedVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS()) * fDirectionSign;
 			}
-		}
+		}*/
 	}
 
 
-	if (m_pLinkedVillager->m_eAction == EAction_Walking &&
+	/*if (m_pLinkedVillager->m_eAction == EAction_Walking &&
 		m_pRescuedVillager != nullptr)
 	{
 		m_pRescuedVillager->m_tVelocity.x = m_pLinkedVillager->m_tVelocity.x;
 		m_pRescuedVillager->m_eDirection = m_pLinkedVillager->m_eDirection;
 		m_pRescuedVillager->m_eAction = EAction_Walking;
-	}
+	}*/
 
 
 	if (m_pEnclosureTarget == nullptr)
 	{
+		m_pRescuedVillager = nullptr;
 		m_pLinkedVillager->RandomMove();
 	}
 
@@ -174,8 +234,13 @@ void TPriest::ProfessionUpdate()
 		m_pLinkedVillager->m_pSprite = m_pWalk->Play(m_pLinkedVillager->m_eDirection);
 	}
 
-	else
+	else if (m_pLinkedVillager->m_eAction == EAction_Running)
 	{
 		m_pLinkedVillager->m_pSprite = m_pRun->Play(m_pLinkedVillager->m_eDirection);
+	}
+
+	else
+	{
+		m_pLinkedVillager->m_pSprite = m_pAction->Play(m_pLinkedVillager->m_eDirection);
 	}
 }

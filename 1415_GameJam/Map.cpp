@@ -93,9 +93,9 @@ void TMap::S_Initialize()
 	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(20.0f, 500.0f));
 
 	TBuilding::S_InitializeBuildings();
-	//S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(300.0f, 0.0f));
-	//S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(0.0f, 0.0f));
-	//S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(-300.0f, 0.0f));
+	S_CreateBuilding(EBuildingType_Church, TFloor::GetPosition() + TGfxVec2(400.0f, 0.0f));
+	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(0.0f, 0.0f));
+	S_CreateBuilding(EBuildingType_Enclosure, TFloor::GetPosition() + TGfxVec2(-300.0f, 0.0f));
 	S_CreateBuilding(EBuildingType_Workshop, TFloor::GetPosition() + TGfxVec2(100.0f, 0.0f));
 
 	TBird::S_Initialize();
@@ -104,8 +104,8 @@ void TMap::S_Initialize()
 
 
 	//TFloor::S_AddExtension(EDirection_Right);
-	//TFloor::S_AddExtension(EDirection_Right);
-	//TFloor::S_AddExtension(EDirection_Left);
+	TFloor::S_AddExtension(EDirection_Right);
+	TFloor::S_AddExtension(EDirection_Left);
 	//TFloor::S_AddExtension(true);
 	//TFloor::S_AddExtension(true);
 	//TFloor::S_AddExtension(true);

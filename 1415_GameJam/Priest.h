@@ -29,6 +29,9 @@ private:
 
 	TAnim * m_pRun;
 
+	TAnim * m_pAction;
+	static TGfxTexture * s_pActionTileSet;
+
 	TEnclosure * m_pEnclosureTarget;
 	TVillager * m_pRescuedVillager;
 };
