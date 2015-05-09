@@ -90,6 +90,13 @@ void TBuilding::S_InitializeBuildings()
 void TBuilding::Update()
 {
 	SpecificUpdate();
+
+	if (m_pAssignedVillagersSprite != nullptr)
+	{
+		int iCutoutX = m_iAssignedVillagersCount;
+
+		GfxSpriteSetCutout(m_pAssignedVillagersSprite, iCutoutX * int(ASSIGNED_VILLAGERS_TILESET_SIZE.x), 0, int(ASSIGNED_VILLAGERS_TILESET_SIZE.x), int(ASSIGNED_VILLAGERS_TILESET_SIZE.y));
+	}
 }
 
 bool TBuilding::DropCivilian(TVillager * pVillager)
