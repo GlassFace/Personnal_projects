@@ -42,14 +42,14 @@ namespace
 
 
 TGfxTexture * TBird::s_pBirdTileSet = nullptr;
+TGfxTexture * TBird::s_pBirdBlood = nullptr;
 
 TBird::TBird() :
 TDynamic(),
-//m_pBlood(nullptr),
-m_eState(EState_Alive),
-m_eAction(EBirdAction_ToTarget),
 m_pTarget(nullptr),
 m_pFly(nullptr),
+m_eState(EState_Alive),
+m_eAction(EBirdAction_ToTarget),
 m_iLastMove(0),
 m_iHitLeft(HIT_TO_KILL)
 {
@@ -59,16 +59,22 @@ m_iHitLeft(HIT_TO_KILL)
 
 TBird::TBird(const TGfxVec2 & tPos) :
 TDynamic(tPos, BIRD_SIZE, BIRD_FLY_SPEED),
-//m_pBlood(nullptr),
-m_eState(EState_Alive),
-m_eAction(EBirdAction_ToTarget),
 m_pTarget(nullptr),
 m_pFly(nullptr),
+m_eState(EState_Alive),
+m_eAction(EBirdAction_ToTarget),
 m_iLastMove(GfxTimeGetMilliseconds()),
 m_iHitLeft(HIT_TO_KILL)
 {
 	m_pFly = new TAnim(s_pBirdTileSet, 7, 48, 48);
 
+	for (int i = 0; i < NBR_BLOOD_SPRITE; i++)
+	{
+		m_pBlood[i] = new TBloodInfo();
+		m_pBlood[i]->m_pSprite = nullptr;
+		m_pBlood[i]->iAnimBegin = 0;
+
+	}
 }
 
 TBird::~TBird()
@@ -81,13 +87,22 @@ void TBird::S_Initialize()
 {
 
 	s_pBirdTileSet = GfxTextureLoad(FLY_TILESET_NAME);
-	//s_pBirdBlood = GfxTextureLoad(BIRD_BLOOD_NAME);
+	s_pBirdBlood = GfxTextureLoad(BIRD_BLOOD_NAME);
+
+
 	LEFT_ESCAPE_POINT = TGfxVec2(TFloor::GetPosition().x - TFloor::GetLeftSize() - EMPTY_SPACE_RANGE, 500.f);
 	RIGHT_ESCAPE_POINT = TGfxVec2(TFloor::GetPosition().x + TFloor::GetRightSize() + EMPTY_SPACE_RANGE, 500.f);
 }
 
 void TBird::Initialize()
 {
+	for (int i = 0; i < NBR_BLOOD_SPRITE; i++)
+	{
+
+		m_pBlood[i]->m_pSprite = GfxSpriteCreate(s_pBirdBlood);
+		m_pBlood[i]->iAnimBegin = 0;
+
+	}
 	FindTarget();
 }
 
@@ -106,6 +121,7 @@ void TBird::SpecificUpdate()
 	if (IsAlive() == true)
 	{
 		m_pSprite = m_pFly->Play(m_eDirection);
+		//UpdateBlood();
 	}
 }
 
@@ -250,6 +266,20 @@ void TBird::TakeHit()
 	}
 }
 
+void TBird::UpdateBlood()
+{
+	for (int i = 0; i < NBR_BLOOD_SPRITE; i++)
+	{
+		if (m_pBlood[i]->iAnimBegin != 0)
+		{
+			int iTimePassed = GfxTimeGetMilliseconds() - m_pBlood[i]->iAnimBegin / 1000.f;
+			float iRatioToScale = 1.f + iTimePassed ; 
+			GfxSpriteSetScale(m_pBlood[i]->m_pSprite, iRatioToScale, iRatioToScale);
+			GfxSpriteSetPosition(m_pBlood[i]->m_pSprite, m_tPos.x, m_tPos.y);
+
+		}
+	}
+}
 void TBird::Render() const
 {
 	if (m_pSprite != nullptr)
