@@ -2,6 +2,8 @@
 #include "flib.h"
 #include "flib_vec2.h"
 #include "generics.h"
+#include "Background.h"
+#include "Parallax.h"
 #include "Map.h"
 #include "Entity.h"
 #include "Building.h"

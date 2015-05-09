@@ -1,6 +1,8 @@
 #include "flib.h"
 #include "flib_vec2.h"
 #include "generics.h"
+#include "Background.h"
+#include "Parallax.h"
 #include "Map.h"
 #include <math.h>
 #include "Entity.h"
@@ -9,7 +11,6 @@
 #include "HUD.h"
 #include "Building.h"
 #include "House.h"
-#include "Map.h"
 
 
 namespace
@@ -26,6 +27,8 @@ namespace
 	const float VILLAGER_COUNTER_POS_X = 100.f;
 	const float VILLAGER_COUNTER_POS_Y = 100.f;
 	const float SUICID_CAP = 300.f;
+
+	const float PARALLAX_SCROLL_SPEED = 0.5f;
 }
 
 TGfxSprite * THUD::s_pVillagerCounter = nullptr;
@@ -52,6 +55,7 @@ void THUD::S_Initialize()
 	GfxSpriteSetCutout(s_pMouseSprite, 0, 0, 32, 32);
 	GfxSpriteSetPivot(s_pMouseSprite, 10.0f, 10.0f);
 	GfxSpriteSetPosition(s_pMouseSprite, float(GfxGetCurrentMouseX()), float(GfxGetCurrentMouseY()));
+
 
 	s_pVillagerCounter = GfxTextSpriteCreate();
 	GfxSpriteSetFilteringEnabled(s_pVillagerCounter, false);
@@ -90,6 +94,7 @@ void THUD::S_Update()
 	S_UpdateVillagerCounter();
 	S_UpdateVillagerSuicideGauge();
 	S_DisplayName();
+
 }
 
 void THUD::S_UpdateVillagerCounter()
@@ -134,7 +139,6 @@ void THUD::S_DisplayName()
 		GfxTextSpritePrintf(pVillager->GetNameSprite(), "%s", pVillager->GetName());
 	}
 }
-
 void THUD::S_Render()
 {
 	GfxSpriteRender(s_pMouseSprite);

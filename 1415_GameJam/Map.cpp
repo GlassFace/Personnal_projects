@@ -3,6 +3,8 @@
 #include "flib_vec2.h"
 #include <math.h>
 #include "generics.h"
+#include "Background.h"
+#include "Parallax.h"
 #include "Map.h"
 #include "Entity.h"
 #include "Dynamic.h"
@@ -35,18 +37,19 @@ namespace
 
 	const int BIRDS_MAX_COUNT = 60;
 
-	const float BIRDS_GENERATION_RATE = 7.f;
+	const float BIRDS_GENERATION_RATE = 1.f;
 
 	const int MIN_BIRD_RATIO = 1;
 	const int MAX_BIRD_RATIO = 3;
-	const float MIN_PERCENT = 5.f / PERCENTS;
+	const float MIN_PERCENT = 10.f / PERCENTS;
 	const float MAX_PERCENT = 20.f / PERCENTS;
 	TGfxVec2 tSpawnLimite;
 }
 
+TParallax * TMap::s_pParallax = nullptr;
 
-TGfxTexture * TMap::s_pBackGroundTexture = nullptr;
-TGfxSprite * TMap::s_pBackGroundSprite = nullptr;
+//TGfxTexture * TMap::s_pBackGroundTexture = nullptr;
+//TGfxSprite * TMap::s_pBackGroundSprite = nullptr;
 
 TVillager ** TMap::s_pVillagers = nullptr;
 int TMap::s_iVillagersCount = 0;
@@ -66,10 +69,11 @@ void TMap::S_Initialize()
 
 	tSpawnLimite = TGfxVec2(TFloor::GetPosition().x - TFloor::GetLeftSize(), TFloor::GetPosition().x + TFloor::GetRightSize());
 
-
-	s_pBackGroundTexture = GfxTextureLoad(BACKGROUND_TEXTURE);
-	s_pBackGroundSprite = GfxSpriteCreate(s_pBackGroundTexture);
-	GfxSpriteSetPosition(s_pBackGroundSprite, 0.0f, 0.0f);
+	s_pParallax = new TParallax();
+	s_pParallax->Initialize();
+	//s_pBackGroundTexture = GfxTextureLoad(BACKGROUND_TEXTURE);
+	//s_pBackGroundSprite = GfxSpriteCreate(s_pBackGroundTexture);
+	//GfxSpriteSetPosition(s_pBackGroundSprite, 0.0f, 0.0f);
 
 	s_iLastTimeBirdGeneration = GfxTimeGetMilliseconds();
 
@@ -252,6 +256,7 @@ void TMap::S_Update()
 	}
 
 	S_GenerateBird();
+	s_pParallax->Scroll(-2.f);
 }
 
 void TMap::S_AssignToBuilding(TVillager * pVillager)
@@ -293,12 +298,10 @@ void TMap::S_GenerateBird()
 {
 	if (BIRDS_GENERATION_RATE * 1000.f < (GfxTimeGetMilliseconds() - s_iLastTimeBirdGeneration))
 	{
-		float fRandomBird = GfxMathGetRandomFloat(MIN_BIRD_RATIO * (s_iVillagersCount * MIN_PERCENT), MAX_BIRD_RATIO * (s_iVillagersCount * MAX_PERCENT));
-		int iRandomBirdNbr = int(fRandomBird);
-		for (int i = 0; i < iRandomBirdNbr; i++)
+		int iRandom = GfxMathGetRandomInteger(0, 100);
+		if (iRandom < (MIN_PERCENT * 100))
 		{
 			float fRandomSpawnX = GfxMathGetRandomFloat(tSpawnLimite.x, tSpawnLimite.y);
-
 			S_CreateBird(TGfxVec2(fRandomSpawnX, float(-GfxGetDisplaySizeY())));
 		}
 		s_iLastTimeBirdGeneration = GfxTimeGetMilliseconds();
@@ -308,11 +311,12 @@ void TMap::S_GenerateBird()
 void TMap::S_Render()
 {
 	GfxClear(EGfxColor_Black);
-	
-	if (s_pBackGroundSprite != nullptr)
-	{
-		GfxSpriteRender(s_pBackGroundSprite);
-	}
+
+	//if (s_pBackGroundSprite != nullptr)
+	//{
+	//	GfxSpriteRender(s_pBackGroundSprite);
+	//}
+	s_pParallax->Render();
 
 	TFloor::S_Render();
 

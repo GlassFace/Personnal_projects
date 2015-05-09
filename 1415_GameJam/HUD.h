@@ -2,7 +2,6 @@
 #define HUD_H_INCLUDED
 
 
-
 struct TSuicideInfo
 {
 	TSuicideInfo()
@@ -35,6 +34,8 @@ public:
 	static void S_UpdateVillagerSuicideGauge();
 	static void S_OneMoreSuicide();
 	static void S_DisplayName();
+
+
 	const TGfxSprite * GetVillagerCounter() const
 	{
 		return s_pVillagerCounter;
@@ -44,8 +45,6 @@ public:
 	{
 		return s_tSuicideInfo;
 	}
-
-
 	static void S_Render();
 
 private:

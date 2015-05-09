@@ -6,6 +6,8 @@
 #include "Entity.h"
 #include "Dynamic.h"
 #include "Villager.h"
+#include "Background.h"
+#include "Parallax.h"
 #include "Map.h"
 #include "Bird.h"
 
