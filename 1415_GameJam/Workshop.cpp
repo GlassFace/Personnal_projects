@@ -35,7 +35,7 @@ TGfxTexture * TWorkshop::s_pIconsTileSet = nullptr;
 
 TWorkshop::TWorkshop() :
 TBuilding(),
-m_eBuildingToCreateType(EBuildingType_Workshop)
+m_eBuildingToCreateType(EBuildingType_House)
 {
 	m_eBuildingType = EBuildingType_Workshop;
 }
@@ -43,7 +43,7 @@ m_eBuildingToCreateType(EBuildingType_Workshop)
 TWorkshop::TWorkshop(const TGfxVec2 & tPos) :
 TBuilding(tPos, WORKSHOP_SIZE),
 m_pIconSprite(nullptr),
-m_eBuildingToCreateType(EBuildingType_Workshop)
+m_eBuildingToCreateType(EBuildingType_House)
 {
 	m_pAssignedVillagers = new TVillager*[ASSIGNED_VILLAGERS_MAX];
 
