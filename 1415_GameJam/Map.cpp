@@ -39,8 +39,8 @@ namespace
 
 	const int MIN_BIRD_RATIO = 1;
 	const int MAX_BIRD_RATIO = 3;
-	const float MIN_PERCENT = 30.f / PERCENTS;
-	const float MAX_PERCENT = 50.f / PERCENTS;
+	const float MIN_PERCENT = 5.f / PERCENTS;
+	const float MAX_PERCENT = 20.f / PERCENTS;
 	TGfxVec2 tSpawnLimite;
 }
 

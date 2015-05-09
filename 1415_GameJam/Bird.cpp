@@ -124,7 +124,21 @@ void TBird::FindTarget()
 			if (pVillager->GetAction() != EAction_Grab)
 			{
 				m_pTarget = pVillager;
-				break;
+				return;
+			}
+		}
+	}
+	for (int i = 0; i < TMap::S_GetVillagerCount(); i++)
+	{
+		TVillager * pVillager = TMap::S_GetVillagers()[i];
+
+		if (TFloor::GetPosition().x - (TFloor::GetLeftSize()) < pVillager->GetPos().x
+			&& TFloor::GetPosition().x + (TFloor::GetRightSize()) > pVillager->GetPos().x)
+		{
+			if (pVillager->GetAction() != EAction_Grab)
+			{
+				m_pTarget = pVillager;
+				return;
 			}
 		}
 	}
@@ -132,19 +146,26 @@ void TBird::FindTarget()
 
 void TBird::GoToTarget()
 {
-	TGfxVec2 tDirection = m_pTarget->GetPos() - m_tPos;
-	tDirection = tDirection.SquaredLength() >= 0.001f ? tDirection.Normalize() : TGfxVec2(0.0f, 0.0f);
-
-	m_eDirection = tDirection.x >= 0.0f ? EDirection_Right : EDirection_Left;
-	
-	m_tVelocity = tDirection * (m_fSpeed * ((GfxTimeGetMilliseconds() - float(m_iLastMove)) / SECONDS));
-	m_iLastMove = GfxTimeGetMilliseconds();
-
-	if (m_pTarget->IsMouseOver(m_tPos))
+	if (m_pTarget != nullptr && m_pTarget->GetAction() != EAction_Grab)
 	{
-		m_pTarget->SetAction(EAction_Grab);
-		m_pTarget->SetPosition(m_tPos);
-		m_eAction = EBirdAction_DelivringTarget;
+		TGfxVec2 tDirection = m_pTarget->GetPos() - m_tPos;
+		tDirection = tDirection.SquaredLength() >= 0.001f ? tDirection.Normalize() : TGfxVec2(0.0f, 0.0f);
+
+		m_eDirection = tDirection.x >= 0.0f ? EDirection_Right : EDirection_Left;
+
+		m_tVelocity = tDirection * (m_fSpeed * ((GfxTimeGetMilliseconds() - float(m_iLastMove)) / SECONDS));
+		m_iLastMove = GfxTimeGetMilliseconds();
+
+		if (m_pTarget->IsMouseOver(m_tPos))
+		{
+			m_pTarget->SetAction(EAction_Grab);
+			m_pTarget->SetPosition(m_tPos);
+			m_eAction = EBirdAction_DelivringTarget;
+		}
+	}
+	else
+	{
+		FindTarget();
 	}
 }
 
