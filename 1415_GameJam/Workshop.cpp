@@ -48,7 +48,7 @@ m_eBuildingToCreateType(EBuildingType_Workshop)
 
 	m_pIconSprite = GfxSpriteCreate(s_pIconsTileSet);
 	GfxSpriteSetCutout(m_pIconSprite, 0, 0, int(ICONS_SIZE.x), int(ICONS_SIZE.y));
-	GfxSpriteSetPivot(m_pIconSprite, ICONS_SIZE.x / 2.0f, ICONS_SIZE.y);
+	GfxSpriteSetPivot(m_pIconSprite, ICONS_SIZE.x / 2.0f, ICONS_SIZE.y + m_tSize.y);
 	GfxSpriteSetPosition(m_pIconSprite, m_tPos.x, m_tPos.y - m_tSize.y);
 
 

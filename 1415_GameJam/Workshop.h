@@ -23,6 +23,11 @@ public:
 
 	static float S_GetSizeX();
 
+	TGfxSprite * GetIconSprite()
+	{
+		return m_pIconSprite;
+	}
+
 
 	void SpecificRender();
 
