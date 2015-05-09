@@ -64,7 +64,7 @@ m_eState(EState_Alive),
 m_eAction(EBirdAction_ToTarget),
 m_pTarget(nullptr),
 m_pFly(nullptr),
-m_iLastMove(0),
+m_iLastMove(GfxTimeGetMilliseconds()),
 m_iHitLeft(HIT_TO_KILL)
 {
 	m_pFly = new TAnim(s_pBirdTileSet, 7, 48, 48);
