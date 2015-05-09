@@ -19,6 +19,7 @@ class TVillager : public TDynamic
 {
 	friend TProfession;
 	friend class TWorker;
+	friend class TMillitary;
 
 public:
 

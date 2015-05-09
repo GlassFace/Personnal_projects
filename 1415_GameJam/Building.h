@@ -41,6 +41,9 @@ protected:
 
 	TVillager ** m_pAssignedVillagers;
 	int m_iAssignedVillagersCount;
+
+	static TGfxTexture * s_pAssignedVillagersTileSet;
+	TGfxSprite * m_pAssignedVillagersSprite;
 };
 
 #endif

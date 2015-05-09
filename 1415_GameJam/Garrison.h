@@ -22,7 +22,7 @@ public:
 	void UnassignVillager(TVillager * pVillager);
 
 
-	void SpecificRender() {};
+	void SpecificRender();
 
 
 private:

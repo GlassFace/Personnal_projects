@@ -29,6 +29,8 @@ namespace
 
 	const int TIME_BETWEEN_CONSTRUCTIONS = 10 * SECONDS;
 	const int CONSTRUCTION_TIME = 6 * SECONDS;
+
+	const float EXTENSIONS_CONSTRUCTION_SECURITY_DISTANCE = 20.0f;
 }
 
 
@@ -110,13 +112,13 @@ void TWorker::ProfessionUpdate()
 				{
 				case EDirection_Right:
 
-					m_tDestinationToConstruct = TFloor::GetPosition() + TGfxVec2(TFloor::GetRightSize(), 0.0f);
+					m_tDestinationToConstruct = TFloor::GetPosition() + TGfxVec2(TFloor::GetRightSize() - EXTENSIONS_CONSTRUCTION_SECURITY_DISTANCE, 0.0f);
 
 					break;
 
 				case EDirection_Left:
 
-					m_tDestinationToConstruct = TFloor::GetPosition() - TGfxVec2(TFloor::GetRightSize(), 0.0f);
+					m_tDestinationToConstruct = TFloor::GetPosition() - TGfxVec2(TFloor::GetLeftSize() - EXTENSIONS_CONSTRUCTION_SECURITY_DISTANCE, 0.0f);
 
 					break;
 				}

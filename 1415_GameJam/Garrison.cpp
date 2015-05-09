@@ -24,7 +24,7 @@ namespace
 
 	const TGfxVec2 GARRISON_SIZE = TGfxVec2(136.0f, 80.0f);
 
-	const int ASSIGNED_VILLAGERS_MAX = 2;
+	const int ASSIGNED_VILLAGERS_MAX = 3;
 }
 
 
@@ -110,4 +110,13 @@ void TGarrison::UnassignVillager(TVillager * pVillager)
 float TGarrison::S_GetSizeX()
 {
 	return GARRISON_SIZE.x;
+}
+
+
+void TGarrison::SpecificRender()
+{
+	if (m_pAssignedVillagersSprite != nullptr)
+	{
+		GfxSpriteRender(m_pAssignedVillagersSprite);
+	}
 }

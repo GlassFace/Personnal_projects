@@ -53,6 +53,8 @@ m_eBuildingToCreateType(EBuildingType_Workshop)
 	GfxSpriteSetPivot(m_pIconSprite, ICONS_SIZE.x / 2.0f, ICONS_SIZE.y + m_tSize.y);
 	GfxSpriteSetPosition(m_pIconSprite, m_tPos.x, m_tPos.y - m_tSize.y);
 
+	GfxSpriteSetPosition(m_pAssignedVillagersSprite, m_tPos.x, m_tPos.y - m_tSize.y - m_tSize.y);
+
 
 	m_eBuildingType = EBuildingType_Workshop;
 
