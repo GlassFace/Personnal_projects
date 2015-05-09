@@ -13,10 +13,17 @@ public:
 	const TGfxVec2 & GetMousePosition() const;
 
 
-	static void Update();
-	static void CheckInput();
+	static void S_Initialize();
+
+
+	static void S_Update();
+	static void S_CheckInput();
+
+
+	static void S_Render();
 
 private:
+
 	static TVillager * s_pDraggedVillager;
 };
 

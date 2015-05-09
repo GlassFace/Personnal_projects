@@ -45,7 +45,7 @@ THUD::~THUD()
 
 void THUD::S_Initialize()
 {
-	GfxSetMouseVisible(false);
+	//GfxSetMouseVisible(false);
 
 	s_pMouseTexture = GfxTextureLoad(MOUSE_TEXTURE_NAME);
 	s_pMouseSprite = GfxSpriteCreate(s_pMouseTexture);
@@ -137,7 +137,7 @@ void THUD::S_DisplayName()
 
 void THUD::S_Render()
 {
-	GfxSpriteRender(s_pMouseSprite);
+	//GfxSpriteRender(s_pMouseSprite);
 
 	GfxTextSpriteRender(s_pVillagerCounter, VILLAGER_COUNTER_POS_X, VILLAGER_COUNTER_POS_Y, EGfxColor_White, 2.0f, false, false);
 	GfxSpriteRender(s_tSuicideInfo.m_pSuicideGauge);

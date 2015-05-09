@@ -63,6 +63,7 @@ int TMap::s_iLastTimeBirdGeneration = 0;
 void TMap::S_Initialize()
 {
 	THUD::S_Initialize();
+	TControl::S_Initialize();
 
 	tSpawnLimite = TGfxVec2(TFloor::GetPosition().x - TFloor::GetLeftSize(), TFloor::GetPosition().x + TFloor::GetRightSize());
 
@@ -216,7 +217,7 @@ void TMap::S_DeleteBird(TBird * pBird)
 void TMap::S_Update()
 {
 	THUD::S_Update();
-	TControl::CheckInput();
+	TControl::S_Update();
 
 	tSpawnLimite = TGfxVec2(TFloor::GetPosition().x - TFloor::GetLeftSize(), TFloor::GetPosition().x + TFloor::GetRightSize());
 
@@ -291,10 +292,9 @@ bool TMap::S_EnoughRoomToConstruct(const TGfxVec2 & tPos, const float tBuildingS
 
 void TMap::S_GenerateBird()
 {
-	if (BIRDS_GENERATION_RATE * 1000.f < (GfxTimeGetMilliseconds() - s_iLastTimeBirdGeneration))
+	if (BIRDS_GENERATION_RATE * SECONDS < (GfxTimeGetMilliseconds() - s_iLastTimeBirdGeneration))
 	{
-		float fRandomBird = GfxMathGetRandomFloat(MIN_BIRD_RATIO * (s_iVillagersCount * MIN_PERCENT), MAX_BIRD_RATIO * (s_iVillagersCount * MAX_PERCENT));
-		int iRandomBirdNbr = int(fRandomBird);
+		int iRandomBirdNbr = int(GfxMathGetRandomFloat(MIN_BIRD_RATIO * (s_iVillagersCount * MIN_PERCENT), MAX_BIRD_RATIO * (s_iVillagersCount * MAX_PERCENT)));
 		for (int i = 0; i < iRandomBirdNbr; i++)
 		{
 			float fRandomSpawnX = GfxMathGetRandomFloat(tSpawnLimite.x, tSpawnLimite.y);
@@ -333,4 +333,5 @@ void TMap::S_Render()
 	}
 
 	THUD::S_Render();
+	TControl::S_Render();
 }

@@ -83,6 +83,8 @@ public:
 
 	void SetAction(EAction eAction);
 
+	void AddForce(const TGfxVec2 & tForce);
+
 
 	void Render() const;
 

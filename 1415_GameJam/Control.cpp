@@ -16,6 +16,9 @@ using namespace Generics;
 namespace
 {
 	const float SCROLL_SPEED = 9.0f;
+
+	const float DRAG_VECTOR_MAX_LENGHT = 24.0f;
+	const float SPEED_DECREASE = 2.0f;				// Per millisecond
 }
 
 TVillager * TControl::s_pDraggedVillager = nullptr;
@@ -30,14 +33,16 @@ TControl::~TControl()
 
 }
 
-void TControl::Update()
+
+void TControl::S_Update()
 {
-	CheckInput();
+	S_CheckInput();
 }
 
-void TControl::CheckInput()
+void TControl::S_CheckInput()
 {
 	const TGfxVec2 tMousePosition = GetCurrentMouse();
+	const TGfxVec2 tMousePosScreen = TGfxVec2(float(GfxGetCurrentMouseX()), float(GfxGetCurrentMouseY()));
 
 	if (GfxInputIsPressed(EGfxInputID_KeyArrowLeft))
 	{
@@ -61,6 +66,7 @@ void TControl::CheckInput()
 				break;
 			}
 		}
+
 		for (int i = 0; i < TMap::S_GetVillagerCount(); i++)
 		{
 			TVillager * pVillager = TMap::S_GetVillagers()[i];
@@ -68,6 +74,7 @@ void TControl::CheckInput()
 			if (pVillager->IsMouseOver(tMousePosition))
 			{
 				s_pDraggedVillager = pVillager;
+
 				break;
 			}
 		}
@@ -84,6 +91,15 @@ void TControl::CheckInput()
 		s_pDraggedVillager != nullptr)
 	{
 		TMap::S_AssignToBuilding(s_pDraggedVillager);
+
+		TGfxVec2 tForce = tMousePosScreen - TGfxVec2(float(GfxGetPreviousMouseX()), float(GfxGetPreviousMouseY()));
+
+		if (tForce.SquaredLength() > DRAG_VECTOR_MAX_LENGHT * DRAG_VECTOR_MAX_LENGHT)
+		{
+			tForce = tForce.Normalize() * DRAG_VECTOR_MAX_LENGHT;
+		}
+
+		s_pDraggedVillager->AddForce(tForce);
 
 		s_pDraggedVillager = nullptr;
 	}
