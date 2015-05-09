@@ -100,7 +100,7 @@ void TBird::Initialize()
 	{
 
 		m_pBlood[i]->m_pSprite = GfxSpriteCreate(s_pBirdBlood);
-		GfxSpriteSetPivot(m_pBlood[i]->m_pSprite, 24.f, 24.f);
+		GfxSpriteSetPivot(m_pBlood[i]->m_pSprite, 24.f, 48.f);
 		m_pBlood[i]->iAnimBegin = 0;
 
 	}
@@ -280,10 +280,9 @@ void TBird::UpdateBlood()
 	{
 		if (m_pBlood[i]->iAnimBegin != 0)
 		{
-			int iTimePassed = (GfxTimeGetMilliseconds() - m_pBlood[i]->iAnimBegin) / 1000;
-			float iRatioToScale =( 1.f + iTimePassed ) * 1.5f;
-			GfxDbgPrintf("%f\n", iRatioToScale);
-			if (iRatioToScale > 1.5f)
+			float fTimePassed = (GfxTimeGetMilliseconds() - m_pBlood[i]->iAnimBegin) / 1000.f;
+			float iRatioToScale = fTimePassed / 0.1;
+			if (iRatioToScale > 1.3f)
 			{
 				m_pBlood[i]->iAnimBegin = 0;
 				GfxSpriteSetScale(m_pBlood[i]->m_pSprite,0,0);
