@@ -6,7 +6,7 @@ enum EAction
 {
 	EAction_Idle,
 	EAction_Walking,
-	EAction_Running,
+	EAction_Falling,
 	EAction_Action,
 	EAction_Grab,
 };

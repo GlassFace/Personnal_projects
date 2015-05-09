@@ -164,7 +164,7 @@ void TVillager::GetRandomName()
 
 void TVillager::SpecificUpdate()
 {
-	if (m_eAction != EAction_Grab)
+	if (m_eAction != EAction_Grab && m_eAction != EAction_Falling)
 	{
 		if (m_pProfession == nullptr)
 		{
@@ -201,6 +201,19 @@ void TVillager::SpecificUpdate()
 		if (m_tPos.y > GfxGetDisplaySizeY())
 		{
 			Die();
+		}
+
+		else if (m_tPos.y < TFloor::GetPosition().y)
+		{
+			m_eAction = EAction_Falling;
+		}
+	}
+
+	else if (m_eAction == EAction_Falling)
+	{
+		if (m_tPos.y >= TFloor::GetPosition().y)
+		{
+			m_eAction = EAction_Idle;
 		}
 	}
 }
