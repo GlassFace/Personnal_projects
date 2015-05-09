@@ -280,7 +280,7 @@ void TBird::UpdateBlood()
 	{
 		if (m_pBlood[i]->iAnimBegin != 0)
 		{
-			int iTimePassed = (GfxTimeGetMilliseconds() - m_pBlood[i]->iAnimBegin) / 1000.f;
+			int iTimePassed = (GfxTimeGetMilliseconds() - m_pBlood[i]->iAnimBegin) / 1000;
 			float iRatioToScale =( 1.f + iTimePassed ) * 1.5f;
 			GfxDbgPrintf("%f\n", iRatioToScale);
 			if (iRatioToScale > 1.5f)

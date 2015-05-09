@@ -176,6 +176,12 @@ void TWorkshop::GetInput()
 			iCutoutX = 4;
 
 			break;
+
+		case EBuildingType_Church:
+
+			iCutoutX = 5;
+
+			break;
 		}
 
 		GfxSpriteSetCutout(m_pIconSprite, iCutoutX * int(ICONS_SIZE.x), 0, int(ICONS_SIZE.x), int(ICONS_SIZE.y));

@@ -15,6 +15,7 @@
 #include "Workshop.h"
 #include "Enclosure.h"
 #include "Garrison.h"
+#include "Church.h"
 #include "Floor.h"
 #include "HUD.h"
 #include "Control.h"
@@ -156,6 +157,14 @@ void TMap::S_CreateBuilding(EBuildingType eBuildingToCreate, const TGfxVec2 & tP
 	case EBuildingType_Garrison:
 
 		s_pBuildings[s_iBuildingsCount] = new TGarrison(tPos);
+
+		s_iBuildingsCount++;
+
+		break;
+
+	case EBuildingType_Church:
+
+		s_pBuildings[s_iBuildingsCount] = new TChurch(tPos);
 
 		s_iBuildingsCount++;
 
