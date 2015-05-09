@@ -95,7 +95,6 @@ void TMap::S_Initialize()
 
 	TMeteorite::S_Initialize();
 	s_pMeteorites = new TMeteorite*[30]{ 0 };
-	s_pMeteorites[0] = new TMeteorite(TGfxVec2(280.0f, 0.0f));
 }
 
 void TMap::S_CreateVillager(const TGfxVec2 & tPos)
@@ -182,11 +181,11 @@ void TMap::S_DeleteVillager(TVillager * pVillager)
 	}
 }
 
-void TMap::S_DeleteHouse(THouse * pHouse)
+void TMap::S_DeleteBuilding(TBuilding * pBuilding)
 {
 	for (int i = 0;; i++)
 	{
-		if (s_pBuildings[i] == pHouse)
+		if (s_pBuildings[i] == pBuilding)
 		{
 			delete s_pBuildings[i];
 			s_pBuildings[i] = s_pBuildings[s_iBuildingsCount - 1];

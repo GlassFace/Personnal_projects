@@ -27,12 +27,15 @@ private:
 
 	static TGfxTexture * s_pMeteoriteTileset;
 	static TGfxTexture * s_pWarningTileSet;
+	static TGfxTexture * s_pDirtSprayTileSet;
 
 	TAnim * m_pFall;
+	TAnim * m_pWarning;
 	TGfxSprite * m_pMeteoriteSprite;
 
-	TAnim * m_pWarning;
+	TAnim * m_pDirtSpray;
 	TGfxSprite * m_pDirtSpraySprite;
+
 
 	bool m_bWarning;
 

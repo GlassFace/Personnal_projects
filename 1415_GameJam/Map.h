@@ -34,7 +34,7 @@ public:
 	static void S_CreateBird(const TGfxVec2 & tPos);
 
 	static void S_DeleteVillager(TVillager * pVillager);
-	static void S_DeleteHouse(THouse * pHouse);
+	static void S_DeleteBuilding(TBuilding * pBuilding);
 	static void S_DeleteBird(TBird * pBird);
 
 
