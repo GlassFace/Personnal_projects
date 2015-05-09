@@ -7,6 +7,7 @@
 #include "Building.h"
 #include "House.h"
 #include "Workshop.h"
+#include "Enclosure.h"
 #include "Dynamic.h"
 #include "Anim.h"
 #include "Villager.h"
@@ -230,7 +231,9 @@ float TWorker::GetBuildingSize()
 
 		break;
 
-	case EBuildingType_Tower:
+	case EBuildingType_Enclosure:
+
+		fSize = TEnclosure::S_GetSizeX();
 
 		break;
 	}

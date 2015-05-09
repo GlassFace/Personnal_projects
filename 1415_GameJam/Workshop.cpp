@@ -163,7 +163,7 @@ void TWorkshop::GetInput()
 
 			break;
 
-		case EBuildingType_Tower:
+		case EBuildingType_Enclosure:
 
 			iCutoutX = 3;
 

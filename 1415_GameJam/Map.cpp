@@ -11,6 +11,7 @@
 #include "Building.h"
 #include "House.h"
 #include "Workshop.h"
+#include "Enclosure.h"
 #include "Floor.h"
 #include "HUD.h"
 #include "Control.h"
@@ -96,9 +97,9 @@ void TMap::S_Initialize()
 	
 
 
-	TFloor::S_AddExtension(EDirection_Right);
-	TFloor::S_AddExtension(EDirection_Right);
-	TFloor::S_AddExtension(EDirection_Left);
+	//TFloor::S_AddExtension(EDirection_Right);
+	//TFloor::S_AddExtension(EDirection_Right);
+	//TFloor::S_AddExtension(EDirection_Left);
 	//TFloor::S_AddExtension(true);
 	//TFloor::S_AddExtension(true);
 	//TFloor::S_AddExtension(true);
@@ -138,6 +139,14 @@ void TMap::S_CreateBuilding(EBuildingType eBuildingToCreate, const TGfxVec2 & tP
 
 		break;
 	}
+
+	case EBuildingType_Enclosure:
+
+		s_pBuildings[s_iBuildingsCount] = new TEnclosure(tPos);
+
+		s_iBuildingsCount++;
+
+		break;
 
 	/*case EBuildingType_Tower:
 
@@ -289,7 +298,7 @@ void TMap::S_GenerateBird()
 		for (int i = 0; i < iRandomBirdNbr; i++)
 		{
 			float fRandomSpawnX = GfxMathGetRandomFloat(tSpawnLimite.x, tSpawnLimite.y);
-			GfxDbgPrintf("%d \n", iRandomBirdNbr);
+
 			S_CreateBird(TGfxVec2(fRandomSpawnX, float(-GfxGetDisplaySizeY())));
 		}
 		s_iLastTimeBirdGeneration = GfxTimeGetMilliseconds();

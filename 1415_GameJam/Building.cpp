@@ -12,6 +12,7 @@
 #include "Worker.h"
 #include "House.h"
 #include "Workshop.h"
+#include "Enclosure.h"
 
 
 
@@ -54,6 +55,7 @@ void TBuilding::S_InitializeBuildings()
 {
 	THouse::S_Initialize();
 	TWorkshop::S_Initialize();
+	TEnclosure::S_Initialize();
 }
 
 
