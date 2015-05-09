@@ -41,16 +41,16 @@ void TCamera::S_Update()
 
 void TCamera::S_UpdateLocal()
 {
-	TGfxVec2 tLocalPosition = TFloor::GetPosition() - m_tWorldPosition;
+	TGfxVec2 tLocalPosition = TFloor::S_GetPosition() - m_tWorldPosition;
 	tLocalPosition.x += GfxGetDisplaySizeX() / 2.f;
-	GfxSpriteSetPosition(TFloor::GetPlatformSprite(), tLocalPosition.x, tLocalPosition.y);
+	GfxSpriteSetPosition(TFloor::S_GetPlatformSprite(), tLocalPosition.x, tLocalPosition.y);
 
 	for (int i = 0; i < 30; i++)
 	{
-		TGfxSprite * pSprite = TFloor::GetExtensionSprite()[i];
+		TGfxSprite * pSprite = TFloor::S_GetExtensionSprite()[i];
 		if (pSprite != 0)
 		{
-			TGfxVec2 * tWorldPosition = TFloor::GetExtensionsPositions()[i];
+			TGfxVec2 * tWorldPosition = TFloor::S_GetExtensionsPositions()[i];
 			TGfxVec2 tLocalPosition = *tWorldPosition - m_tWorldPosition;
 			tLocalPosition.x += GfxGetDisplaySizeX() / 2.f;
 			GfxSpriteSetPosition(pSprite, tLocalPosition.x, tLocalPosition.y);
@@ -102,12 +102,12 @@ void TCamera::S_Scroll(float fXVelocity)
 {
 	m_tWorldPosition.x += fXVelocity;
 	
-	if (m_tWorldPosition.x < (TFloor::GetPosition().x - TFloor::GetLeftSize())- 200.f)
+	if (m_tWorldPosition.x < (TFloor::S_GetPosition().x - TFloor::S_GetLeftSize())- 200.f)
 	{
-		m_tWorldPosition.x = TFloor::GetPosition().x - TFloor::GetLeftSize() - 200.f;
+		m_tWorldPosition.x = TFloor::S_GetPosition().x - TFloor::S_GetLeftSize() - 200.f;
 	}
-	if (m_tWorldPosition.x >(TFloor::GetPosition().x + TFloor::GetRightSize()) )
+	if (m_tWorldPosition.x >(TFloor::S_GetPosition().x + TFloor::S_GetRightSize()) )
 	{
-		m_tWorldPosition.x = TFloor::GetPosition().x + TFloor::GetRightSize();
+		m_tWorldPosition.x = TFloor::S_GetPosition().x + TFloor::S_GetRightSize();
 	}
 }

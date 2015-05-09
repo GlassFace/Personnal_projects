@@ -26,32 +26,32 @@ public:
 
 	/*		Getters		*/
 
-	static TGfxSprite ** GetExtensionSprite()
+	static TGfxSprite ** S_GetExtensionSprite()
 	{
 		return s_pSprite;
 	}
 
-	static TGfxVec2 ** GetExtensionsPositions()
+	static TGfxVec2 ** S_GetExtensionsPositions()
 	{
 		return s_pExtensionsPositions;
 	}
 
-	static float GetLeftSize()
+	static float S_GetLeftSize()
 	{
 		return s_fLeftSize;
 	}
 
-	static float GetRightSize()
+	static float S_GetRightSize()
 	{
 		return s_fRightSize;
 	}
 
-	static TGfxSprite * GetPlatformSprite()
+	static TGfxSprite * S_GetPlatformSprite()
 	{
 		return s_pPlatformSprite;
 	}
 
-	static TGfxVec2 & GetPosition()
+	static TGfxVec2 & S_GetPosition()
 	{
 		return s_tPosition;
 	}

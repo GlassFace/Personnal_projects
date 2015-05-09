@@ -210,7 +210,7 @@ void TVillager::SpecificUpdate()
 			Die();
 		}
 
-		else if (m_tPos.y < TFloor::GetPosition().y)
+		else if (m_tPos.y < TFloor::S_GetPosition().y)
 		{
 			m_eAction = EAction_Falling;
 		}
@@ -218,7 +218,7 @@ void TVillager::SpecificUpdate()
 
 	else if (m_eAction == EAction_Falling)
 	{
-		if (m_tPos.y >= TFloor::GetPosition().y)
+		if (m_tPos.y >= TFloor::S_GetPosition().y)
 		{
 			m_eAction = EAction_Idle;
 		}

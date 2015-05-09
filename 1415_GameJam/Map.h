@@ -19,6 +19,7 @@ class THouse;
 class TFloor;
 class TVillager;
 class TBird;
+class TMeteorite;
 
 class TMap
 {
@@ -31,10 +32,12 @@ public:
 	static void S_CreateVillager(const TGfxVec2 & tPos);
 	static void S_CreateBuilding(EBuildingType eBuildingToCreate, const TGfxVec2 & tPos);
 	static void S_CreateBird(const TGfxVec2 & tPos);
+	static void S_CreateMeteorite(const TGfxVec2 & tPos);
 
 	static void S_DeleteVillager(TVillager * pVillager);
-	static void S_DeleteHouse(THouse * pHouse);
+	static void S_DeleteBuilding(TBuilding * pBuilding);
 	static void S_DeleteBird(TBird * pBird);
+	static void S_DeleteMeteorite(TMeteorite * pMeteorite);
 
 
 	/*		Update		*/
@@ -78,6 +81,8 @@ public:
 	}
 
 	static void S_GenerateBird();
+	
+	static void S_GenerateMeteorites();
 
 	static void S_Render();
 
@@ -100,7 +105,12 @@ private:
 
 	static TFloor * s_pFloor;
 
+	static TMeteorite ** s_pMeteorites;
+	static int s_iMeteoritesCount;
+
 	static int s_iLastTimeBirdGeneration;
+
+	static int s_iLastTimeMeteoriteGeneration;
 };
 
 #endif

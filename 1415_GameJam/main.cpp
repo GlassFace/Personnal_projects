@@ -10,6 +10,7 @@
 #include "Villager.h"
 #include "Building.h"
 #include "House.h"
+#include "Meteorite.h"
 
 
 

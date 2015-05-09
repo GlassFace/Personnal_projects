@@ -92,7 +92,7 @@ void TWorker::ProfessionUpdate()
 
 				do
 				{
-					const TGfxVec2 tRandomPos = TGfxVec2(GfxMathGetRandomFloat(TFloor::GetPosition().x - TFloor::GetLeftSize(), TFloor::GetPosition().x + TFloor::GetRightSize()), TFloor::GetPosition().y);
+					const TGfxVec2 tRandomPos = TGfxVec2(GfxMathGetRandomFloat(TFloor::S_GetPosition().x - TFloor::S_GetLeftSize(), TFloor::S_GetPosition().x + TFloor::S_GetRightSize()), TFloor::S_GetPosition().y);
 
 					if (TMap::S_EnoughRoomToConstruct(tRandomPos, GetBuildingSize()))
 					{
@@ -112,13 +112,13 @@ void TWorker::ProfessionUpdate()
 				{
 				case EDirection_Right:
 
-					m_tDestinationToConstruct = TFloor::GetPosition() + TGfxVec2(TFloor::GetRightSize() - EXTENSIONS_CONSTRUCTION_SECURITY_DISTANCE, 0.0f);
+					m_tDestinationToConstruct = TFloor::S_GetPosition() + TGfxVec2(TFloor::S_GetRightSize() - EXTENSIONS_CONSTRUCTION_SECURITY_DISTANCE, 0.0f);
 
 					break;
 
 				case EDirection_Left:
 
-					m_tDestinationToConstruct = TFloor::GetPosition() - TGfxVec2(TFloor::GetLeftSize() - EXTENSIONS_CONSTRUCTION_SECURITY_DISTANCE, 0.0f);
+					m_tDestinationToConstruct = TFloor::S_GetPosition() - TGfxVec2(TFloor::S_GetLeftSize() - EXTENSIONS_CONSTRUCTION_SECURITY_DISTANCE, 0.0f);
 
 					break;
 				}
