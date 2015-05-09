@@ -154,6 +154,7 @@
     <ClInclude Include="generics.h" />
     <ClInclude Include="House.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Millitary.h" />
     <ClInclude Include="Profession.h" />
     <ClInclude Include="Villager.h" />
     <ClInclude Include="Worker.h" />

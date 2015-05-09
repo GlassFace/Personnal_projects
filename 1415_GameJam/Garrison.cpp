@@ -2,11 +2,15 @@
 #include "flib.h"
 #include "flib_vec2.h"
 #include "generics.h"
+#include "Background.h"
+#include "Parallax.h"
 #include "Map.h"
 #include "Entity.h"
 #include "Dynamic.h"
 #include "Anim.h"
+#include "Profession.h"
 #include "Villager.h"
+#include "Millitary.h"
 #include "Building.h"
 #include "Garrison.h"
 
@@ -77,8 +81,8 @@ bool TGarrison::AssignVillager(TVillager * pVillager)
 		m_pAssignedVillagers[m_iAssignedVillagersCount] = pVillager;
 		m_iAssignedVillagersCount++;
 
-		TMillitary * pProfession = new TMillitary(pVillager);
-		pVillager->SetProfession(pProfession, this);
+		//TMillitary * pProfession = new TMillitary(pVillager);
+		//pVillager->SetProfession(pProfession, this);
 
 		return true;
 	}
