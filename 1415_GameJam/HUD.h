@@ -37,12 +37,12 @@ public:
 	static void S_DisplayName();
 	const TGfxSprite * GetVillagerCounter() const
 	{
-		return m_pVillagerCounter;
+		return s_pVillagerCounter;
 	}
 
 	const TSuicideInfo & GetSuicideGauge() const
 	{
-		return m_tSuicideInfo;
+		return s_tSuicideInfo;
 	}
 
 
@@ -50,8 +50,11 @@ public:
 
 private:
 
-	static TGfxSprite * m_pVillagerCounter;
-	static TSuicideInfo m_tSuicideInfo;
+	static TGfxSprite * s_pVillagerCounter;
+	static TSuicideInfo s_tSuicideInfo;
+
+	static TGfxTexture * s_pMouseTexture;
+	static TGfxSprite * s_pMouseSprite;
 };
 
 #endif
