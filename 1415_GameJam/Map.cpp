@@ -63,7 +63,6 @@ int TMap::s_iLastTimeBirdGeneration = 0;
 void TMap::S_Initialize()
 {
 	THUD::S_Initialize();
-	TControl::S_Initialize();
 
 	tSpawnLimite = TGfxVec2(TFloor::GetPosition().x - TFloor::GetLeftSize(), TFloor::GetPosition().x + TFloor::GetRightSize());
 
@@ -332,6 +331,6 @@ void TMap::S_Render()
 		s_pBirds[i]->Render();
 	}
 
+
 	THUD::S_Render();
-	TControl::S_Render();
 }

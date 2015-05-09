@@ -92,6 +92,7 @@ void TControl::S_CheckInput()
 	{
 		TMap::S_AssignToBuilding(s_pDraggedVillager);
 
+
 		TGfxVec2 tForce = tMousePosScreen - TGfxVec2(float(GfxGetPreviousMouseX()), float(GfxGetPreviousMouseY()));
 
 		if (tForce.SquaredLength() > DRAG_VECTOR_MAX_LENGHT * DRAG_VECTOR_MAX_LENGHT)

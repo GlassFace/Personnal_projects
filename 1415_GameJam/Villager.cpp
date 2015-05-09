@@ -216,8 +216,6 @@ void TVillager::SpecificUpdate()
 		}
 
 		m_tVelocity.x -= AIR_DRAG / (GfxTimeFrameGetCurrentFPS() != 0.0f ? GfxTimeFrameGetCurrentFPS() : 60.0f);
-
-		m_pSprite = m_pIdle->Play(m_eDirection);
 	}
 }
 
