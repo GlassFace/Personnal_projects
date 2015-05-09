@@ -27,8 +27,8 @@ namespace
 	const float SUICIDE_GAUGE_SIZE_Y = 20.f;
 	const float SUICIDE_GAUGE_POS_X = 1520.f;
 	const float SUICIDE_GAUGE_POS_Y = 100.f;
-	const float SUICIDE_GAUGE_SPEED = 3.f;
-	const float SUICIDE_MALUS = 10.f;
+	const float SUICIDE_GAUGE_SPEED = 1.f;
+	const float SUICIDE_MALUS = 30.f;
 	const float SUICIDE_MALUS_MAX = 300.f;
 
 	const float VILLAGER_COUNTER_POS_X = 100.f;
@@ -121,7 +121,7 @@ void THUD::S_Initialize()
 	s_pSuicidometre = GfxSpriteCreate(s_pSuicidometreTex);
 	s_pSuicidometreDeco = GfxSpriteCreate(s_pSuicidometreDecoTex);
 
-	GfxSpriteSetPosition(s_pSuicidometre, 1320.f, 50.f);
+	GfxSpriteSetPosition(s_pSuicidometre, 1345.f, 50.f);
 	GfxSpriteSetPosition(s_pSuicidometreDeco, 1320.f, 50.f);
 	///
 
@@ -186,7 +186,6 @@ void THUD::S_UpdateVillagerSuicideGauge()
 
 	GfxSpriteSetScale(s_pSuicidometre, (s_tSuicideInfo.m_fSuicideMalus / SUICIDE_MALUS_MAX), 1);
 
-	GfxDbgPrintf("%f \n", s_tSuicideInfo.m_fSuicideMalus / SUICIDE_MALUS_MAX);
 	s_tSuicideInfo.m_iLastFrameLost = GfxTimeGetMilliseconds();
 }
 

@@ -199,11 +199,8 @@ void TWorker::SetBuildingsToCreate(EBuildingType eBuildingToConstruct)
 {
 	m_eConstructionToDo = eBuildingToConstruct;
 
-	GfxDbgPrintf("%s\n", m_eConstructionToDo == EBuildingType_Barricade ? "Barricade" : m_eConstructionToDo == EBuildingType_House ? "House" : "Workshop");
-
 	if (m_tDestinationToConstruct != TGfxVec2(0.0f, 0.0f))
 	{
-		GfxDbgPrintf("Yo\n");
 
 		m_iStartConstructionTime = GfxTimeGetMilliseconds();
 

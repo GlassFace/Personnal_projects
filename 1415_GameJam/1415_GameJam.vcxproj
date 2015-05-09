@@ -133,6 +133,7 @@
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Parallax.cpp" />
     <ClCompile Include="Millitary.cpp" />
     <ClCompile Include="Priest.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="generics.h" />
     <ClInclude Include="House.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="Menu.h" />
     <ClInclude Include="Millitary.h" />
     <ClInclude Include="Priest.h" />
     <ClInclude Include="Profession.h" />

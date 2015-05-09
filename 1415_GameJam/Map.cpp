@@ -21,6 +21,7 @@
 #include "Control.h"
 #include "Camera.h"
 #include "Bird.h"
+#include "Menu.h"
 
 
 
@@ -64,6 +65,7 @@ int TMap::s_iLastTimeBirdGeneration = 0;
 
 void TMap::S_Initialize()
 {
+	//TMenu::S_Initialize();
 	THUD::S_Initialize();
 	tSpawnLimite = TGfxVec2(TFloor::GetPosition().x - TFloor::GetLeftSize(), TFloor::GetPosition().x + TFloor::GetRightSize());
 

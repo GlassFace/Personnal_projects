@@ -71,6 +71,7 @@ void TCamera::S_UpdateLocal()
 		TBuilding * pBuilding = TMap::S_GetBuildings()[i];
 		TGfxVec2 tLocalPosition = pBuilding->GetPos() - m_tWorldPosition;
 		tLocalPosition.x += GfxGetDisplaySizeX() / 2.0f;
+		GfxSpriteSetPosition(pBuilding->GetAssignedVillager(), tLocalPosition.x, GfxSpriteGetPositionY(pBuilding->GetAssignedVillager()));
 		GfxSpriteSetPosition(pBuilding->GetSprite(), tLocalPosition.x, tLocalPosition.y);
 		
 		if (pBuilding->GetBuildingType() == EBuildingType_Workshop)

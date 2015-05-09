@@ -26,6 +26,11 @@ public:
 		return m_eBuildingType;
 	}
 
+	TGfxSprite * GetAssignedVillager()
+	{
+		return m_pAssignedVillagersSprite;
+	}
+
 	virtual bool AssignVillager(TVillager * pVillager) = 0;
 	virtual void UnassignVillager(TVillager * pVillager) = 0;
 

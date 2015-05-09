@@ -6,7 +6,7 @@ struct TSuicideInfo
 {
 	TSuicideInfo()
 	:m_pSuicideGauge(nullptr),
-	m_fSuicideMalus(300),
+	m_fSuicideMalus(0),
 	m_iTotalSuicide(0)
 	{
 
@@ -36,6 +36,10 @@ public:
 	static void S_OneMoreSuicide();
 	static void S_DisplayName();
 
+	static const TSuicideInfo & GetSuicidInfo()
+	{
+		return s_tSuicideInfo;
+	}
 
 	const TGfxSprite * GetVillagerCounter() const
 	{
