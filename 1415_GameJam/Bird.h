@@ -5,6 +5,14 @@ struct TGfxVec2;
 class TAnim;
 class TVillager;
 
+const int NBR_BLOOD_SPRITE = 3;
+
+struct TBloodInfo
+{
+	TGfxSprite * m_pSprite;
+	int iAnimBegin;
+};
+
 class TBird : public TDynamic
 {
 public:
@@ -44,6 +52,7 @@ public:
 	bool IsAlive() const;
 	bool IsMouseOver(const TGfxVec2 & tMousePos) const;
 	void TakeHit();
+	void UpdateBlood();
 	void Render() const;
 
 protected:
@@ -60,13 +69,13 @@ protected:
 		EBirdAction_DelivringTarget,
 	};
 
-	TGfxSprite * m_pBlood;
+	TVillager * m_pTarget;
+	TBloodInfo * m_pBlood[NBR_BLOOD_SPRITE];
+	TAnim * m_pFly;
 	EState m_eState;
 	EBirdAction m_eAction;
-	TVillager * m_pTarget;
 	
 
-	TAnim * m_pFly;
 	static TGfxTexture * s_pBirdBlood;
 	static TGfxTexture * s_pBirdTileSet;
 	static TGfxFile * s_pNamesFile;

@@ -34,6 +34,7 @@ TBuilding::TBuilding() :
 TEntity(),
 m_pAssignedVillagers(nullptr),
 m_pAssignedVillagersSprite(nullptr),
+
 m_iAssignedVillagersCount(0)
 {
 	m_pAssignedVillagersSprite = GfxSpriteCreate(s_pAssignedVillagersTileSet);
