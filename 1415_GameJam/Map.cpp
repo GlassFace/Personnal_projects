@@ -15,6 +15,7 @@
 #include "Workshop.h"
 #include "Enclosure.h"
 #include "Garrison.h"
+#include "Church.h"
 #include "Floor.h"
 #include "HUD.h"
 #include "Control.h"
@@ -49,9 +50,6 @@ namespace
 
 TParallax * TMap::s_pParallax = nullptr;
 
-//TGfxTexture * TMap::s_pBackGroundTexture = nullptr;
-//TGfxSprite * TMap::s_pBackGroundSprite = nullptr;
-
 TVillager ** TMap::s_pVillagers = nullptr;
 int TMap::s_iVillagersCount = 0;
 TBuilding ** TMap::s_pBuildings = nullptr;
@@ -71,9 +69,6 @@ void TMap::S_Initialize()
 
 	s_pParallax = new TParallax();
 	s_pParallax->Initialize();
-	//s_pBackGroundTexture = GfxTextureLoad(BACKGROUND_TEXTURE);
-	//s_pBackGroundSprite = GfxSpriteCreate(s_pBackGroundTexture);
-	//GfxSpriteSetPosition(s_pBackGroundSprite, 0.0f, 0.0f);
 
 	s_iLastTimeBirdGeneration = GfxTimeGetMilliseconds();
 
@@ -86,28 +81,14 @@ void TMap::S_Initialize()
 
 	TVillager::S_Initialize();
 	TProfession::S_InitializeProfessions();
-	//S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0.0f, 500.0f));
-	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(0.0f, 500.0f));
+	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(-80.0f, 500.0f));
 	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(20.0f, 500.0f));
 
 	TBuilding::S_InitializeBuildings();
-	//S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(300.0f, 0.0f));
-	//S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(0.0f, 0.0f));
-	//S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(-300.0f, 0.0f));
-	S_CreateBuilding(EBuildingType_Workshop, TFloor::GetPosition() + TGfxVec2(100.0f, 0.0f));
+	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() - TGfxVec2(200.0f, 0.0f));
+	S_CreateBuilding(EBuildingType_Workshop, TFloor::GetPosition() + TGfxVec2(200.0f, 0.0f));
 
 	TBird::S_Initialize();
-	//S_CreateBird(TFloor::GetPosition() + TGfxVec2(-500, -500));
-	
-
-
-	//TFloor::S_AddExtension(EDirection_Right);
-	//TFloor::S_AddExtension(EDirection_Right);
-	//TFloor::S_AddExtension(EDirection_Left);
-	//TFloor::S_AddExtension(true);
-	//TFloor::S_AddExtension(true);
-	//TFloor::S_AddExtension(true);
-	//TFloor::S_AddExtension(true);
 }
 
 void TMap::S_CreateVillager(const TGfxVec2 & tPos)
@@ -155,6 +136,14 @@ void TMap::S_CreateBuilding(EBuildingType eBuildingToCreate, const TGfxVec2 & tP
 	case EBuildingType_Garrison:
 
 		s_pBuildings[s_iBuildingsCount] = new TGarrison(tPos);
+
+		s_iBuildingsCount++;
+
+		break;
+
+	case EBuildingType_Church:
+
+		s_pBuildings[s_iBuildingsCount] = new TChurch(tPos);
 
 		s_iBuildingsCount++;
 

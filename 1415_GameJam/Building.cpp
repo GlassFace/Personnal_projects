@@ -16,6 +16,7 @@
 #include "Workshop.h"
 #include "Enclosure.h"
 #include "Garrison.h"
+#include "Church.h"
 
 
 
@@ -86,6 +87,7 @@ void TBuilding::S_InitializeBuildings()
 	TWorkshop::S_Initialize();
 	TEnclosure::S_Initialize();
 	TGarrison::S_Initialize();
+	TChurch::S_Initialize();
 }
 
 
