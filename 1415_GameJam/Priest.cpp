@@ -72,7 +72,7 @@ void TPriest::S_Initialize()
 
 void TPriest::ProfessionUpdate()
 {
-	if (m_pEnclosureTarget == nullptr)
+	if (m_pEnclosureTarget == nullptr || m_pRescuedVillager == nullptr)
 	{
 		TBuilding ** pBuildings = TMap::S_GetBuildings();
 
@@ -154,6 +154,7 @@ void TPriest::ProfessionUpdate()
 			{
 				m_pRescuedVillager->m_eAction = EAction_Idle;
 				m_pEnclosureTarget->AssignVillager(m_pRescuedVillager);
+
 				m_pEnclosureTarget = nullptr;
 				m_pRescuedVillager = nullptr;
 
@@ -173,6 +174,7 @@ void TPriest::ProfessionUpdate()
 			break;
 		}
 		}
+	}
 
 
 	if (m_pEnclosureTarget == nullptr)
