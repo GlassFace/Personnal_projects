@@ -256,7 +256,7 @@ void TMap::S_Update()
 	}
 
 	S_GenerateBird();
-	s_pParallax->Scroll(-2.f);
+	s_pParallax->Scroll(-1.f);
 }
 
 void TMap::S_AssignToBuilding(TVillager * pVillager)

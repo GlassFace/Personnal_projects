@@ -12,9 +12,10 @@ TBackground::TBackground(TGfxTexture * pTexture)
 	for (int i = 0; i < NBR_SPRITE; i++)
 	{
 		m_pSprite[i] = new TSpriteInfo();
-		m_pSprite[i]->m_tPosition = TGfxVec2(-IMG_SIZE_X / 2.f + i * IMG_SIZE_X, 0.f);
+		m_pSprite[i]->m_tPosition = TGfxVec2(-IMG_SIZE_X / 2.f + i * IMG_SIZE_X, IMG_SIZE_Y / 2.f);
 		m_pSprite[i]->m_pSprite = GfxSpriteCreate(pTexture);
 		GfxSpriteSetPosition(m_pSprite[i]->m_pSprite, m_pSprite[i]->m_tPosition.x, m_pSprite[i]->m_tPosition.y);
+		GfxSpriteSetPivot(m_pSprite[i]->m_pSprite, IMG_SIZE_X / 2.f, IMG_SIZE_Y / 2.f);
 	}
 }
 void TBackground::Scroll(float fX)
@@ -31,6 +32,7 @@ void TBackground::CorrectParallax()
 	{
 		if (m_pSprite[i]->m_tPosition.x < -IMG_SIZE_X)
 		{
+			GfxDbgPrintf("ok\n");
 			m_pSprite[i]->m_tPosition.x = GetExtremRight().x + IMG_SIZE_X;
 		}
 		if (m_pSprite[i]->m_tPosition.x > 2 * IMG_SIZE_X)

@@ -41,10 +41,12 @@ void TParallax::Update()
 void TParallax::Scroll(float fX)
 {
 	float fSpeedBG1 = fX;
-	float fSpeedBG2 = fX * 0.6;
+	float fSpeedBG2 = fX * 0.5;
 
 	m_pBackground1->Scroll(fSpeedBG1);
 	m_pBackground2->Scroll(fSpeedBG2);
+	m_pBackground1->CorrectParallax();
+	m_pBackground2->CorrectParallax();
 }
 
 void TParallax::Render() const
