@@ -116,6 +116,7 @@
     </ClCompile>
     <ClCompile Include="..\..\main\lib\flib\flib_vec2.cpp" />
     <ClCompile Include="Anim.cpp" />
+    <ClCompile Include="Background.cpp" />
     <ClCompile Include="Bird.cpp" />
     <ClCompile Include="Building.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -131,6 +132,7 @@
     <ClCompile Include="HUD.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Parallax.cpp" />
     <ClCompile Include="Millitary.cpp" />
     <ClCompile Include="Profession.cpp" />
     <ClCompile Include="Villager.cpp" />
@@ -139,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Anim.h" />
+    <ClInclude Include="Background.h" />
     <ClInclude Include="Bird.h" />
     <ClInclude Include="Building.h" />
     <ClInclude Include="Button.h" />
@@ -151,7 +154,6 @@
     <ClInclude Include="generics.h" />
     <ClInclude Include="House.h" />
     <ClInclude Include="Map.h" />
-    <ClInclude Include="Millitary.h" />
     <ClInclude Include="Profession.h" />
     <ClInclude Include="Villager.h" />
     <ClInclude Include="Worker.h" />

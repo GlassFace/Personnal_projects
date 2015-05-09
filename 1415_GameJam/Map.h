@@ -83,6 +83,8 @@ public:
 
 private:
 
+	static TParallax * s_pParallax;
+
 	static TGfxTexture * s_pBackGroundTexture;
 	static TGfxSprite * s_pBackGroundSprite;
 

@@ -5,6 +5,8 @@
 #include "Dynamic.h"
 #include "Anim.h"
 #include "Bird.h"
+#include "Background.h"
+#include "Parallax.h"
 #include "Map.h"
 #include "Villager.h"
 #include "Floor.h"
@@ -101,7 +103,10 @@ void TBird::SpecificUpdate()
 	{
 		Escape();
 	}
-	m_pSprite = m_pFly->Play(m_eDirection);
+	if (IsAlive() == true)
+	{
+		m_pSprite = m_pFly->Play(m_eDirection);
+	}
 }
 
 
