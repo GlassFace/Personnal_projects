@@ -20,10 +20,10 @@ using namespace Generics;
 
 namespace
 {
-	const char * const NAMES_FILE = "Names.txt";
+	const char * const NAMES_FILE = "Villager\\Names.txt";
 
-	const char * const IDLE_TILESET_NAME = "Villager_Idle.tga";
-	const char * const WALK_TILESET_NAME = "Villager_Walk.tga";
+	const char * const IDLE_TILESET_NAME = "Villager\\Villager_Idle.tga";
+	const char * const WALK_TILESET_NAME = "Villager\\Villager_Walk.tga";
 
 	const int NAME_MAX_SIZE = 250;
 
@@ -91,7 +91,7 @@ m_pWalk(nullptr)
 
 TVillager::~TVillager()
 {
-	if (m_pProfession != nullptr)
+	if (m_pAssignedBuilding != nullptr)
 	{
 		m_pAssignedBuilding->UnassignVillager(this);
 	}
@@ -189,9 +189,7 @@ void TVillager::SpecificUpdate()
 
 		if (m_eAction == EAction_Walking)
 		{
-			//GfxDbgPrintf("1 %f \n", m_tVelocity.x);
 			m_tVelocity.x = (m_fSpeed / (GfxTimeFrameGetCurrentFPS() != 0.0f ? GfxTimeFrameGetCurrentFPS() : 60.0f)) * (m_eDirection == EDirection_Right ? 1.0f : -1.0f);
-			//GfxDbgPrintf("2 %f \n", m_tVelocity.x);
 		}
 
 		else if (m_eAction == EAction_Idle || m_eAction == EAction_Action)
@@ -209,14 +207,14 @@ void TVillager::SpecificUpdate()
 
 void TVillager::RandomMove()
 {
-	if (m_eAction == EAction_Walking && GfxTimeGetMilliseconds() - m_iStartMoveTime >= m_iMoveDuration)
+	if (m_eAction == EAction_Walking && GfxTimeGetMilliseconds() - m_iStartMoveTime >= m_iMoveDuration)							// Stop walking
 	{
 		m_eAction = EAction_Idle;
 
 		m_iIdleDuration = GfxMathGetRandomInteger(IDLE_DURATION_MIN, IDLE_DURATION_MAX);
 	}
 
-	else if (m_eAction == EAction_Idle && GfxTimeGetMilliseconds() - (m_iStartMoveTime + m_iMoveDuration) >= m_iIdleDuration)
+	else if (m_eAction == EAction_Idle && GfxTimeGetMilliseconds() - (m_iStartMoveTime + m_iMoveDuration) >= m_iIdleDuration)	// Start walking
 	{
 		m_eAction = EAction_Walking;
 
@@ -224,7 +222,23 @@ void TVillager::RandomMove()
 		m_iStartMoveTime = GfxTimeGetMilliseconds();
 	}
 
-	if (GfxTimeGetMilliseconds() % SECONDS >= 950 &&
+
+	if (m_pProfession == nullptr && m_pAssignedBuilding != nullptr &&																						// Enclosure collision
+		m_eAction == EAction_Walking)
+	{
+		const float fFenceLeftBorder = m_pAssignedBuilding->GetPos().x - (m_pAssignedBuilding->GetSize().x / 2.0f);
+		const float fFenceRightBorder = m_pAssignedBuilding->GetPos().x + (m_pAssignedBuilding->GetSize().x / 2.0f);
+
+		if (m_eDirection == EDirection_Left && m_tPos.x - (m_tSize.x / 2.0f) <= fFenceLeftBorder ||
+			m_eDirection == EDirection_Right && m_tPos.x + (m_tSize.x / 2.0f) >= fFenceRightBorder)
+		{
+			m_eDirection = EDirection(!m_eDirection);
+			m_tVelocity.x *= -1.0f;
+		}
+	}
+
+
+	if (GfxTimeGetMilliseconds() % SECONDS >= 950 &&																			// Change direction
 		GfxTimeGetMilliseconds() % SECONDS <= 1050 &&
 		GfxMathGetRandomFloat(0.0f, 100.0f) <= DIRECTION_CHANGE_CHANCES)
 	{
@@ -270,6 +284,11 @@ void TVillager::SetAction(EAction eAction)
 
 void TVillager::SetProfession(TProfession * pProfession, TBuilding * pBuilding)
 {
+	if (m_pProfession != nullptr)
+	{
+		m_pAssignedBuilding->UnassignVillager(this);
+	}
+
 	m_pProfession = pProfession;
 	m_pAssignedBuilding = pBuilding;
 }

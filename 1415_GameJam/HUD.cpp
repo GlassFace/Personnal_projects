@@ -109,15 +109,16 @@ void THUD::S_DisplayName()
 		GfxTextSpritePrintf(pVillager->GetNameSprite(), "%s", pVillager->GetName());
 	}
 }
+
 void THUD::S_Render()
 {
-	GfxTextSpriteRender(m_pVillagerCounter, VILLAGER_COUNTER_POS_X, VILLAGER_COUNTER_POS_Y, EGfxColor_White, 2.f, false, false);
+	GfxTextSpriteRender(m_pVillagerCounter, VILLAGER_COUNTER_POS_X, VILLAGER_COUNTER_POS_Y, EGfxColor_White, 2.0f, false, false);
 	GfxSpriteRender(m_tSuicideInfo.m_pSuicideGauge);
 
 	for (int i = 0; i < TMap::S_GetVillagerCount(); i++)
 	{
 		TVillager * pVillager = TMap::S_GetVillagers()[i];
-		GfxTextSpriteRender(pVillager->GetNameSprite(), pVillager->GetNameLocal().x, pVillager->GetNameLocal().y - pVillager->GetSize().y + 10.f, EGfxColor_Black, 1.f, true, true);
+		GfxTextSpriteRender(pVillager->GetNameSprite(), pVillager->GetNameLocal().x, pVillager->GetNameLocal().y - pVillager->GetSize().y + 10.0f, EGfxColor_Black, 1.0f, true, true);
 	}
 }
 

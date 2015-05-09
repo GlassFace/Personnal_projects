@@ -21,8 +21,16 @@ public:
 
 	bool DropCivilian(TVillager * pVillager);
 
+	EBuildingType GetBuildingType()
+	{
+		return m_eBuildingType;
+	}
+
 	virtual bool AssignVillager(TVillager * pVillager) = 0;
 	virtual void UnassignVillager(TVillager * pVillager) = 0;
+
+
+	virtual void SpecificRender() = 0;
 
 
 protected:

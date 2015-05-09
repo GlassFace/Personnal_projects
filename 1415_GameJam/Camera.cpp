@@ -9,6 +9,7 @@
 #include "Map.h"
 #include "Building.h"
 #include "House.h"
+#include "Workshop.h"
 #include "Bird.h"
 
 
@@ -60,6 +61,7 @@ void TCamera::S_UpdateLocal()
 		TGfxVec2 tLocalPosition = pVillager->GetPos() - m_tWorldPosition;
 		tLocalPosition.x += GfxGetDisplaySizeX() / 2.f;
 		GfxSpriteSetPosition(pVillager->GetSprite(), tLocalPosition.x, tLocalPosition.y);
+		pVillager->SetLocalName(tLocalPosition);
 	}
 
 	for (int i = 0; i < TMap::S_GetBuildingsCount(); i++)
@@ -68,20 +70,19 @@ void TCamera::S_UpdateLocal()
 		TGfxVec2 tLocalPosition = pBuilding->GetPos() - m_tWorldPosition;
 		tLocalPosition.x += GfxGetDisplaySizeX() / 2.0f;
 		GfxSpriteSetPosition(pBuilding->GetSprite(), tLocalPosition.x, tLocalPosition.y);
+		
+		if (pBuilding->GetBuildingType() == EBuildingType_Workshop)
+		{
+			GfxSpriteSetPosition(static_cast<TWorkshop*>(pBuilding)->GetIconSprite(), tLocalPosition.x, tLocalPosition.y);
+		}
 	}
+
 	for (int i = 0; i < TMap::S_GetBirdsCount(); i++)
 	{
 		TBird * pBird = TMap::S_GetBirds()[i];
 		TGfxVec2 tLocalPosition = pBird->GetPosition() - m_tWorldPosition;
 		tLocalPosition.x += GfxGetDisplaySizeX() / 2.f;
 		GfxSpriteSetPosition(pBird->GetSprite(), tLocalPosition.x, tLocalPosition.y);
-	}
-	for (int i = 0; i < TMap::S_GetVillagerCount(); i++)
-	{
-		TVillager * pVillager = TMap::S_GetVillagers()[i];
-		TGfxVec2 tLocalPosition = pVillager->GetPos() - m_tWorldPosition;
-		tLocalPosition.x += GfxGetDisplaySizeX() / 2.f;
-		pVillager->SetLocalName(tLocalPosition);
 	}
 }
 void TCamera::S_Render()
