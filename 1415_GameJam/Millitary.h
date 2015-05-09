@@ -11,7 +11,7 @@ public:
 	~TMillitary();
 
 
-	void S_Initialize();
+	static void S_Initialize();
 
 
 	void ProfessionUpdate();

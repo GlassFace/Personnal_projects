@@ -11,6 +11,7 @@
 #include "Villager.h"
 #include "Profession.h"
 #include "Worker.h"
+#include "Millitary.h"
 
 
 TProfession::TProfession() :
@@ -34,4 +35,5 @@ TProfession::~TProfession()
 void TProfession::S_InitializeProfessions()
 {
 	TWorker::S_Initialize();
+	TMillitary::S_Initialize();
 }

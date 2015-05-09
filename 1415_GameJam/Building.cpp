@@ -15,6 +15,7 @@
 #include "House.h"
 #include "Workshop.h"
 #include "Enclosure.h"
+#include "Garrison.h"
 
 
 
@@ -67,7 +68,7 @@ TBuilding::~TBuilding()
 
 		delete[] m_pAssignedVillagers;
 		m_pAssignedVillagers = nullptr;
-	}
+	} 
 
 	if (m_pAssignedVillagersSprite != nullptr)
 	{
@@ -84,6 +85,7 @@ void TBuilding::S_InitializeBuildings()
 	THouse::S_Initialize();
 	TWorkshop::S_Initialize();
 	TEnclosure::S_Initialize();
+	TGarrison::S_Initialize();
 }
 
 

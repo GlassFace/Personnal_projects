@@ -170,6 +170,12 @@ void TWorkshop::GetInput()
 			iCutoutX = 3;
 
 			break;
+
+		case EBuildingType_Garrison:
+
+			iCutoutX = 4;
+
+			break;
 		}
 
 		GfxSpriteSetCutout(m_pIconSprite, iCutoutX * int(ICONS_SIZE.x), 0, int(ICONS_SIZE.x), int(ICONS_SIZE.y));

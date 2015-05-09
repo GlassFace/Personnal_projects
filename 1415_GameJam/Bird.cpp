@@ -272,7 +272,7 @@ void TBird::UpdateBlood()
 	{
 		if (m_pBlood[i]->iAnimBegin != 0)
 		{
-			int iTimePassed = GfxTimeGetMilliseconds() - m_pBlood[i]->iAnimBegin / 1000.f;
+			int iTimePassed = GfxTimeGetMilliseconds() - (m_pBlood[i]->iAnimBegin / 1000);
 			float iRatioToScale = 1.f + iTimePassed ; 
 			GfxSpriteSetScale(m_pBlood[i]->m_pSprite, iRatioToScale, iRatioToScale);
 			GfxSpriteSetPosition(m_pBlood[i]->m_pSprite, m_tPos.x, m_tPos.y);

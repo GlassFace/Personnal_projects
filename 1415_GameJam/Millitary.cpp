@@ -26,6 +26,7 @@ namespace
 	const int TIME_BETWEEN_SHOTS = 2 * SECONDS;
 	const int ATTACK_ANIMATION_DURATION = int((SECONDS / 7.0f) * 8.0f);
 
+
 	const float SIGHT_RADIUS = 100.0f;
 }
 
