@@ -15,6 +15,7 @@
 #include "House.h"
 #include "Workshop.h"
 #include "Enclosure.h"
+#include "Garrison.h"
 
 
 
@@ -67,7 +68,7 @@ TBuilding::~TBuilding()
 
 		delete[] m_pAssignedVillagers;
 		m_pAssignedVillagers = nullptr;
-	}
+	} 
 
 	if (m_pAssignedVillagersSprite != nullptr)
 	{
@@ -79,17 +80,25 @@ TBuilding::~TBuilding()
 
 void TBuilding::S_InitializeBuildings()
 {
+	s_pAssignedVillagersTileSet = GfxTextureLoad(ASSIGNED_VILLAGERS_TILESET_NAME);
+
 	THouse::S_Initialize();
 	TWorkshop::S_Initialize();
 	TEnclosure::S_Initialize();
-
-	s_pAssignedVillagersTileSet = GfxTextureLoad(ASSIGNED_VILLAGERS_TILESET_NAME);
+	TGarrison::S_Initialize();
 }
 
 
 void TBuilding::Update()
 {
 	SpecificUpdate();
+
+	if (m_pAssignedVillagersSprite != nullptr)
+	{
+		int iCutoutX = m_iAssignedVillagersCount;
+
+		GfxSpriteSetCutout(m_pAssignedVillagersSprite, iCutoutX * int(ASSIGNED_VILLAGERS_TILESET_SIZE.x), 0, int(ASSIGNED_VILLAGERS_TILESET_SIZE.x), int(ASSIGNED_VILLAGERS_TILESET_SIZE.y));
+	}
 }
 
 bool TBuilding::DropCivilian(TVillager * pVillager)

@@ -41,7 +41,7 @@ void TParallax::Update()
 void TParallax::Scroll(float fX)
 {
 	float fSpeedBG1 = fX;
-	float fSpeedBG2 = fX * 0.5;
+	float fSpeedBG2 = fX * 0.5f;
 
 	m_pBackground1->Scroll(fSpeedBG1);
 	m_pBackground2->Scroll(fSpeedBG2);

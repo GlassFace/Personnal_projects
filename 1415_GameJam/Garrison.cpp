@@ -22,6 +22,7 @@ namespace
 {
 	const char * const GARRISON_TEXTURE_NAME = "Garrison.tga";
 
+
 	const TGfxVec2 GARRISON_SIZE = TGfxVec2(136.0f, 80.0f);
 
 	const int ASSIGNED_VILLAGERS_MAX = 3;
@@ -81,8 +82,8 @@ bool TGarrison::AssignVillager(TVillager * pVillager)
 		m_pAssignedVillagers[m_iAssignedVillagersCount] = pVillager;
 		m_iAssignedVillagersCount++;
 
-		//TMillitary * pProfession = new TMillitary(pVillager);
-		//pVillager->SetProfession(pProfession, this);
+		TMillitary * pProfession = new TMillitary(pVillager);
+		pVillager->SetProfession(pProfession, this);
 
 		return true;
 	}

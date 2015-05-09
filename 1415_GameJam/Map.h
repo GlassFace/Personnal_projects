@@ -8,10 +8,10 @@ enum EBuildingType : int
 	EBuildingType_Workshop,
 	EBuildingType_Barricade,
 	EBuildingType_Enclosure,
-	EBuildingType_Tower
+	EBuildingType_Garrison
 };
 
-const int BUILDINGS_TYPES_COUNT = 4;
+const int BUILDINGS_TYPES_COUNT = 5;
 
 class TBuilding;
 class THouse;

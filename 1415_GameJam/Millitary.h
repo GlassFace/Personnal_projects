@@ -7,11 +7,11 @@ class TMillitary : public TProfession
 public:
 
 	TMillitary();
-	TMillitary(const TGfxVec2 & tPos);
+	TMillitary(TVillager * pLinkedVillager);
 	~TMillitary();
 
 
-	void S_Initialize();
+	static void S_Initialize();
 
 
 	void ProfessionUpdate();
@@ -27,6 +27,9 @@ private:
 
 	TAnim * m_pAction;
 	static TGfxTexture * s_pActionTileSet;
+
+
+	int m_iLastAttackTime;
 };
 
 #endif
