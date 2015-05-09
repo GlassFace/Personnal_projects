@@ -44,6 +44,7 @@ TProfession()
 	m_pIdle = new TAnim(s_pIdleTileSet, 1, 32, 64);
 	m_pWalk = new TAnim(s_pWalkTileSet, 7, 32, 64);
 	m_pRun = new TAnim(s_pWalkTileSet, 15, 32, 64);
+	m_pAction = new TAnim(s_pActionTileSet, 7, 32, 64);
 }
 
 TPriest::TPriest(TVillager * pLinkedVillager) :
@@ -52,6 +53,7 @@ TProfession(pLinkedVillager)
 	m_pIdle = new TAnim(s_pIdleTileSet, 1, 32, 64);
 	m_pWalk = new TAnim(s_pWalkTileSet, 7, 32, 64);
 	m_pRun = new TAnim(s_pWalkTileSet, 15, 32, 64);
+	m_pAction = new TAnim(s_pActionTileSet, 7, 32, 64);
 }
 
 TPriest::~TPriest()
@@ -64,6 +66,7 @@ void TPriest::S_Initialize()
 {
 	s_pIdleTileSet = GfxTextureLoad(IDLE_TILESET_NAME);
 	s_pWalkTileSet = GfxTextureLoad(WALK_TILESET_NAME);
+	s_pActionTileSet = GfxTextureLoad(ACTION_TILESET_NAME);
 }
 
 
@@ -126,8 +129,8 @@ void TPriest::ProfessionUpdate()
 		{
 		case EAction_Running:
 		{
-				if (m_pRescuedVillager->m_tPos.x - m_pLinkedVillager->m_tPos.x >= -0.1f &&
-					m_pRescuedVillager->m_tPos.x - m_pLinkedVillager->m_tPos.x <= 0.1f)
+				if (m_pRescuedVillager->m_tPos.x - m_pLinkedVillager->m_tPos.x >= -1.0f &&
+					m_pRescuedVillager->m_tPos.x - m_pLinkedVillager->m_tPos.x <= 1.0f)
 				{
 					m_pLinkedVillager->m_eAction = EAction_Action;
 					m_pRescuedVillager->m_eAction = EAction_Grab;
@@ -146,8 +149,8 @@ void TPriest::ProfessionUpdate()
 		}
 		case EAction_Action:
 		{
-			if (m_pEnclosureTarget->GetPos().x - m_pLinkedVillager->m_tPos.x >= -0.1f &&
-				m_pEnclosureTarget->GetPos().x - m_pLinkedVillager->m_tPos.x <= 0.1f)
+			if (m_pEnclosureTarget->GetPos().x - m_pLinkedVillager->m_tPos.x >= -1.0f &&
+				m_pEnclosureTarget->GetPos().x - m_pLinkedVillager->m_tPos.x <= 1.0f)
 			{
 				m_pRescuedVillager->m_eAction = EAction_Idle;
 				m_pEnclosureTarget->AssignVillager(m_pRescuedVillager);
@@ -163,58 +166,13 @@ void TPriest::ProfessionUpdate()
 
 				m_pLinkedVillager->m_tVelocity.x = (m_pLinkedVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS()) * fDirectionSign;
 				m_pLinkedVillager->m_eDirection = fDirectionSign == 1.0f ? EDirection_Right : EDirection_Left;
+
+				m_pRescuedVillager->SetPosition(m_pLinkedVillager->m_tPos - TGfxVec2(0.0f, m_pLinkedVillager->m_tSize.y));
 			}
 
 			break;
 		}
-
-		/*case EAction_Walking:
-		case EAction_Idle:
-
-
-
-			break;*/
 		}
-
-
-
-
-		/*if (m_pLinkedVillager->m_eAction == EAction_Action)
-		{
-			if ((m_pRescuedVillager->m_tPos.x - m_pLinkedVillager->m_tPos.x) > (m_pLinkedVillager->m_tSize.x / 2.0f))
-			{
-				const float fDirectionSign = m_pRescuedVillager->m_tPos.x >= m_pLinkedVillager->m_tPos.x ? 1.0f : -1.0f;
-				m_pLinkedVillager->m_eDirection = fDirectionSign == 1.0f ? EDirection_Right : EDirection_Left;
-
-				m_pLinkedVillager->m_tVelocity.x = ((m_pLinkedVillager->m_fSpeed * 2.0f) / GfxTimeFrameGetCurrentFPS()) * fDirectionSign;
-			}
-
-			else
-			{
-				m_pLinkedVillager->m_eAction = EAction_Walking;
-			}
-		}
-
-		else if (m_pLinkedVillager->m_eAction == EAction_Walking)
-		{
-			if ((m_pEnclosureTarget->GetPos().x - m_pLinkedVillager->m_tPos.x) > (m_pLinkedVillager->m_tSize.x / 2.0f))
-			{
-				const float fDirectionSign = m_pEnclosureTarget->GetPos().x >= m_pLinkedVillager->m_tPos.x ? 1.0f : -1.0f;
-				m_pLinkedVillager->m_eDirection = fDirectionSign == 1.0f ? EDirection_Right : EDirection_Left;
-
-				m_pLinkedVillager->m_tVelocity.x = (m_pLinkedVillager->m_fSpeed / GfxTimeFrameGetCurrentFPS()) * fDirectionSign;
-			}
-		}*/
-	}
-
-
-	/*if (m_pLinkedVillager->m_eAction == EAction_Walking &&
-		m_pRescuedVillager != nullptr)
-	{
-		m_pRescuedVillager->m_tVelocity.x = m_pLinkedVillager->m_tVelocity.x;
-		m_pRescuedVillager->m_eDirection = m_pLinkedVillager->m_eDirection;
-		m_pRescuedVillager->m_eAction = EAction_Walking;
-	}*/
 
 
 	if (m_pEnclosureTarget == nullptr)

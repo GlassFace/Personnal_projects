@@ -94,9 +94,9 @@ void TMap::S_Initialize()
 
 	TBuilding::S_InitializeBuildings();
 	S_CreateBuilding(EBuildingType_Church, TFloor::GetPosition() + TGfxVec2(400.0f, 0.0f));
-	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(0.0f, 0.0f));
+	//S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() + TGfxVec2(0.0f, 0.0f));
 	S_CreateBuilding(EBuildingType_Enclosure, TFloor::GetPosition() + TGfxVec2(-300.0f, 0.0f));
-	S_CreateBuilding(EBuildingType_Workshop, TFloor::GetPosition() + TGfxVec2(100.0f, 0.0f));
+	//S_CreateBuilding(EBuildingType_Workshop, TFloor::GetPosition() + TGfxVec2(100.0f, 0.0f));
 
 	TBird::S_Initialize();
 	//S_CreateBird(TFloor::GetPosition() + TGfxVec2(-500, -500));

@@ -133,13 +133,13 @@ void TWorker::ProfessionUpdate()
 		}
 
 		
-		else																													// Wait
+		else																															// Wait
 		{
 			m_pLinkedVillager->RandomMove();
 		}
 	}
 
-	else if (m_pLinkedVillager->m_eAction == EAction_Walking && m_pLinkedVillager->m_tPos != m_tDestinationToConstruct)							// Go to spot
+	else if (m_pLinkedVillager->m_eAction == EAction_Walking && m_pLinkedVillager->m_tPos != m_tDestinationToConstruct)					// Go to spot
 	{
 		if (m_eConstructionToDo != EBuildingType_Barricade &&
 			!TMap::S_EnoughRoomToConstruct(m_tDestinationToConstruct, GetBuildingSize()))
@@ -154,6 +154,7 @@ void TWorker::ProfessionUpdate()
 			m_pLinkedVillager->m_tPos = m_tDestinationToConstruct;
 
 			m_pLinkedVillager->m_eAction = EAction_Action;
+			m_pLinkedVillager->m_tVelocity.x = 0.0f;
 
 			m_iStartConstructionTime = GfxTimeGetMilliseconds();
 		}

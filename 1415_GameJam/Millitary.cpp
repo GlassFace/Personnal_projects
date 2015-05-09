@@ -93,6 +93,7 @@ void TMillitary::ProfessionUpdate()
 		m_iLastAttackTime = GfxTimeGetMilliseconds();
 
 		m_pLinkedVillager->m_eAction = EAction_Action;
+		m_pLinkedVillager->m_tVelocity.x = 0.0f;
 	}
 
 	else
