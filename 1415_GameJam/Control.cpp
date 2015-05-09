@@ -85,8 +85,11 @@ void TControl::S_CheckInput()
 	else if (GfxInputIsPressed(EGfxInputID_MouseLeft) &&
 			 s_pDraggedVillager != nullptr)							// Drag villager
 	{
-		s_pDraggedVillager->SetPosition(tMousePosition);
-		s_pDraggedVillager->SetFallVelocity(0.0f);
+		if (s_pDraggedVillager->IsAlive())
+		{
+			s_pDraggedVillager->SetPosition(tMousePosition);
+			s_pDraggedVillager->SetFallVelocity(0.0f);
+		}
 	}
 
 	if (GfxInputIsJustReleased(EGfxInputID_MouseLeft) &&

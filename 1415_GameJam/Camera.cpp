@@ -84,7 +84,12 @@ void TCamera::S_UpdateLocal()
 		TBird * pBird = TMap::S_GetBirds()[i];
 		TGfxVec2 tLocalPosition = pBird->GetPosition() - m_tWorldPosition;
 		tLocalPosition.x += GfxGetDisplaySizeX() / 2.f;
+		for (int i = 0; i < NBR_BLOOD_SPRITE; i++)
+		{
+			GfxSpriteSetPosition(pBird->GetBloodSprite()[i]->m_pSprite, tLocalPosition.x, tLocalPosition.y);
+		}
 		GfxSpriteSetPosition(pBird->GetSprite(), tLocalPosition.x, tLocalPosition.y);
+		
 	}
 }
 void TCamera::S_Render()

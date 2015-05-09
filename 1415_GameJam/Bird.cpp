@@ -100,6 +100,7 @@ void TBird::Initialize()
 	{
 
 		m_pBlood[i]->m_pSprite = GfxSpriteCreate(s_pBirdBlood);
+		GfxSpriteSetPivot(m_pBlood[i]->m_pSprite, 24.f, 24.f);
 		m_pBlood[i]->iAnimBegin = 0;
 
 	}
@@ -121,7 +122,7 @@ void TBird::SpecificUpdate()
 	if (IsAlive() == true)
 	{
 		m_pSprite = m_pFly->Play(m_eDirection);
-		//UpdateBlood();
+		UpdateBlood();
 	}
 }
 
@@ -252,7 +253,14 @@ bool TBird::IsMouseOver(const TGfxVec2 & tMousePos) const
 void TBird::TakeHit()
 {
 	m_iHitLeft--;
-
+	for (int i = 0; i < NBR_BLOOD_SPRITE; i++)
+	{
+		if (m_pBlood[i]->iAnimBegin == 0)
+		{
+			m_pBlood[i]->iAnimBegin = GfxTimeGetMilliseconds();
+			break;
+		}
+	}
 	if (m_iHitLeft == 0 )
 	{
 		Die();
@@ -272,8 +280,14 @@ void TBird::UpdateBlood()
 	{
 		if (m_pBlood[i]->iAnimBegin != 0)
 		{
-			int iTimePassed = GfxTimeGetMilliseconds() - m_pBlood[i]->iAnimBegin / 1000.f;
-			float iRatioToScale = 1.f + iTimePassed ; 
+			int iTimePassed = (GfxTimeGetMilliseconds() - m_pBlood[i]->iAnimBegin) / 1000.f;
+			float iRatioToScale =( 1.f + iTimePassed ) * 1.5f;
+			GfxDbgPrintf("%f\n", iRatioToScale);
+			if (iRatioToScale > 1.5f)
+			{
+				m_pBlood[i]->iAnimBegin = 0;
+				GfxSpriteSetScale(m_pBlood[i]->m_pSprite,0,0);
+			}
 			GfxSpriteSetScale(m_pBlood[i]->m_pSprite, iRatioToScale, iRatioToScale);
 			GfxSpriteSetPosition(m_pBlood[i]->m_pSprite, m_tPos.x, m_tPos.y);
 
@@ -285,5 +299,12 @@ void TBird::Render() const
 	if (m_pSprite != nullptr)
 	{
 		GfxSpriteRender(m_pSprite);
+	}
+	for (int i = 0; i < NBR_BLOOD_SPRITE; i++)
+	{
+		if (m_pBlood[i]->iAnimBegin != 0)
+		{
+			GfxSpriteRender(m_pBlood[i]->m_pSprite);
+		}
 	}
 }

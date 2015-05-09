@@ -26,6 +26,10 @@ public:
 
 	void Initialize();
 
+	const TBloodInfo * const * GetBloodSprite()
+	{
+		return m_pBlood;
+	}
 	TGfxSprite * GetSprite() const
 	{
 		return m_pSprite;
