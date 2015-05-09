@@ -90,8 +90,8 @@ void TBird::S_Initialize()
 	s_pBirdBlood = GfxTextureLoad(BIRD_BLOOD_NAME);
 
 
-	LEFT_ESCAPE_POINT = TGfxVec2(TFloor::GetPosition().x - TFloor::GetLeftSize() - EMPTY_SPACE_RANGE, 500.f);
-	RIGHT_ESCAPE_POINT = TGfxVec2(TFloor::GetPosition().x + TFloor::GetRightSize() + EMPTY_SPACE_RANGE, 500.f);
+	LEFT_ESCAPE_POINT = TGfxVec2(TFloor::S_GetPosition().x - TFloor::S_GetLeftSize() - EMPTY_SPACE_RANGE, 500.f);
+	RIGHT_ESCAPE_POINT = TGfxVec2(TFloor::S_GetPosition().x + TFloor::S_GetRightSize() + EMPTY_SPACE_RANGE, 500.f);
 }
 
 void TBird::Initialize()
@@ -109,8 +109,8 @@ void TBird::Initialize()
 
 void TBird::SpecificUpdate()
 {
-	LEFT_ESCAPE_POINT = TGfxVec2(TFloor::GetPosition().x - TFloor::GetLeftSize() - EMPTY_SPACE_RANGE, 500.f);
-	RIGHT_ESCAPE_POINT = TGfxVec2(TFloor::GetPosition().x + TFloor::GetRightSize() + EMPTY_SPACE_RANGE, 500.f);
+	LEFT_ESCAPE_POINT = TGfxVec2(TFloor::S_GetPosition().x - TFloor::S_GetLeftSize() - EMPTY_SPACE_RANGE, 500.f);
+	RIGHT_ESCAPE_POINT = TGfxVec2(TFloor::S_GetPosition().x + TFloor::S_GetRightSize() + EMPTY_SPACE_RANGE, 500.f);
 	if (m_eAction == EBirdAction_ToTarget)
 	{
 		GoToTarget();
@@ -140,8 +140,8 @@ void TBird::FindTarget()
 	{
 		TVillager * pVillager = TMap::S_GetVillagers()[i];
 
-		if (TFloor::GetPosition().x - (TFloor::GetLeftSize() * TARGET_ZONE_RATIO) < pVillager->GetPos().x
-			&& TFloor::GetPosition().x + (TFloor::GetRightSize() * TARGET_ZONE_RATIO) > pVillager->GetPos().x)
+		if (TFloor::S_GetPosition().x - (TFloor::S_GetLeftSize() * TARGET_ZONE_RATIO) < pVillager->GetPos().x
+			&& TFloor::S_GetPosition().x + (TFloor::S_GetRightSize() * TARGET_ZONE_RATIO) > pVillager->GetPos().x)
 		{
 			if (pVillager->GetAction() != EAction_Grab)
 			{
@@ -154,8 +154,8 @@ void TBird::FindTarget()
 	{
 		TVillager * pVillager = TMap::S_GetVillagers()[i];
 
-		if (TFloor::GetPosition().x - (TFloor::GetLeftSize()) < pVillager->GetPos().x
-			&& TFloor::GetPosition().x + (TFloor::GetRightSize()) > pVillager->GetPos().x)
+		if (TFloor::S_GetPosition().x - (TFloor::S_GetLeftSize()) < pVillager->GetPos().x
+			&& TFloor::S_GetPosition().x + (TFloor::S_GetRightSize()) > pVillager->GetPos().x)
 		{
 			if (pVillager->GetAction() != EAction_Grab)
 			{
@@ -282,7 +282,7 @@ void TBird::UpdateBlood()
 		if (m_pBlood[i]->iAnimBegin != 0)
 		{
 			float fTimePassed = (GfxTimeGetMilliseconds() - m_pBlood[i]->iAnimBegin) / 1000.f;
-			float iRatioToScale = fTimePassed / 0.1;
+			float iRatioToScale = fTimePassed / 0.1f;
 			if (iRatioToScale > 1.3f)
 			{
 				m_pBlood[i]->iAnimBegin = 0;

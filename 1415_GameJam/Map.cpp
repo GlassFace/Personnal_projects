@@ -8,6 +8,7 @@
 #include "Map.h"
 #include "Entity.h"
 #include "Dynamic.h"
+#include "Meteorite.h"
 #include "Villager.h"
 #include "Profession.h"
 #include "Building.h"
@@ -59,13 +60,15 @@ int TMap::s_iBirdsCount = 0;
 
 TFloor * TMap::s_pFloor = nullptr;
 
+TMeteorite ** TMap::s_pMeteorites = nullptr;
+
 int TMap::s_iLastTimeBirdGeneration = 0;
 
 
 void TMap::S_Initialize()
 {
 	THUD::S_Initialize();
-	tSpawnLimite = TGfxVec2(TFloor::GetPosition().x - TFloor::GetLeftSize(), TFloor::GetPosition().x + TFloor::GetRightSize());
+	tSpawnLimite = TGfxVec2(TFloor::S_GetPosition().x - TFloor::S_GetLeftSize(), TFloor::S_GetPosition().x + TFloor::S_GetRightSize());
 
 	s_pParallax = new TParallax();
 	s_pParallax->Initialize();
@@ -81,14 +84,18 @@ void TMap::S_Initialize()
 
 	TVillager::S_Initialize();
 	TProfession::S_InitializeProfessions();
-	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(-80.0f, 500.0f));
-	S_CreateVillager(TFloor::GetPosition() - TGfxVec2(20.0f, 500.0f));
+	S_CreateVillager(TFloor::S_GetPosition() - TGfxVec2(-80.0f, 500.0f));
+	S_CreateVillager(TFloor::S_GetPosition() - TGfxVec2(20.0f, 500.0f));
 
 	TBuilding::S_InitializeBuildings();
-	S_CreateBuilding(EBuildingType_House, TFloor::GetPosition() - TGfxVec2(200.0f, 0.0f));
-	S_CreateBuilding(EBuildingType_Workshop, TFloor::GetPosition() + TGfxVec2(200.0f, 0.0f));
+	S_CreateBuilding(EBuildingType_House, TFloor::S_GetPosition() - TGfxVec2(200.0f, 0.0f));
+	S_CreateBuilding(EBuildingType_Workshop, TFloor::S_GetPosition() + TGfxVec2(200.0f, 0.0f));
 
 	TBird::S_Initialize();
+
+	TMeteorite::S_Initialize();
+	s_pMeteorites = new TMeteorite*[30]{ 0 };
+	s_pMeteorites[0] = new TMeteorite(TGfxVec2(280.0f, 0.0f));
 }
 
 void TMap::S_CreateVillager(const TGfxVec2 & tPos)
@@ -119,7 +126,7 @@ void TMap::S_CreateBuilding(EBuildingType eBuildingToCreate, const TGfxVec2 & tP
 
 	case EBuildingType_Barricade:
 	{
-		const EDirection eSide = tPos.x > TFloor::GetPosition().x ? EDirection_Right : EDirection_Left;
+		const EDirection eSide = tPos.x > TFloor::S_GetPosition().x ? EDirection_Right : EDirection_Left;
 		TFloor::S_AddExtension(eSide);
 
 		break;
@@ -215,7 +222,7 @@ void TMap::S_Update()
 	THUD::S_Update();
 	TControl::S_Update();
 
-	tSpawnLimite = TGfxVec2(TFloor::GetPosition().x - TFloor::GetLeftSize(), TFloor::GetPosition().x + TFloor::GetRightSize());
+	tSpawnLimite = TGfxVec2(TFloor::S_GetPosition().x - TFloor::S_GetLeftSize(), TFloor::S_GetPosition().x + TFloor::S_GetRightSize());
 
 	for (int i = 0; i < s_iVillagersCount; i++)
 	{
@@ -240,6 +247,8 @@ void TMap::S_Update()
 			s_pBirds[i]->Update();
 		}
 	}
+
+	s_pMeteorites[0]->Update();
 
 	TCamera::S_Update();
 
@@ -273,8 +282,8 @@ bool TMap::S_EnoughRoomToConstruct(const TGfxVec2 & tPos, const float tBuildingS
 		const float fBuildingLeftBorder = s_pBuildings[i]->GetPos().x - (s_pBuildings[i]->GetSize().x / 2.0f);
 		const float fBuildingRightBorder = s_pBuildings[i]->GetPos().x + (s_pBuildings[i]->GetSize().x / 2.0f);
 
-		const bool bLeftBorderInTheAir = fConstructionLeftBorder < TFloor::GetPosition().x - TFloor::GetLeftSize();
-		const bool bRightBorderInTheAir = fConstructionRightBorder > TFloor::GetPosition().x + TFloor::GetRightSize();
+		const bool bLeftBorderInTheAir = fConstructionLeftBorder < TFloor::S_GetPosition().x - TFloor::S_GetLeftSize();
+		const bool bRightBorderInTheAir = fConstructionRightBorder > TFloor::S_GetPosition().x + TFloor::S_GetRightSize();
 
 		if (fConstructionLeftBorder <= fBuildingRightBorder &&
 			fConstructionRightBorder >= fBuildingLeftBorder ||
@@ -305,13 +314,7 @@ void TMap::S_Render()
 {
 	GfxClear(EGfxColor_Black);
 	
-	//if (s_pBackGroundSprite != nullptr)
-	//{
-	//	GfxSpriteRender(s_pBackGroundSprite);
-	//}
 	s_pParallax->Render();
-
-	TFloor::S_Render();
 
 	for (int i = 0; i < s_iBuildingsCount; i++)
 	{
@@ -329,6 +332,8 @@ void TMap::S_Render()
 		s_pBirds[i]->Render();
 	}
 
+	s_pMeteorites[0]->Render();
+	TFloor::S_Render();
 
 	THUD::S_Render();
 }

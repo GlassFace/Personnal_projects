@@ -2,7 +2,9 @@
 #ifndef METEORITE_H_INCLUDED
 #define METEORITE_H_INCLUDED
 
-class TMeteorite : public TDynamic
+class TAnim;
+
+class TMeteorite
 {
 public:
 
@@ -13,9 +15,12 @@ public:
 
 	static void S_Initialize();
 
-	void SpecificUpdate();
+	void Update();
 
 	void Die();
+
+
+	void Render() const;
 
 
 private:
@@ -24,11 +29,21 @@ private:
 	static TGfxTexture * s_pWarningTileSet;
 
 	TAnim * m_pFall;
+	TGfxSprite * m_pMeteoriteSprite;
+
 	TAnim * m_pWarning;
-	TGfxSprite * m_pWarningSprite;
+	TGfxSprite * m_pDirtSpraySprite;
+
+	bool m_bWarning;
 
 	TGfxVec2 m_tDestination;
 	int m_iStartWarningTime;
+
+	TGfxVec2 m_tPos;
+	TGfxVec2 m_tSize;
+
+	TGfxVec2 m_tVelocity;
+	float m_fSpeed;
 };
 
 #endif

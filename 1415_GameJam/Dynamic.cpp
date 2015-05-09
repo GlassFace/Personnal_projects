@@ -52,9 +52,9 @@ void TDynamic::Update()
 void TDynamic::Move()
 {
 	// Move on Y
-	if (m_tPos.y < TFloor::GetPosition().y
-		|| (m_tPos.x < TFloor::GetPosition().x - TFloor::GetLeftSize()
-		|| m_tPos.x > TFloor::GetPosition().x + TFloor::GetRightSize()))
+	if (m_tPos.y < TFloor::S_GetPosition().y
+		|| (m_tPos.x < TFloor::S_GetPosition().x - TFloor::S_GetLeftSize()
+		|| m_tPos.x > TFloor::S_GetPosition().x + TFloor::S_GetRightSize()))
 	{
 		if (m_tVelocity.y < MAX_FALL_SPEED)
 		{
@@ -69,11 +69,11 @@ void TDynamic::Move()
 
 	m_tPos += m_tVelocity;
 
-	if (m_tPos.x < TFloor::GetPosition().x + TFloor::GetRightSize()
-		&& m_tPos.x > TFloor::GetPosition().x - TFloor::GetLeftSize()
-		&& m_tPos.y > TFloor::GetPosition().y)
+	if (m_tPos.x < TFloor::S_GetPosition().x + TFloor::S_GetRightSize()
+		&& m_tPos.x > TFloor::S_GetPosition().x - TFloor::S_GetLeftSize()
+		&& m_tPos.y > TFloor::S_GetPosition().y)
 	{
-		m_tPos.y = TFloor::GetPosition().y;
+		m_tPos.y = TFloor::S_GetPosition().y;
 		m_tVelocity.y = 0.0f;
 	}
 }

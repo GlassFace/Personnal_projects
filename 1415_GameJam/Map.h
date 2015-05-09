@@ -19,6 +19,7 @@ class THouse;
 class TFloor;
 class TVillager;
 class TBird;
+class TMeteorite;
 
 class TMap
 {
@@ -99,6 +100,8 @@ private:
 	static int s_iBuildingsCount;
 
 	static TFloor * s_pFloor;
+
+	static TMeteorite ** s_pMeteorites;
 
 	static int s_iLastTimeBirdGeneration;
 };
