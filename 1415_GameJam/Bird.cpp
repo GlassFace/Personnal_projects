@@ -216,6 +216,7 @@ void TBird::Escape()
 	}
 
 	m_pTarget->SetPosition(m_tPos);
+	m_pTarget->SetFallVelocity(0.f);
 
 	if (m_tPos.x < LEFT_ESCAPE_POINT.x + (EMPTY_SPACE_RANGE/2.0f))
 	{
