@@ -30,7 +30,7 @@ namespace
 
 	const float METEORITE_SPEED = 2000.0f;
 
-	const int WARNING_DURATION = 2 * SECONDS;
+	const int WARNING_DURATION = 4 * SECONDS;
 }
 
 
@@ -106,7 +106,6 @@ void TMeteorite::Update()
 			m_bWarning = false;
 
 			m_pDirtSpraySprite = m_pDirtSpray->Play(EDirection_Right);
-			//GfxSpriteSetPivot(m_pDirtSpraySprite, m_tPos.x + (m_tSize.x / 2.0f), DIRTSPRAY_SIZE.y);
 
 			const TGfxVec2 tDirtSprayPosWorld = TGfxVec2(m_tPos.x - (DIRTSPRAY_SIZE.x / 2.0f), TFloor::S_GetPosition().y) - TCamera::S_GetWorldPosition();
 			GfxSpriteSetPosition(m_pDirtSpraySprite, tDirtSprayPosWorld.x, tDirtSprayPosWorld.y);
@@ -148,9 +147,9 @@ void TMeteorite::Update()
 	}
 }
 
-void TMeteorite::Die()
+bool TMeteorite::IsDead()
 {
-
+	return (GfxTimeGetMilliseconds() - m_iStartWarningTime >= 6 * SECONDS);
 }
 
 

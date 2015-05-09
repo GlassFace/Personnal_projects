@@ -17,7 +17,7 @@ public:
 
 	void Update();
 
-	void Die();
+	bool IsDead();
 
 
 	void Render() const;
