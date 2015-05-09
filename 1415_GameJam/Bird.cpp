@@ -15,8 +15,8 @@ namespace
 {
 	const int NAME_MAX_SIZE = 250;
 
-	const char * const FLY_TILESET_NAME = "Bird_Fly.tga";
-	const char * const BIRD_BLOOD_NAME = "Bird_Blood.tga";
+	const char * const FLY_TILESET_NAME = "Bird\\Bird_Fly.tga";
+	const char * const BIRD_BLOOD_NAME = "Bird\\Bird_Blood.tga";
 
 	const TGfxVec2 BIRD_SIZE = TGfxVec2(32.0f, 64.0f);
 	const float BIRD_FLY_SPEED = 180.0f;					// Pixels per seconds

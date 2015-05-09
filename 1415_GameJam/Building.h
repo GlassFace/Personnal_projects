@@ -25,6 +25,9 @@ public:
 	virtual void UnassignVillager(TVillager * pVillager) = 0;
 
 
+	virtual void SpecificRender() = 0;
+
+
 protected:
 
 	EBuildingType m_eBuildingType;

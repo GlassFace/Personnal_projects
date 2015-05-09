@@ -18,49 +18,61 @@ using namespace Generics;
 
 namespace
 {
-	const char * const SPRITE_NAME = "Workshop.tga";
+	const char * const SPRITE_NAME = "Workshop\\Workshop.tga";
+	const char * const ICONS_TILESET_NAME = "Workshop\\Workshop_icons.tga";
 
 	const int ASSIGNED_VILLAGERS_MAX = 3;
 
 	const TGfxVec2 WORKSHOP_SIZE = TGfxVec2(136.0f, 112.0f);
+	const TGfxVec2 ICONS_SIZE = TGfxVec2(96.0f, 96.0f);
 }
 
 
-TGfxTexture * TWorkshop::s_pTexture = nullptr;
+TGfxTexture * TWorkshop::s_pWorkshopTexture = nullptr;
+TGfxTexture * TWorkshop::s_pIconsTileSet = nullptr;
 
 TWorkshop::TWorkshop() :
 TBuilding(),
-m_pTypeSprite(),
 m_eBuildingToCreateType(EBuildingType_Workshop)
 {
-
 	m_eBuildingType = EBuildingType_Workshop;
 }
 
 TWorkshop::TWorkshop(const TGfxVec2 & tPos) :
 TBuilding(tPos, WORKSHOP_SIZE),
-m_pTypeSprite(),
+m_pIconSprite(nullptr),
 m_eBuildingToCreateType(EBuildingType_Workshop)
 {
 	m_pAssignedVillagers = new TVillager*[ASSIGNED_VILLAGERS_MAX];
 
 
+	m_pIconSprite = GfxSpriteCreate(s_pIconsTileSet);
+	GfxSpriteSetCutout(m_pIconSprite, 0, 0, int(ICONS_SIZE.x), int(ICONS_SIZE.y));
+	GfxSpriteSetPivot(m_pIconSprite, ICONS_SIZE.x / 2.0f, ICONS_SIZE.y);
+	GfxSpriteSetPosition(m_pIconSprite, m_tPos.x, m_tPos.y - m_tSize.y);
+
+
 	m_eBuildingType = EBuildingType_Workshop;
 
-	m_pSprite = GfxSpriteCreate(s_pTexture);
+	m_pSprite = GfxSpriteCreate(s_pWorkshopTexture);
 	GfxSpriteSetPivot(m_pSprite, (m_tSize.x / 2.0f), m_tSize.y);
 	GfxSpriteSetPosition(m_pSprite, m_tPos.x, m_tPos.y);
 }
 
 TWorkshop::~TWorkshop()
 {
-	
+	if (m_pIconSprite != nullptr)
+	{
+		GfxSpriteDestroy(m_pIconSprite);
+		m_pIconSprite = nullptr;
+	}
 }
 
 
 void TWorkshop::S_Initialize()
 {
-	s_pTexture = GfxTextureLoad(SPRITE_NAME);
+	s_pWorkshopTexture = GfxTextureLoad(SPRITE_NAME);
+	s_pIconsTileSet = GfxTextureLoad(ICONS_TILESET_NAME);
 }
 
 void TWorkshop::SpecificUpdate()
@@ -127,10 +139,51 @@ void TWorkshop::GetInput()
 		{
 			static_cast<TWorker*>(m_pAssignedVillagers[i]->GetProfession())->SetBuildingsToCreate(m_eBuildingToCreateType);
 		}
+
+
+		int iCutoutX = 0;
+
+		switch (m_eBuildingToCreateType)
+		{
+		case EBuildingType_House:
+
+			iCutoutX = 0;
+
+			break;
+
+		case EBuildingType_Workshop:
+
+			iCutoutX = 1;
+
+			break;
+
+		case EBuildingType_Barricade:
+
+			iCutoutX = 2;
+
+			break;
+
+		case EBuildingType_Tower:
+
+			iCutoutX = 3;
+
+			break;
+		}
+
+		GfxSpriteSetCutout(m_pIconSprite, iCutoutX * int(ICONS_SIZE.x), 0, int(ICONS_SIZE.x), int(ICONS_SIZE.y));
 	}
 }
 
 float TWorkshop::S_GetSizeX()
 {
 	return WORKSHOP_SIZE.x;
+}
+
+
+void TWorkshop::SpecificRender()
+{
+	if (m_pIconSprite != nullptr)
+	{
+		GfxSpriteRender(m_pIconSprite);
+	}
 }

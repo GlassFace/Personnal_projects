@@ -20,10 +20,10 @@ using namespace Generics;
 
 namespace
 {
-	const char * const NAMES_FILE = "Names.txt";
+	const char * const NAMES_FILE = "Villager\\Names.txt";
 
-	const char * const IDLE_TILESET_NAME = "Villager_Idle.tga";
-	const char * const WALK_TILESET_NAME = "Villager_Walk.tga";
+	const char * const IDLE_TILESET_NAME = "Villager\\Villager_Idle.tga";
+	const char * const WALK_TILESET_NAME = "Villager\\Villager_Walk.tga";
 
 	const int NAME_MAX_SIZE = 250;
 

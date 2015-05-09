@@ -24,7 +24,7 @@ using namespace Generics;
 
 namespace
 {
-	const char * BACKGROUND_TEXTURE = "Background.tga";
+	const char * BACKGROUND_TEXTURE = "Background\\Background.tga";
 
 	const int VILLAGERS_MAX_COUNT = 2000;
 
@@ -290,7 +290,7 @@ void TMap::S_GenerateBird()
 		{
 			float fRandomSpawnX = GfxMathGetRandomFloat(tSpawnLimite.x, tSpawnLimite.y);
 			GfxDbgPrintf("%d \n", iRandomBirdNbr);
-			S_CreateBird(TGfxVec2(fRandomSpawnX, -GfxGetDisplaySizeY()));
+			S_CreateBird(TGfxVec2(fRandomSpawnX, float(-GfxGetDisplaySizeY())));
 		}
 		s_iLastTimeBirdGeneration = GfxTimeGetMilliseconds();
 	}
@@ -310,6 +310,7 @@ void TMap::S_Render()
 	for (int i = 0; i < s_iBuildingsCount; i++)
 	{
 		s_pBuildings[i]->Render();
+		s_pBuildings[i]->SpecificRender();
 	}
 
 	for (int i = 0; i < s_iVillagersCount; i++)

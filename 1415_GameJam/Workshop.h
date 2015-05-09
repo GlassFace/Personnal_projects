@@ -23,10 +23,16 @@ public:
 
 	static float S_GetSizeX();
 
+
+	void SpecificRender();
+
+
 private:
 	
-	TGfxSprite * m_pTypeSprite;
-	static TGfxTexture * s_pTexture;
+	static TGfxTexture * s_pWorkshopTexture;
+
+	TGfxSprite * m_pIconSprite;
+	static TGfxTexture * s_pIconsTileSet;
 
 	EBuildingType m_eBuildingToCreateType;
 };

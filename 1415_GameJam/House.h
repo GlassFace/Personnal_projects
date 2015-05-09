@@ -24,6 +24,9 @@ public:
 	static float S_GetSizeX();
 
 
+	void SpecificRender() {};
+
+
 private:
 
 	static TGfxTexture * s_pTexture;
