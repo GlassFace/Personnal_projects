@@ -289,8 +289,9 @@ void TMap::S_GenerateBird()
 		for (int i = 0; i < iRandomBirdNbr; i++)
 		{
 			float fRandomSpawnX = GfxMathGetRandomFloat(tSpawnLimite.x, tSpawnLimite.y);
-			GfxDbgPrintf("%d \n", iRandomBirdNbr);
+			GfxDbgPrintf("%d \n", -GfxGetDisplaySizeY());
 			S_CreateBird(TGfxVec2(fRandomSpawnX, -GfxGetDisplaySizeY()));
+
 		}
 		s_iLastTimeBirdGeneration = GfxTimeGetMilliseconds();
 	}
