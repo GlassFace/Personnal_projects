@@ -42,8 +42,7 @@ namespace
 	const int CHANGE_DIRECTION_TIME_MIN = 2 * SECONDS;
 	const int CHANGE_DIRECTION_TIME_MAX = 10 * SECONDS;
 
-	const float GRAVITY = 0.2f;
-	const float MAX_FALL_SPEED = 20.0f;
+	const float AIR_DRAG = 0.8f;
 }
 
 
@@ -218,6 +217,8 @@ void TVillager::SpecificUpdate()
 		{
 			m_eAction = EAction_Idle;
 		}
+
+		m_tVelocity.x -= AIR_DRAG / (GfxTimeFrameGetCurrentFPS() != 0.0f ? GfxTimeFrameGetCurrentFPS() : 60.0f);
 	}
 }
 
@@ -296,6 +297,11 @@ bool TVillager::IsMouseOver(const TGfxVec2 & tMousePos) const
 void TVillager::SetAction(EAction eAction)
 {
 	m_eAction = eAction;
+}
+
+void TVillager::AddForce(const TGfxVec2 & tForce)
+{
+	m_tVelocity += tForce;
 }
 
 void TVillager::SetProfession(TProfession * pProfession, TBuilding * pBuilding)

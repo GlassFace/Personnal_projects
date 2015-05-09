@@ -12,8 +12,8 @@ using namespace Generics;
 
 namespace
 {
-	const float GRAVITY = 0.2f;
-	const float MAX_FALL_SPEED = 20.0f;
+	const float GRAVITY = 0.6f;
+	const float MAX_FALL_SPEED = 30.0f;
 }
 
 
@@ -74,7 +74,7 @@ void TDynamic::Move()
 		&& m_tPos.y > TFloor::GetPosition().y)
 	{
 		m_tPos.y = TFloor::GetPosition().y;
-		m_tVelocity.y = 0.f;
+		m_tVelocity.y = 0.0f;
 	}
 }
 

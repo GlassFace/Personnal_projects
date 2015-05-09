@@ -220,7 +220,7 @@ void TMap::S_DeleteBird(TBird * pBird)
 void TMap::S_Update()
 {
 	THUD::S_Update();
-	TControl::CheckInput();
+	TControl::S_Update();
 
 	tSpawnLimite = TGfxVec2(TFloor::GetPosition().x - TFloor::GetLeftSize(), TFloor::GetPosition().x + TFloor::GetRightSize());
 
@@ -296,7 +296,7 @@ bool TMap::S_EnoughRoomToConstruct(const TGfxVec2 & tPos, const float tBuildingS
 
 void TMap::S_GenerateBird()
 {
-	if (BIRDS_GENERATION_RATE * 1000.f < (GfxTimeGetMilliseconds() - s_iLastTimeBirdGeneration))
+	if (BIRDS_GENERATION_RATE * SECONDS < (GfxTimeGetMilliseconds() - s_iLastTimeBirdGeneration))
 	{
 		int iRandom = GfxMathGetRandomInteger(0, 100);
 		if (iRandom < (MIN_PERCENT * 100))
@@ -311,7 +311,7 @@ void TMap::S_GenerateBird()
 void TMap::S_Render()
 {
 	GfxClear(EGfxColor_Black);
-
+	
 	//if (s_pBackGroundSprite != nullptr)
 	//{
 	//	GfxSpriteRender(s_pBackGroundSprite);
@@ -335,6 +335,7 @@ void TMap::S_Render()
 	{
 		s_pBirds[i]->Render();
 	}
+
 
 	THUD::S_Render();
 }
