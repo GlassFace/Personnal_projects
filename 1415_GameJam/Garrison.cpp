@@ -36,7 +36,7 @@ TBuilding()
 {
 	m_pAssignedVillagers = new TVillager*[ASSIGNED_VILLAGERS_MAX];
 
-	m_eBuildingType = EBuildingType_Enclosure;
+	m_eBuildingType = EBuildingType_Garrison;
 
 	m_pSprite = GfxSpriteCreate(s_pGarrisonTexture);
 	GfxSpriteSetPivot(m_pSprite, (m_tSize.x / 2.0f), m_tSize.y);
@@ -48,7 +48,7 @@ TBuilding(tPos, GARRISON_SIZE)
 {
 	m_pAssignedVillagers = new TVillager*[ASSIGNED_VILLAGERS_MAX];
 
-	m_eBuildingType = EBuildingType_Enclosure;
+	m_eBuildingType = EBuildingType_Garrison;
 
 	m_pSprite = GfxSpriteCreate(s_pGarrisonTexture);
 	GfxSpriteSetPivot(m_pSprite, (m_tSize.x / 2.0f), m_tSize.y);
